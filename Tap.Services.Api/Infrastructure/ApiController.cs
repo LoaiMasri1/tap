@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using Tap.Domain.Core.Primitives;
 using Tap.Services.Api.Contracts;
 
@@ -17,7 +18,9 @@ public class ApiController : ControllerBase
         _mediator ??= HttpContext.RequestServices.GetService<IMediator>()!;
 
     protected IActionResult BadRequest(Error error) =>
-        BadRequest(new ApiResponse { Errors = new[] { error } });
+        BadRequest(
+            new ApiResponse { Errors = new[] { error }, StatusCode = HttpStatusCode.BadRequest }
+        );
 
     protected new IActionResult Ok(object value) => base.Ok(value);
 
