@@ -1,4 +1,4 @@
-# Hotel Booking System with Discount Management
+# Travel and Accommodation Booking Platform
 This project implements a comprehensive hotel booking system with a discount management feature using ASP.NET Core API. It allows users to browse hotels, view room details, make reservations, and apply discount codes to reduce their booking costs. Hotel owners can manage hotel information, room types, and discounts through API endpoints.
 
 ## Prerequisites
