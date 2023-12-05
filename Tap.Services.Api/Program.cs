@@ -1,10 +1,18 @@
+using Tap.Application;
+using Tap.Infrastructure;
+using Tap.Persistence;
 using Tap.Services.Api;
+using Tap.Services.Api.Extentions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var services = builder.Services;
+var configuration = builder.Configuration;
 
-services.AddApi();
+builder.Services
+    .AddApi()
+    .AddApplication()
+    .AddInfrastructure(configuration)
+    .AddPersistence(configuration);
 
 var app = builder.Build();
 
@@ -12,6 +20,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.ApplyMigration();
 }
 
 app.MapControllers();
