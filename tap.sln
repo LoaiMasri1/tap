@@ -9,17 +9,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{C16BF3AC-3
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{740706CE-E0C6-41E5-AFBB-6048DEFB8A53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tap.Domain", "Tap.Domain\Tap.Domain.csproj", "{7DCDFB9A-3160-4663-ACBB-783257620364}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tap.Domain", "Tap.Domain\Tap.Domain.csproj", "{7DCDFB9A-3160-4663-ACBB-783257620364}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tap.Application", "Tap.Application\Tap.Application.csproj", "{9F140502-1D8C-4A71-902A-2AA5D90E537D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tap.Application", "Tap.Application\Tap.Application.csproj", "{9F140502-1D8C-4A71-902A-2AA5D90E537D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tap.Infrastructure", "Tap.Infrastructure\Tap.Infrastructure.csproj", "{62B2E42D-87B9-45CF-A173-2FC4E5459D89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tap.Infrastructure", "Tap.Infrastructure\Tap.Infrastructure.csproj", "{62B2E42D-87B9-45CF-A173-2FC4E5459D89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tap.Contracts", "Tap.Contracts\Tap.Contracts.csproj", "{3A19E154-3598-4553-9F96-55813CF7989D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tap.Contracts", "Tap.Contracts\Tap.Contracts.csproj", "{3A19E154-3598-4553-9F96-55813CF7989D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tap.Persistence", "Tap.Persistence\Tap.Persistence.csproj", "{619A1E02-4CBA-408F-93DB-EC11D6ED23C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tap.Persistence", "Tap.Persistence\Tap.Persistence.csproj", "{619A1E02-4CBA-408F-93DB-EC11D6ED23C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tap.Services.Api", "Tap.Services.Api\Tap.Services.Api.csproj", "{2C3AA02D-C52E-48FF-AB1B-FABA15BB06C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tap.Services.Api", "Tap.Services.Api\Tap.Services.Api.csproj", "{2C3AA02D-C52E-48FF-AB1B-FABA15BB06C6}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{6CC8767B-629B-4C1D-8208-5536FE58F82E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{2C3AA02D-C52E-48FF-AB1B-FABA15BB06C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C3AA02D-C52E-48FF-AB1B-FABA15BB06C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C3AA02D-C52E-48FF-AB1B-FABA15BB06C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CC8767B-629B-4C1D-8208-5536FE58F82E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CC8767B-629B-4C1D-8208-5536FE58F82E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CC8767B-629B-4C1D-8208-5536FE58F82E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CC8767B-629B-4C1D-8208-5536FE58F82E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
