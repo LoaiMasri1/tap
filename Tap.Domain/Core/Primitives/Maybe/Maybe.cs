@@ -25,7 +25,7 @@ public class Maybe<TValue> : IEquatable<Maybe<TValue>>
 
     public static implicit operator TValue(Maybe<TValue> maybe) => maybe.Value;
 
-    public bool Equals(Maybe<TValue> other)
+    public bool Equals(Maybe<TValue>? other)
     {
         if (other is null)
         {
@@ -45,7 +45,7 @@ public class Maybe<TValue> : IEquatable<Maybe<TValue>>
         return Value!.Equals(other.Value);
     }
 
-    public override bool Equals(object obj) =>
+    public override bool Equals(object? obj) =>
         obj switch
         {
             null => false,
