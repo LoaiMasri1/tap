@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tap.Application.Core.Abstractions.Data;
-using Tap.Domain.Repositories;
+using Tap.Domain.Features.Users;
 using Tap.Persistence.Infrastructure;
 using Tap.Persistence.Repositories;
 

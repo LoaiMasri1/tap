@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using Tap.Services.Api.Middlewares;
 
 namespace Tap.Services.Api;
 
@@ -10,7 +11,7 @@ public static class DependencyInjection
     {
         services.AddControllers();
 
-        services.AddSwagger().AddVersioning();
+        services.AddSwagger().AddVersioning().AddMiddlware();
 
         return services;
     }
@@ -70,6 +71,13 @@ public static class DependencyInjection
             config.AssumeDefaultVersionWhenUnspecified = true;
             config.ReportApiVersions = true;
         });
+
+        return services;
+    }
+
+    public static IServiceCollection AddMiddlware(this IServiceCollection services)
+    {
+        services.AddScoped<ExceptionHandlerMiddlware>();
 
         return services;
     }

@@ -1,10 +1,9 @@
 ﻿using Tap.Application.Core.Messaging;
-using Tap.Domain.Repositories;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Application.Core.Abstractions.Data;
-using Tap.Domain.Entities;
 using Tap.Contracts.Features.Users;
+using Tap.Domain.Features.Users;
 
 namespace Tap.Application.Features.Users.CreateUser;
 
@@ -24,12 +23,22 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Resul
         CancellationToken cancellationToken
     )
     {
-        if (await _userRepository.IsEmailUniqueAsync(request.Email, cancellationToken))
+        var email = Email.Create(request.Email);
+        var password = Password.Create(request.Password);
+
+        var result = Result.Combine(email, password);
+
+        if (result.IsFailure)
+        {
+            return result.Error;
+        }
+
+        if (await _userRepository.IsEmailUniqueAsync(email.Value, cancellationToken))
         {
             return DomainErrors.User.DuplicateEmail;
         }
 
-        var user = new User(request.Name, request.Email, request.Password);
+        var user = new User(request.Name, email.Value, password.Value, request.Role);
 
         _userRepository.Insert(user);
 

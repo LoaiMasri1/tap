@@ -4,6 +4,7 @@ using Tap.Infrastructure;
 using Tap.Persistence;
 using Tap.Services.Api;
 using Tap.Services.Api.Extentions;
+using Tap.Services.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,8 @@ builder.Services
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionHandlerMiddlware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -30,6 +33,6 @@ if (app.Environment.IsDevelopment())
 
 app.MapControllers();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.Run();

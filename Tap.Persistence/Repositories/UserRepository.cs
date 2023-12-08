@@ -1,6 +1,5 @@
 ﻿using Tap.Application.Core.Abstractions.Data;
-using Tap.Domain.Entities;
-using Tap.Domain.Repositories;
+using Tap.Domain.Features.Users;
 
 namespace Tap.Persistence.Repositories;
 

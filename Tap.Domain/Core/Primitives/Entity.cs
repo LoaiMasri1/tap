@@ -5,7 +5,6 @@ namespace Tap.Domain.Core.Primitives;
 public abstract class Entity : IEquatable<Entity>
 {
     protected Entity(int id)
-        : this()
     {
         Ensure.NotEmpty(id, "The identifier is required.", nameof(id));
 
@@ -14,7 +13,7 @@ public abstract class Entity : IEquatable<Entity>
 
     protected Entity() { }
 
-    public int Id { get; private set; }
+    public int Id { get; }
 
     public bool Equals(Entity? other)
     {
@@ -33,15 +32,10 @@ public abstract class Entity : IEquatable<Entity>
             return false;
         }
 
-        if (Id == default || other.Id == default)
-        {
-            return false;
-        }
-
-        return Id == other.Id;
+        return Id.Equals(other.Id);
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj is null)
         {
