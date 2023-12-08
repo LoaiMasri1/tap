@@ -26,6 +26,14 @@ public static class Ensure
         }
     }
 
+    public static void NotEmpty(int value, string message, string argumentName)
+    {
+        if (value == default)
+        {
+            throw new ArgumentException(message, argumentName);
+        }
+    }
+
     public static void NotNull<TValue>(TValue value, string message, string argumentName)
         where TValue : class
     {
@@ -35,9 +43,9 @@ public static class Ensure
         }
     }
 
-    public static void NotEmpty(int value, string message, string argumentName)
+    public static void NotDefault<TValue>(TValue value, string message, string argumentName)
     {
-        if (value == default)
+        if (EqualityComparer<TValue>.Default.Equals(value, default))
         {
             throw new ArgumentException(message, argumentName);
         }

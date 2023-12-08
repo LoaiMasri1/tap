@@ -2,24 +2,29 @@
 using Tap.Domain.Core.Primitives;
 using Tap.Domain.Core.Utility;
 
-namespace Tap.Domain.Entities;
+namespace Tap.Domain.Features.Users;
 
 public class User : Entity, IAuditableEntity
 {
-    public User(string name, string email, string password)
+    private User() { }
+
+    public User(string name, Email email, Password password, UserRole role)
     {
-        Ensure.NotEmpty(name, "The first name is required.", nameof(name));
+        Ensure.NotEmpty(name, "The name is required.", nameof(name));
         Ensure.NotEmpty(email, "The email is required.", nameof(email));
         Ensure.NotEmpty(password, "The password is required", nameof(password));
+        Ensure.NotDefault(role, "The role is required", nameof(role));
 
         Name = name;
         Email = email;
         Password = password;
+        Role = role;
     }
 
     public string Name { get; private set; }
-    public string Email { get; private set; }
-    public string Password { get; private set; }
+    public Email Email { get; private set; }
+    public Password Password { get; private set; }
+    public UserRole Role { get; private set; }
     public DateTime CreatedAtUtc { get; }
     public DateTime? UpdatedAtUtc { get; }
 }
