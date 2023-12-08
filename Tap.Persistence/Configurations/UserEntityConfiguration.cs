@@ -21,9 +21,9 @@ internal class UserEntityConfiguration : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder
-            .Property(x => x.Password)
-            .HasConversion(x => x.Value, x => Password.Create(x).Value)
-            .HasMaxLength(Password.MaxLength)
+            .Property<string>("_hashedPassword")
+            .HasField("_hashedPassword")
+            .HasColumnName("Password")
             .IsRequired();
 
         builder.Property(x => x.CreatedAtUtc).IsRequired();

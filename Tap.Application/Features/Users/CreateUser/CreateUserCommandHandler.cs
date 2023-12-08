@@ -4,18 +4,25 @@ using Tap.Domain.Core.Primitives.Result;
 using Tap.Application.Core.Abstractions.Data;
 using Tap.Contracts.Features.Users;
 using Tap.Domain.Features.Users;
+using Tap.Application.Core.Abstractions.Cryptography;
 
 namespace Tap.Application.Features.Users.CreateUser;
 
 public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Result<UserResponse>>
 {
     private readonly IUserRepository _userRepository;
+    private readonly IPasswordHasher _passwordHasher;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+    public CreateUserCommandHandler(
+        IUserRepository userRepository,
+        IUnitOfWork unitOfWork,
+        IPasswordHasher passwordHasher
+    )
     {
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<Result<UserResponse>> Handle(
@@ -38,7 +45,9 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Resul
             return DomainErrors.User.DuplicateEmail;
         }
 
-        var user = new User(request.Name, email.Value, password.Value, request.Role);
+        var hashedPassword = _passwordHasher.HashPassword(password.Value);
+
+        var user = new User(request.Name, email.Value, hashedPassword, request.Role);
 
         _userRepository.Insert(user);
 
