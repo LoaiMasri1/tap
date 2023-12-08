@@ -19,4 +19,17 @@ public class Result
         value is null
             ? Result<TIn>.Failure(Error.NullValue)
             : new Result<TIn>(value, true, Error.None);
+
+    public static Result Combine(params Result[] results)
+    {
+        foreach (var result in results)
+        {
+            if (result.IsFailure)
+            {
+                return result;
+            }
+        }
+
+        return Success();
+    }
 }
