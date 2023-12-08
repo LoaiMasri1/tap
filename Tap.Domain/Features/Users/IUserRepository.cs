@@ -2,6 +2,6 @@
 
 public interface IUserRepository
 {
-    Task<bool> IsEmailUniqueAsync(Email email);
+    Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken);
     void Insert(User user);
 }
