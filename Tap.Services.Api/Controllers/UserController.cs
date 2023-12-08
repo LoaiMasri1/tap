@@ -18,7 +18,8 @@ public class UserController : ApiController
                     new CreateUserCommand(
                         $"{request.FirstName} {request.LastName}",
                         request.Email,
-                        request.Password
+                        request.Password,
+                        request.Role
                     )
             )
             .Bind(command => Mediator.Send(command))
