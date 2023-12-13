@@ -1,11 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Tap.Application.Core.Abstractions.Common;
 using Tap.Domain.Features.Users;
 
 namespace Tap.Persistence.Configurations;
 
 internal class UserEntityConfiguration : IEntityTypeConfiguration<User>
 {
+    private IDateTime _dateTime;
+
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable(nameof(User));
@@ -19,6 +23,17 @@ internal class UserEntityConfiguration : IEntityTypeConfiguration<User>
             .HasConversion(x => x.Value, x => Email.Create(x).Value)
             .HasMaxLength(Email.MaxLength)
             .IsRequired();
+
+        builder.OwnsOne(
+            user => user.ActivationToken,
+            tokenBuilder =>
+            {
+                tokenBuilder.WithOwner();
+
+                tokenBuilder.Property(x => x.Value).HasColumnName("TokenValue");
+                tokenBuilder.Property(x => x.ExpiredAt).HasColumnName("TokenExpireAt");
+            }
+        );
 
         builder
             .Property<string>("_hashedPassword")
