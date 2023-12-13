@@ -23,5 +23,12 @@ public class UserController : ApiController
                     )
             )
             .Bind(command => Mediator.Send(command))
-            .Match(Ok, BadRequest);
+            .Match(
+                user =>
+                    Ok(
+                        user,
+                        "Account Created Successfully. Please check your email for activation."
+                    ),
+                BadRequest
+            );
 }
