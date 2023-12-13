@@ -1,10 +1,13 @@
-﻿using Tap.Application.Core.Messaging;
+﻿using Tap.Application.Core.Abstractions.Common;
+using Tap.Application.Core.Messaging;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Application.Core.Abstractions.Data;
 using Tap.Contracts.Features.Users;
 using Tap.Domain.Features.Users;
 using Tap.Application.Core.Abstractions.Cryptography;
+using Tap.Application.Core.Abstractions.Notification;
+using Tap.Contracts.Emails;
 
 namespace Tap.Application.Features.Users.CreateUser;
 
@@ -12,17 +15,26 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Resul
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IEmailNotificationService _emailNotificationService;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IDateTime _dateTime;
+    private readonly ITokenGenerator _tokenGenerator;
 
     public CreateUserCommandHandler(
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,
-        IPasswordHasher passwordHasher
+        IPasswordHasher passwordHasher,
+        IEmailNotificationService emailNotificationService,
+        IDateTime dateTime,
+        ITokenGenerator tokenGenerator
     )
     {
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
         _passwordHasher = passwordHasher;
+        _emailNotificationService = emailNotificationService;
+        _dateTime = dateTime;
+        _tokenGenerator = tokenGenerator;
     }
 
     public async Task<Result<UserResponse>> Handle(
@@ -45,9 +57,15 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Resul
             return DomainErrors.User.DuplicateEmail;
         }
 
+        var token = new Token(_tokenGenerator.Generate(), _dateTime.UtcNow.AddDays(1));
+
         var hashedPassword = _passwordHasher.HashPassword(password.Value);
 
-        var user = new User(request.Name, email.Value, hashedPassword, request.Role);
+        var user = new User(request.Name, email.Value, hashedPassword, request.Role, token);
+
+        var welcomeEmail = new WelcomeEmail(user.Name, user.Email, token.Value);
+
+        await _emailNotificationService.SendWelcomeEmail(welcomeEmail);
 
         _userRepository.Insert(user);
 
