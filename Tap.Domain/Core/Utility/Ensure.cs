@@ -50,4 +50,20 @@ public static class Ensure
             throw new ArgumentException(message, argumentName);
         }
     }
+
+    public static void NotFuture(DateTime value, string message, string argumentName)
+    {
+        if (value > DateTime.UtcNow)
+        {
+            throw new ArgumentException(message, argumentName);
+        }
+    }
+
+    public static void NotPast(DateTime value, string message, string argumentName)
+    {
+        if (value < DateTime.UtcNow)
+        {
+            throw new ArgumentException(message, argumentName);
+        }
+    }
 }
