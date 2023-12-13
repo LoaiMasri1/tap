@@ -1,8 +1,11 @@
 ﻿using FluentAssertions;
 using NSubstitute;
+using Tap.Application.Core.Abstractions.Common;
 using Tap.Application.Core.Abstractions.Cryptography;
 using Tap.Application.Core.Abstractions.Data;
+using Tap.Application.Core.Abstractions.Notification;
 using Tap.Application.Features.Users.CreateUser;
+using Tap.Contracts.Emails;
 using Tap.Contracts.Features.Users;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives;
@@ -19,18 +22,31 @@ public class CreateUserCommandTests
 
     private readonly IUserRepository _userRepositoryMock;
     private readonly IUnitOfWork _unitOfWorkMock;
-    private readonly IPasswordHasher _passwordHasherMock;
 
     public CreateUserCommandTests()
     {
         _userRepositoryMock = Substitute.For<IUserRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-        _passwordHasherMock = Substitute.For<IPasswordHasher>();
+
+        var emailNotificationServiceMock = Substitute.For<IEmailNotificationService>();
+        var passwordHasherMock = Substitute.For<IPasswordHasher>();
+        var tokenGeneratorMock = Substitute.For<ITokenGenerator>();
+        var dateTimeMock = Substitute.For<IDateTime>();
+
+        tokenGeneratorMock.Generate().Returns("token");
+        dateTimeMock.UtcNow.Returns(DateTime.UtcNow);
+        passwordHasherMock.HashPassword(Command.Password).Returns(Command.Password);
+        emailNotificationServiceMock
+            .SendWelcomeEmail(Arg.Any<WelcomeEmail>())
+            .Returns(Task.CompletedTask);
 
         _sut = new CreateUserCommandHandler(
             _userRepositoryMock,
             _unitOfWorkMock,
-            _passwordHasherMock
+            passwordHasherMock,
+            emailNotificationServiceMock,
+            dateTimeMock,
+            tokenGeneratorMock
         );
     }
 
@@ -56,7 +72,6 @@ public class CreateUserCommandTests
         // Arrange
 
         _userRepositoryMock.IsEmailUniqueAsync(Command.Email, default).Returns(true);
-        _passwordHasherMock.HashPassword(Command.Password).Returns(Command.Password);
 
         // Act
 
@@ -73,7 +88,6 @@ public class CreateUserCommandTests
         // Arrange
 
         _userRepositoryMock.IsEmailUniqueAsync(Command.Email, default).Returns(false);
-        _passwordHasherMock.HashPassword(Command.Password).Returns(Command.Password);
 
         // Act
 
@@ -90,7 +104,6 @@ public class CreateUserCommandTests
         // Arrange
 
         _userRepositoryMock.IsEmailUniqueAsync(Command.Email, default).Returns(false);
-        _passwordHasherMock.HashPassword(Command.Password).Returns(Command.Password);
 
         // Act
 
@@ -107,7 +120,6 @@ public class CreateUserCommandTests
         // Arrange
 
         _userRepositoryMock.IsEmailUniqueAsync(Command.Email, default).Returns(false);
-        _passwordHasherMock.HashPassword(Command.Password).Returns(Command.Password);
 
         // Act
 
@@ -125,7 +137,6 @@ public class CreateUserCommandTests
         // Arrange
 
         _userRepositoryMock.IsEmailUniqueAsync(Command.Email, default).Returns(false);
-        _passwordHasherMock.HashPassword(Command.Password).Returns(Command.Password);
 
         // Act
 
