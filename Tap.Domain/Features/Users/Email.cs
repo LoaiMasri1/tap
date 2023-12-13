@@ -2,6 +2,7 @@
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives;
 using Tap.Domain.Core.Primitives.Result;
+using Tap.Domain.Core.Utility;
 
 namespace Tap.Domain.Features.Users;
 
@@ -32,7 +33,14 @@ public sealed class Email : ValueObject
         yield return Value;
     }
 
+    public static Email From(string value)
+    {
+        Ensure.NotEmpty(value, "The email is required.", nameof(value));
+
+        return new Email(value);
+    }
+
     public static implicit operator string(Email email) => email.Value;
 
-    public static explicit operator Email(string email) => Create(email).Value;
+    public static explicit operator Email(string email) => From(email);
 }

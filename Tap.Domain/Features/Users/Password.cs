@@ -45,5 +45,5 @@ public sealed class Password : ValueObject
 
     public static implicit operator string(Password password) => password.Value;
 
-    public static explicit operator Password(string password) => Create(password).Value;
+    public static explicit operator Password(string password) => From(password);
 }
