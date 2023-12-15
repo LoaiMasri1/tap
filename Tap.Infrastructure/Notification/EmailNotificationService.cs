@@ -22,7 +22,7 @@ public class EmailNotificationService : IEmailNotificationService
             $"Welcome to Tap, {welcomeEmail.Name}!"
                 + Environment.NewLine
                 + Environment.NewLine
-                + $"Please click the following link to verify your email address: {BaseUrl}/auth/activate?t={welcomeEmail.Token}"
+                + $"Please click the following link to verify your email address: {BaseUrl}/users/activate?t={welcomeEmail.Token}"
         );
         await _emailService.SendEmailAsync(mailRequest);
     }

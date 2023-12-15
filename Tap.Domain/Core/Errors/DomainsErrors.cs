@@ -1,4 +1,6 @@
-﻿using Tap.Domain.Core.Primitives;
+﻿using MediatR;
+using Tap.Domain.Core.Primitives;
+using Tap.Domain.Core.Primitives.Result;
 
 namespace Tap.Domain.Core.Errors;
 
@@ -11,6 +13,12 @@ public static class DomainErrors
 
         public static Error DuplicateEmail =>
             new("User.DuplicateEmail", "The specified email address is already in use.");
+
+        public static Error UserAllReadyActive =>
+            new("User.UserAllReadyActive", "The user is already active.");
+
+        public static Error ActivationTokenExpired =>
+            new("User.ActivationTokenExpired", "The activation token is expired.");
     }
 
     public static class Email

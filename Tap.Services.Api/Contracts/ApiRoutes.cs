@@ -7,5 +7,6 @@ public static class ApiRoutes
         private const string Base = "users";
         public const string Get = Base;
         public const string Post = Base;
+        public const string Activate = $"{Base}/activate";
     }
 }
