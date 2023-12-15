@@ -16,6 +16,10 @@ internal abstract class GenericRepository<TEntity>
     public async Task<Maybe<TEntity>> GetByIdAsync(int id, CancellationToken cancellationToken) =>
         await DbContext.GetBydIdAsync<TEntity>(id, cancellationToken);
 
+    public async Task<Maybe<TEntity>> GetByAsync(Expression<Func<TEntity,bool>> predicate,
+        CancellationToken cancellationToken) =>
+        await DbContext.GetByAsync(predicate, cancellationToken);
+
     public void Insert(TEntity entity) => DbContext.Insert(entity);
 
     public void InsertRange(IReadOnlyCollection<TEntity> entities) =>
