@@ -17,4 +17,10 @@ public static class ValidationErrors
         internal static Error RoleIsRequired =>
             new("CreateUser.RoleIsRequired", "The role is required.");
     }
+
+    internal static class ActivateUser
+    {
+        internal static Error TokenIsRequired =>
+            new("ActivateUser.TokenIsRequired", "The token is required.");
+    }
 }
