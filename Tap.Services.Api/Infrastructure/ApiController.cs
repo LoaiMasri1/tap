@@ -22,7 +22,7 @@ public class ApiController : ControllerBase
             new ApiResponse { Errors = new[] { error }, StatusCode = HttpStatusCode.BadRequest }
         );
 
-    protected new IActionResult Ok(object value, string? message) =>
+    protected IActionResult Ok(object value, string? message) =>
         base.Ok(
             new ApiResponse
             {

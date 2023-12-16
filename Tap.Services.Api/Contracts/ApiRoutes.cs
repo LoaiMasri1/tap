@@ -9,4 +9,10 @@ public static class ApiRoutes
         public const string Post = Base;
         public const string Activate = $"{Base}/activate";
     }
+
+    public static class Auth
+    {
+        private const string Base = "auth";
+        public const string Login = $"{Base}/login";
+    }
 }
