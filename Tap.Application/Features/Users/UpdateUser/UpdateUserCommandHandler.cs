@@ -42,13 +42,12 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, Resul
 
         user.UpdateName(command.FirstName, command.LastName);
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-
         if (
             string.IsNullOrWhiteSpace(command.Password)
             || string.IsNullOrWhiteSpace(command.ConfirmPassword)
         )
         {
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return Result.Success();
         }
 
