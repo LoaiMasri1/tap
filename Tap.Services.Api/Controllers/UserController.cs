@@ -34,7 +34,7 @@ public class UserController : ApiController
             );
 
     [HttpGet(ApiRoutes.User.Activate)]
-    public async Task<IActionResult> Activate([FromQuery(Name = "t")]string token) =>
+    public async Task<IActionResult> Activate([FromQuery(Name = "t")] string token) =>
         await Result
             .Create(token)
             .Map(t => new ActivateUserCommand(t))

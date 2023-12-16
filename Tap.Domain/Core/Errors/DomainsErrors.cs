@@ -1,6 +1,4 @@
-﻿using MediatR;
-using Tap.Domain.Core.Primitives;
-using Tap.Domain.Core.Primitives.Result;
+﻿using Tap.Domain.Core.Primitives;
 
 namespace Tap.Domain.Core.Errors;
 
@@ -62,6 +60,15 @@ public static class DomainErrors
                 "Password.MissingNonAlphanumeric",
                 "The password must contain at least one non-alphanumeric character."
             );
+    }
+
+    public static class Authentication
+    {
+        public static Error InvalidEmailOrPassword =>
+            new("Authentication.InvalidEmailOrPassword", "Invalid email or password.");
+
+        public static Error AccountNotActive =>
+            new("Authentication.AccountNotActive", "The account is not active.");
     }
 
     public static class General

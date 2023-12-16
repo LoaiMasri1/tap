@@ -23,4 +23,13 @@ public static class ValidationErrors
         internal static Error TokenIsRequired =>
             new("ActivateUser.TokenIsRequired", "The token is required.");
     }
+
+    internal class Login
+    {
+        internal static Error EmailIsRequired =>
+            new("Login.EmailIsRequired", "The email is required.");
+
+        internal static Error PasswordIsRequired =>
+            new("Login.PasswordIsRequired", "The password is required.");
+    }
 }

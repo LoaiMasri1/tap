@@ -1,6 +1,6 @@
-﻿using Tap.Domain.Core.Abstraction;
+﻿using Tap.Domain.Common.Services;
+using Tap.Domain.Core.Abstraction;
 using Tap.Domain.Core.Primitives;
-using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Core.Utility;
 
 namespace Tap.Domain.Features.Users;
@@ -38,5 +38,10 @@ public class User : Entity, IAuditableEntity
     public bool IsActivate { get; private set; } = false;
     public DateTime CreatedAtUtc { get; }
     public DateTime? UpdatedAtUtc { get; }
+
     public void Activate() => IsActivate = true;
+
+    public bool VerifyPasswordHash(string password, IPasswordHashChecker passwordHashChecker) =>
+        !string.IsNullOrWhiteSpace(password)
+        && passwordHashChecker.HashesMatch(_hashedPassword, password);
 }
