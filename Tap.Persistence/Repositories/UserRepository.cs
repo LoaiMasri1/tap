@@ -12,6 +12,9 @@ internal sealed class UserRepository : GenericRepository<User>, IUserRepository
     public Task<bool> IsEmailUniqueAsync(string email, CancellationToken cancellationToken) =>
         AnyAsync(user => user.Email == email, cancellationToken);
 
-    public Task<Maybe<User>> GetByTokenAsync(string token, CancellationToken cancellationToken) => 
-        GetByAsync(u => u.ActivationToken.Value == token, cancellationToken);
+    public Task<Maybe<User>> GetByTokenAsync(string token, CancellationToken cancellationToken) =>
+        GetByAsync(u => u.ActivationToken!.Value == token, cancellationToken);
+
+    public Task<Maybe<User>> GetByEmailAsync(string email, CancellationToken cancellationToken) =>
+        FirstOrDefaultAsync(user => user.Email == email, cancellationToken);
 }

@@ -6,6 +6,7 @@ public interface IUserRepository
 {
     Task<bool> IsEmailUniqueAsync(string email, CancellationToken cancellationToken);
     void Insert(User user);
-    Task<Maybe<User>> GetByTokenAsync(string token, CancellationToken cancellationToken);
 
+    Task<Maybe<User>> GetByTokenAsync(string token, CancellationToken cancellationToken);
+    Task<Maybe<User>> GetByEmailAsync(string email, CancellationToken cancellationToken);
 }
