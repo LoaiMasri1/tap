@@ -8,15 +8,18 @@ public static class DomainErrors
     {
         public static Error NotFound =>
             new("User.NotFound", "The user with the specified identifier was not found.");
-
         public static Error DuplicateEmail =>
             new("User.DuplicateEmail", "The specified email address is already in use.");
-
         public static Error UserAllReadyActive =>
             new("User.UserAllReadyActive", "The user is already active.");
-
         public static Error ActivationTokenExpired =>
             new("User.ActivationTokenExpired", "The activation token is expired.");
+        public static Error PasswordsDoNotMatch =>
+            new("User.PasswordsDoNotMatch", "The passwords do not match.");
+        public static Error CannotChangePassword =>
+            new("User.CannotChangePassword", "The user cannot change the password.");
+        public static Error Unauthorized =>
+            new("User.Unauthorized", "The user is not authorized to perform this action.");
     }
 
     public static class Email
