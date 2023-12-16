@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Tap.Application.Core.Abstractions.Authentication;
 using Tap.Application.Core.Abstractions.Common;
 using Tap.Application.Core.Abstractions.Cryptography;
 using Tap.Application.Core.Abstractions.Email;
 using Tap.Application.Core.Abstractions.Notification;
+using Tap.Application.Features.Authentication;
 using Tap.Domain.Common.Services;
 using Tap.Infrastructure.Authentication;
 using Tap.Infrastructure.Authentication.Options;
