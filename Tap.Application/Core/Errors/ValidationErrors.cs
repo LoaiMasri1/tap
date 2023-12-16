@@ -32,4 +32,13 @@ public static class ValidationErrors
         internal static Error PasswordIsRequired =>
             new("Login.PasswordIsRequired", "The password is required.");
     }
+
+    internal class UpdateUser
+    {
+        internal static Error IdIsRequired => new("UpdateUser.IdIsRequired", "The id is required.");
+        internal static Error FirstNameIsRequired =>
+            new("UpdateUser.NameIsRequired", "The first name is required.");
+        internal static Error LastNameIsRequired =>
+            new("UpdateUser.NameIsRequired", "The last name is required.");
+    }
 }

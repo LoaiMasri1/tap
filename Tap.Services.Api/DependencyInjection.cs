@@ -11,7 +11,7 @@ public static class DependencyInjection
     {
         services.AddControllers();
 
-        services.AddSwagger().AddVersioning().AddMiddlware();
+        services.AddHttpContextAccessor().AddSwagger().AddVersioning().AddMiddlware();
 
         return services;
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tap.Application.Core.Abstractions.Common;
 using Tap.Application.Core.Abstractions.Cryptography;
@@ -43,12 +44,16 @@ public static class DependencyInjection
         IConfiguration configuration
     )
     {
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionKey));
         services.ConfigureOptions<ConfigureJwtBearerOptions>();
 
-        services.AddAuthentication().AddJwtBearer();
+        services.AddAuthorization();
 
         services.AddTransient<IJwtProvider, JwtProvider>();
+
+        services.AddScoped<IUserIdentifierProvider, UserIdentifierProvider>();
 
         return services;
     }
