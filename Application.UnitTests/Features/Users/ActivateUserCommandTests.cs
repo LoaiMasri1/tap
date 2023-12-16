@@ -7,7 +7,7 @@ using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives.Maybe;
 using Tap.Domain.Features.Users;
 
-namespace Application.UnitTests;
+namespace Application.UnitTests.Features.Users;
 
 public class ActivateUserCommandTests
 {
@@ -16,6 +16,7 @@ public class ActivateUserCommandTests
     private readonly IDateTime _dateTimeMock;
 
     private static readonly ActivateUserCommand Command = new("token");
+
     public ActivateUserCommandTests()
     {
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
@@ -120,10 +121,10 @@ public class ActivateUserCommandTests
         _userRepositoryMock.GetByTokenAsync(Command.Token, default).Returns(user);
 
         var sut = new ActivateUserCommandHandler(
-                       _userRepositoryMock,
-                                  _unitOfWorkMock,
-                                  _dateTimeMock
-                              );
+            _userRepositoryMock,
+            _unitOfWorkMock,
+            _dateTimeMock
+        );
 
         // Act
         var result = await sut.Handle(Command, default);

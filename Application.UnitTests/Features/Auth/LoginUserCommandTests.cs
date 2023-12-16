@@ -7,7 +7,7 @@ using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives.Maybe;
 using Tap.Domain.Features.Users;
 
-namespace Application.UnitTests;
+namespace Application.UnitTests.Features.Auth;
 
 public class LoginUserCommandTests
 {

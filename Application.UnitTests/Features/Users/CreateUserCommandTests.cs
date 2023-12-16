@@ -11,7 +11,7 @@ using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives;
 using Tap.Domain.Features.Users;
 
-namespace Application.UnitTests;
+namespace Application.UnitTests.Features.Users;
 
 public class CreateUserCommandTests
 {
