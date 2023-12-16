@@ -29,15 +29,13 @@ public class ExceptionHandlerMiddlware : IMiddleware
 
     private static async Task HandleExceptionAsync(HttpContext context, Exception ex)
     {
-        (HttpStatusCode statusCode, IReadOnlyCollection<Error> errors) = GetHttpStatusCodeAndError(
+        var (statusCode, errors) = GetHttpStatusCodeAndError(
             ex
         );
 
         context.Response.StatusCode = (int)statusCode;
 
-        string response = JsonSerializer.Serialize(
-            new ApiResponse { Errors = errors, StatusCode = statusCode }
-        );
+        var response = new ApiResponse { Errors = errors, StatusCode = statusCode };
 
         await context.Response.WriteAsJsonAsync(response);
     }

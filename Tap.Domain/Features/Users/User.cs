@@ -1,5 +1,6 @@
 ﻿using Tap.Domain.Core.Abstraction;
 using Tap.Domain.Core.Primitives;
+using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Core.Utility;
 
 namespace Tap.Domain.Features.Users;
@@ -10,7 +11,13 @@ public class User : Entity, IAuditableEntity
 
     private User() { }
 
-    public User(string name, Email email, string hashedPassword, UserRole role)
+    public User(
+        string name,
+        Email email,
+        string hashedPassword,
+        UserRole role,
+        Token? activationToken = null
+    )
     {
         Ensure.NotEmpty(name, "The name is required.", nameof(name));
         Ensure.NotEmpty(email, "The email is required.", nameof(email));
@@ -21,11 +28,15 @@ public class User : Entity, IAuditableEntity
         Email = email;
         _hashedPassword = hashedPassword;
         Role = role;
+        ActivationToken = activationToken;
     }
 
     public string Name { get; private set; }
     public Email Email { get; private set; }
     public UserRole Role { get; private set; }
+    public Token? ActivationToken { get; private set; }
+    public bool IsActivate { get; private set; } = false;
     public DateTime CreatedAtUtc { get; }
     public DateTime? UpdatedAtUtc { get; }
+    public void Activate() => IsActivate = true;
 }

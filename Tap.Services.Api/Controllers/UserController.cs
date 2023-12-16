@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Tap.Application.Features.Users.ActivateUser;
 using Tap.Application.Features.Users.CreateUser;
 using Tap.Contracts.Features.Users;
 using Tap.Domain.Core.Primitives.Result;
@@ -23,5 +24,23 @@ public class UserController : ApiController
                     )
             )
             .Bind(command => Mediator.Send(command))
-            .Match(Ok, BadRequest);
+            .Match(
+                user =>
+                    Ok(
+                        user,
+                        "Account Created Successfully. Please check your email for activation."
+                    ),
+                BadRequest
+            );
+
+    [HttpGet(ApiRoutes.User.Activate)]
+    public async Task<IActionResult> Activate([FromQuery(Name = "t")]string token) =>
+        await Result
+            .Create(token)
+            .Map(t => new ActivateUserCommand(t))
+            .Bind(command => Mediator.Send(command))
+            .Match(
+                user => Ok(user, "Account Activated Successfully. You can now login."),
+                BadRequest
+            );
 }
