@@ -17,4 +17,13 @@ public static class ApiRoutes
         private const string Base = "auth";
         public const string Login = $"{Base}/login";
     }
+
+    public static class City
+    {
+        private const string Base = "cities";
+        public const string Get = Base;
+        public const string Post = Base;
+        public const string CreateHotel = $"{Base}/{{id}}/hotels";
+        public const string UploadPhotos = $"{Base}/{{id}}/photos";
+    }
 }
