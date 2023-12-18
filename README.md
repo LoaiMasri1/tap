@@ -15,7 +15,7 @@ This project implements a comprehensive hotel booking system with a discount man
 git clone github.com/LoaiMasri1/tap.git
 ```
 
-2. Run the Project: Navigate to the project directory and run the following command to start the project.
+2. Run the Project: Navigate to the project directory and run the following commands to start the project.
 
 ```bash
 docker-compose -f docker-compose.yml -f docker-compose.override.yml build
@@ -26,7 +26,6 @@ docker-compose -f docker-compose.yml -f docker-compose.override.yml up
 ```
 
 3. Access the Project: Open your browser and navigate to `http://localhost:7194` to access the project.
-<br/>
 
 4. Stop the Project: To stop the project, run the following command.
 
