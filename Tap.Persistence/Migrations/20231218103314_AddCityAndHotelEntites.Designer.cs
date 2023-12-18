@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tap.Persistence;
 
@@ -11,9 +12,11 @@ using Tap.Persistence;
 namespace Tap.Persistence.Migrations
 {
     [DbContext(typeof(TapDbContext))]
-    partial class TapDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231218103314_AddCityAndHotelEntites")]
+    partial class AddCityAndHotelEntites
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,14 +86,9 @@ namespace Tap.Persistence.Migrations
                     b.Property<DateTime?>("UpdatedAtUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CityId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Hotel", (string)null);
                 });
@@ -143,13 +141,7 @@ namespace Tap.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Tap.Domain.Features.Users.User", null)
-                        .WithMany("Hotels")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.OwnsOne("Tap.Domain.Features.Hotels.Hotel.Location#Tap.Domain.Features.Hotels.Location", "Location", b1 =>
+                    b.OwnsOne("Tap.Domain.Features.Hotels.Location", "Location", b1 =>
                         {
                             b1.Property<int>("HotelId")
                                 .HasColumnType("int");
@@ -164,7 +156,7 @@ namespace Tap.Persistence.Migrations
 
                             b1.HasKey("HotelId");
 
-                            b1.ToTable("Hotel", (string)null);
+                            b1.ToTable("Hotel");
 
                             b1.WithOwner()
                                 .HasForeignKey("HotelId");
@@ -176,7 +168,7 @@ namespace Tap.Persistence.Migrations
 
             modelBuilder.Entity("Tap.Domain.Features.Users.User", b =>
                 {
-                    b.OwnsOne("Tap.Domain.Features.Users.User.ActivationToken#Tap.Domain.Features.Users.Token", "ActivationToken", b1 =>
+                    b.OwnsOne("Tap.Domain.Features.Users.Token", "ActivationToken", b1 =>
                         {
                             b1.Property<int>("UserId")
                                 .HasColumnType("int");
@@ -192,7 +184,7 @@ namespace Tap.Persistence.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("User", (string)null);
+                            b1.ToTable("User");
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
@@ -202,11 +194,6 @@ namespace Tap.Persistence.Migrations
                 });
 
             modelBuilder.Entity("Tap.Domain.Features.Cities.City", b =>
-                {
-                    b.Navigation("Hotels");
-                });
-
-            modelBuilder.Entity("Tap.Domain.Features.Users.User", b =>
                 {
                     b.Navigation("Hotels");
                 });

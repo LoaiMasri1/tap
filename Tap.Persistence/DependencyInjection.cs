@@ -19,7 +19,9 @@ public static class DependencyInjection
 
         services.AddSingleton(new ConnectionString(connectionString));
 
-        services.AddDbContext<TapDbContext>(options => options.UseSqlServer(connectionString));
+        services.AddDbContext<TapDbContext>(
+            options => options.UseSqlServer(connectionString, x => x.UseNetTopologySuite())
+        );
 
         services.AddScoped<IDbContext>(
             serviceProvider => serviceProvider.GetService<TapDbContext>()!

@@ -33,6 +33,19 @@ public static class DomainErrors
             new("Email.InvalidFormat", "The email format is invalid.");
     }
 
+    public static class Location
+    {
+        public static Error LatitudeOutOfRange =>
+            new("Location.LatitudeOutOfRange", "The latitude is out of range of -90 and 90.");
+        public static Error LongitudeOutOfRange =>
+            new("Location.LongitudeOutOfRange", "The longitude is out of range. -180 and 180.");
+        public static Error NullOrEmpty => new("Location.NullOrEmpty", "The location is required.");
+        public static Error NullLatitude =>
+            new("Location.NullLatitude", "The latitude is required.");
+        public static Error NullLongitude =>
+            new("Location.NullLongitude", "The longitude is required.");
+    }
+
     public static class Password
     {
         public static Error NullOrEmpty => new("Password.NullOrEmpty", "The password is required.");
