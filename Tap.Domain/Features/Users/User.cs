@@ -4,6 +4,7 @@ using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Core.Utility;
+using Tap.Domain.Features.Hotels;
 
 namespace Tap.Domain.Features.Users;
 
@@ -37,6 +38,7 @@ public class User : Entity, IAuditableEntity
     public Email Email { get; private set; }
     public UserRole Role { get; private set; }
     public Token? ActivationToken { get; private set; }
+    public ICollection<Hotel> Hotels { get; private set; } = new List<Hotel>();
     public bool IsActivate { get; private set; } = false;
     public DateTime CreatedAtUtc { get; }
     public DateTime? UpdatedAtUtc { get; }
