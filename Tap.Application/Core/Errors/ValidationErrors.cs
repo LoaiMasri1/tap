@@ -41,4 +41,33 @@ public static class ValidationErrors
         internal static Error LastNameIsRequired =>
             new("UpdateUser.NameIsRequired", "The last name is required.");
     }
+
+    internal class CreateHotel
+    {
+        internal static Error NameIsRequired =>
+            new("CreateHotel.NameIsRequired", "The name is required.");
+        internal static Error DescriptionIsRequired =>
+            new("CreateHotel.DescriptionIsRequired", "The description is required.");
+        internal static Error LatitudeIsRequired =>
+            new("CreateHotel.LatitudeIsRequired", "The latitude is required.");
+        internal static Error LongitudeIsRequired =>
+            new("CreateHotel.LongitudeIsRequired", "The longitude is required.");
+        internal static Error CityIdIsRequired =>
+            new("CreateHotel.CityIdIsRequired", "The city id is required.");
+    }
+
+    internal class CreateCity
+    {
+        internal static Error NameIsRequired =>
+            new("CreateCity.NameIsRequired", "The name is required.");
+        internal static Error DescriptionIsRequired =>
+            new("CreateCity.DescriptionIsRequired", "The description is required.");
+        internal static Error CountryIsRequired =>
+            new("CreateCity.CountryIsRequired", "The country is required.");
+        public static Error NameTooLong => new("CreateCity.NameTooLong", "The name is too long.");
+        public static Error DescriptionTooLong =>
+            new("CreateCity.DescriptionTooLong", "The description is too long.");
+        public static Error CountryTooLong =>
+            new("CreateCity.CountryTooLong", "The country is too long.");
+    }
 }
