@@ -5,8 +5,8 @@ using Tap.Application.Features.Hotels.CreateHotel;
 using Tap.Application.Features.Photos.UploadPhoto;
 using Tap.Contracts.Features.Cities;
 using Tap.Contracts.Features.Hotels;
-using Tap.Contracts.Files;
 using Tap.Domain.Common.Enumerations;
+using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Services.Api.Contracts;
 using Tap.Services.Api.Infrastructure;
@@ -33,20 +33,15 @@ public class CityController : ApiController
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 
-    // upload photos
     [HttpPost(ApiRoutes.City.UploadPhotos)]
     [Authorize]
-    public async Task<IActionResult> UploadPhotos(int id, IFormFile file)
-    {
-        var ms = new MemoryStream();
-        await file.CopyToAsync(ms);
-        var bytes = ms.ToArray();
-        var filesWithBytes = new FileRequest[] { new(file.FileName, bytes) };
-
-        return await Result
-            .Create(id)
-            .Map(x => new UploadPhotosCommand(ItemId: id, ItemType.City, filesWithBytes))
+    public async Task<IActionResult> UploadPhotos(int id, [FromForm] IFormCollection files) =>
+        await Result
+            .Create((id, files))
+            .Ensure(x => x.files.Count > 5, DomainErrors.Photo.EnsurePhotosCount)
+            .Ensure(x => x.files.IsImageFile(), DomainErrors.Photo.EnsurePhotosType)
+            .Ensure(x => x.files.IsExceededSize(), DomainErrors.Photo.EnsurePhotosSize)
+            .Map(x => new UploadPhotosCommand(x.id, ItemType.City, x.files.CreateFileRequest()))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
-    }
 }

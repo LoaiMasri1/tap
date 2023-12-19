@@ -97,14 +97,17 @@ public static class DomainErrors
 
     public static class Photo
     {
-        public static Error NullOrEmpty => new("Photo.NullOrEmpty", "The photo is required.");
-        public static Error UrlInvalidFormat =>
-            new("Photo.UrlInvalidFormat", "The photo url is invalid.");
         public static Error UrlNullOrEmpty =>
             new("Photo.UrlNullOrEmpty", "The photo url is required.");
         public static Error TypeInvalid => new("Photo.TypeInvalid", "The photo type is invalid.");
         public static Error ItemIdInvalid =>
             new("Photo.ItemIdInvalid", "The photo item id is invalid.");
+        public static Error EnsurePhotosCount =>
+            new("Photo.EnsurePhotosCount", "The photos count must be between 1 and 5.");
+        public static Error EnsurePhotosType =>
+            new("Photo.EnsurePhotosType", "The photos type must be jpeg or png.");
+        public static Error EnsurePhotosSize =>
+            new("Photo.EnsurePhotosSize", "The photos size must be less than 5MB.");
     }
 
     public static class General

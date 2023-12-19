@@ -3,7 +3,7 @@ using Tap.Application;
 using Tap.Infrastructure;
 using Tap.Persistence;
 using Tap.Services.Api;
-using Tap.Services.Api.Extentions;
+using Tap.Services.Api.Extensions;
 using Tap.Services.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -70,4 +70,12 @@ public static class ValidationErrors
         public static Error CountryTooLong =>
             new("CreateCity.CountryTooLong", "The country is too long.");
     }
+
+    public static class UploadPhotos
+    {
+        public static Error ItemIdRequired =>
+            new("UploadPhotos.ItemIdRequired", "The item id is required.");
+        public static Error FilesRequired =>
+            new("UploadPhotos.FilesRequired", "The files are required.");
+    }
 }

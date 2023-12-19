@@ -10,7 +10,6 @@ public class FileService : IFileService
     private readonly IWebHostEnvironment _env;
     private readonly IDateTime _dateTime;
     private readonly ITokenGenerator _guidGenerator;
-    private ILogger<FileService> _logger;
 
     private static readonly object Lock = new();
 
@@ -24,7 +23,6 @@ public class FileService : IFileService
         _env = env;
         _dateTime = dateTime;
         _guidGenerator = guidGenerator;
-        _logger = logger;
     }
 
     private const string DefaultFolderName = "wwwroot";
@@ -34,8 +32,6 @@ public class FileService : IFileService
     {
         folderName ??= DefaultFolderName;
         var path = Path.Combine(_env.ContentRootPath, folderName, ImagesFolderName);
-
-        _logger.LogInformation("Saving {Count} files to {Path}", files.Length, path);
 
         lock (Lock)
         {
@@ -69,8 +65,8 @@ public class FileService : IFileService
             .ToArray();
 
     public string GenerateUniqueFileName(string fileName) =>
-        $"{_dateTime.UtcNow:yyyy_mm_dd__hh_mm}_{_guidGenerator.Generate()}_{fileName}";
+        $"{_dateTime.UtcNow:yyyy_mm_dd__hh_mm_}{_guidGenerator.Generate()}{fileName}";
 
     public static string GetFileUrl(string fileName, string? folderName = null) =>
-        Path.Combine(folderName ?? DefaultFolderName, fileName);
+        Path.Combine(folderName ?? ImagesFolderName, fileName);
 }
