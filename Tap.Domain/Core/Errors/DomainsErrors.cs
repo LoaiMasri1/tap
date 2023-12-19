@@ -22,6 +22,14 @@ public static class DomainErrors
             new("User.Unauthorized", "The user is not authorized to perform this action.");
     }
 
+    public static class City
+    {
+        public static Error NotFound =>
+            new("City.NotFound", "The city with the specified identifier was not found.");
+        public static Error AlreadyExists =>
+            new("City.AlreadyExists", "The city with the specified name already exists.");
+    }
+
     public static class Email
     {
         public static Error NullOrEmpty => new("Email.NullOrEmpty", "The email is required.");

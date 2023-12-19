@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Tap.Domain.Core.Primitives.Maybe;
-using Tap.Domain.Core.Primitives;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Tap.Application.Core.Abstractions.Data;
+using Tap.Domain.Core.Primitives;
+using Tap.Domain.Core.Primitives.Maybe;
 
 namespace Tap.Persistence.Repositories;
 
-internal abstract class GenericRepository<TEntity>
+public abstract class GenericRepository<TEntity>
     where TEntity : Entity
 {
     protected GenericRepository(IDbContext dbContext) => DbContext = dbContext;
@@ -16,9 +16,10 @@ internal abstract class GenericRepository<TEntity>
     public async Task<Maybe<TEntity>> GetByIdAsync(int id, CancellationToken cancellationToken) =>
         await DbContext.GetBydIdAsync<TEntity>(id, cancellationToken);
 
-    public async Task<Maybe<TEntity>> GetByAsync(Expression<Func<TEntity,bool>> predicate,
-        CancellationToken cancellationToken) =>
-        await DbContext.GetByAsync(predicate, cancellationToken);
+    public async Task<Maybe<TEntity>> GetByAsync(
+        Expression<Func<TEntity, bool>> predicate,
+        CancellationToken cancellationToken
+    ) => await DbContext.GetByAsync(predicate, cancellationToken);
 
     public void Insert(TEntity entity) => DbContext.Insert(entity);
 
