@@ -95,6 +95,18 @@ public static class DomainErrors
             new("Authentication.AccountNotActive", "The account is not active.");
     }
 
+    public static class Photo
+    {
+        public static Error NullOrEmpty => new("Photo.NullOrEmpty", "The photo is required.");
+        public static Error UrlInvalidFormat =>
+            new("Photo.UrlInvalidFormat", "The photo url is invalid.");
+        public static Error UrlNullOrEmpty =>
+            new("Photo.UrlNullOrEmpty", "The photo url is required.");
+        public static Error TypeInvalid => new("Photo.TypeInvalid", "The photo type is invalid.");
+        public static Error ItemIdInvalid =>
+            new("Photo.ItemIdInvalid", "The photo item id is invalid.");
+    }
+
     public static class General
     {
         public static Error UnProcessableRequest =>
