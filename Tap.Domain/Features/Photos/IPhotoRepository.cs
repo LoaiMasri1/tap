@@ -3,4 +3,5 @@
 public interface IPhotoRepository
 {
     void Insert(Photo photo);
+    void InsertRange(IReadOnlyCollection<Photo> photos);
 }

@@ -21,10 +21,10 @@ public class Photo : Entity, IAuditableEntity
         Result
             .Create((url, type, itemId))
             .Ensure(x => !string.IsNullOrWhiteSpace(x.url), DomainErrors.Photo.UrlNullOrEmpty)
-            .Ensure(
-                x => Uri.TryCreate(url, UriKind.Absolute, out _),
-                DomainErrors.Photo.UrlInvalidFormat
-            )
+            //.Ensure(
+            //    x => Uri.TryCreate(url, UriKind.Absolute, out _),
+            //    DomainErrors.Photo.UrlInvalidFormat
+            //)
             .Ensure(x => Enum.IsDefined(typeof(ItemType), x.type), DomainErrors.Photo.TypeInvalid)
             .Ensure(x => x.itemId > 0, DomainErrors.Photo.ItemIdInvalid)
             .Map(x => new Photo(x.url, x.type, x.itemId));
