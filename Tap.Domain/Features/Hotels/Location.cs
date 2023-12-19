@@ -20,10 +20,8 @@ public class Location : ValueObject
     public static Result<Location> Create(double latitude, double longitude) =>
         Result
             .Create((latitude, longitude))
-            .Ensure(x => x.latitude is not 0, DomainErrors.Location.NullLatitude)
-            .Ensure(x => x.longitude is not 0, DomainErrors.Location.NullLongitude)
-            .Ensure(x => x.latitude is not 0 and not 0, DomainErrors.Location.NullOrEmpty)
-            .Ensure(x => x.longitude is not 0 and not 0, DomainErrors.Location.NullOrEmpty)
+            .Ensure(x => x.latitude is not double.NaN, DomainErrors.Location.NullLatitude)
+            .Ensure(x => x.longitude is not double.NaN, DomainErrors.Location.NullLongitude)
             .Ensure(x => x.latitude is >= -90 and <= 90, DomainErrors.Location.LatitudeOutOfRange)
             .Ensure(
                 x => x.longitude is >= -180 and <= 180,

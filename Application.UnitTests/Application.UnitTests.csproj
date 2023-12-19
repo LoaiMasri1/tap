@@ -32,4 +32,9 @@
     <ProjectReference Include="..\Tap.Application\Tap.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Cities\" />
+    <Folder Include="Features\Hotels\" />
+  </ItemGroup>
+
 </Project>
