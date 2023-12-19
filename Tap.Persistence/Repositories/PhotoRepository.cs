@@ -1,5 +1,4 @@
 ﻿using Tap.Application.Core.Abstractions.Data;
-using Tap.Domain.Core.Utility;
 using Tap.Domain.Features.Photos;
 
 namespace Tap.Persistence.Repositories;

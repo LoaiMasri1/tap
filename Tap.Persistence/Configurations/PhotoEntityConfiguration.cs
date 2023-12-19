@@ -24,7 +24,5 @@ public class PhotoEntityConfiguration : IEntityTypeConfiguration<Photo>
         builder.Property(x => x.CreatedAtUtc).IsRequired();
 
         builder.Property(x => x.UpdatedAtUtc);
-
-        builder.HasIndex(x => new { x.Type, x.ItemId }).IsUnique();
     }
 }

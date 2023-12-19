@@ -8,8 +8,6 @@ namespace Tap.Persistence.Configurations;
 
 internal class UserEntityConfiguration : IEntityTypeConfiguration<User>
 {
-    private IDateTime _dateTime;
-
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable(nameof(User));
