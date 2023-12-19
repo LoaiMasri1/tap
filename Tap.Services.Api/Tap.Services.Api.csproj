@@ -25,4 +25,8 @@
     <ProjectReference Include="..\Tap.Persistence\Tap.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

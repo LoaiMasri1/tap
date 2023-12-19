@@ -29,10 +29,15 @@ public static class DependencyInjection
         services.AddTransient<IDateTime, DateTimeProvider>();
         services.AddTransient<IPasswordHasher, PasswordHasher>();
         services.AddTransient<IPasswordHashChecker, PasswordHasher>();
+        services.AddTransient<IJwtProvider, JwtProvider>();
+
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<ITokenGenerator, GuidTokenGenerator>();
-
         services.AddScoped<IEmailNotificationService, EmailNotificationService>();
+        services.AddScoped<IUserIdentifierProvider, UserIdentifierProvider>();
+
+        services.AddTransient<IFileService, FileService>();
+        services.AddTransient<IUploadFileService, LocalUploadFileService>();
 
         services.AddAuthentication(configuration);
 
@@ -50,10 +55,6 @@ public static class DependencyInjection
         services.ConfigureOptions<ConfigureJwtBearerOptions>();
 
         services.AddAuthorization();
-
-        services.AddTransient<IJwtProvider, JwtProvider>();
-
-        services.AddScoped<IUserIdentifierProvider, UserIdentifierProvider>();
 
         return services;
     }
