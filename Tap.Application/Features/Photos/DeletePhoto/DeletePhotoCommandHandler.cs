@@ -40,7 +40,8 @@ public class DeletePhotoCommandHandler : IRequestHandler<DeletePhotoCommand, Res
 
         _photoRepository.Remove(photo);
 
-        _fileService.DeleteFiles(new[] { photo.Url });
+        //_fileService.DeleteFiles(new[] { photo.Url });
+        // TODO: uncomment this line when we have a way to delete files from the file system and azure blob storage
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
