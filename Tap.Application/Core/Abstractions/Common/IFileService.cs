@@ -7,4 +7,5 @@ public interface IFileService
     public Task<string[]> SaveFilesAsync(FileRequest[] files, string? folderName = null);
     public FileResponse[] GetFilesUrl(string[] fileNames, string? folderName = null);
     public string GenerateUniqueFileName(string fileName);
+    public void DeleteFiles(string[] fileNames, string? folderName = null);
 }

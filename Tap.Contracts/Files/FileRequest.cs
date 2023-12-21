@@ -1,3 +1,3 @@
 ﻿namespace Tap.Contracts.Files;
 
-public record FileRequest(string FileName, byte[] Content);
+public record FileRequest(string FileName, string ContentType, byte[] Content);

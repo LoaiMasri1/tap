@@ -69,4 +69,16 @@ public class FileService : IFileService
 
     public static string GetFileUrl(string fileName, string? folderName = null) =>
         Path.Combine(folderName ?? ImagesFolderName, fileName);
+
+    public void DeleteFiles(string[] fileNames, string? folderName = null)
+    {
+        folderName ??= DefaultFolderName;
+        var path = Path.Combine(_env.ContentRootPath, folderName);
+
+        foreach (var fileName in fileNames)
+        {
+            var filePath = Path.Combine(path, fileName);
+            File.Delete(filePath);
+        }
+    }
 }

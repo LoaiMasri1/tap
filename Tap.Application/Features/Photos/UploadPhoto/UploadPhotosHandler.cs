@@ -30,6 +30,13 @@ public class UploadPhotosHandler
         CancellationToken cancellationToken
     )
     {
+        var filesResult = request.Files.CreateFileRequest();
+
+        if (filesResult.IsFailure)
+        {
+            return filesResult.Error;
+        }
+
         var fileResponses = await _uploadFileService.UploadFilesAsync(request.Files);
 
         var photosResult = fileResponses
