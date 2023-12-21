@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tap.Persistence;
 
-namespace Tap.Services.Api.Extentions;
+namespace Tap.Services.Api.Extensions;
 
-public static class WebApplicationExtentions
+public static class WebApplicationExtensions
 {
     public static WebApplication ApplyMigration(this WebApplication app)
     {

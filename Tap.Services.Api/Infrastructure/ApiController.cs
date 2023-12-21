@@ -1,7 +1,7 @@
-﻿using Asp.Versioning;
+﻿using System.Net;
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using Tap.Domain.Core.Primitives;
 using Tap.Services.Api.Contracts;
 
@@ -31,6 +31,9 @@ public class ApiController : ControllerBase
                 StatusCode = HttpStatusCode.OK
             }
         );
+
+    protected IActionResult Ok<TValue>(TValue? value) =>
+        base.Ok(new ApiResponse { Data = value, StatusCode = HttpStatusCode.OK });
 
     protected new IActionResult NotFound() => base.NotFound();
 }

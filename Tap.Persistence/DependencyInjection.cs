@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Tap.Application.Core.Abstractions.Data;
 using Tap.Domain.Features.Cities;
 using Tap.Domain.Features.Hotels;
+using Tap.Domain.Features.Photos;
 using Tap.Domain.Features.Users;
 using Tap.Persistence.Infrastructure;
 using Tap.Persistence.Repositories;
@@ -34,6 +35,7 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IHotelRepository, HotelRepository>();
         services.AddScoped<ICityRepository, CityRepository>();
+        services.AddScoped<IPhotoRepository, PhotoRepository>();
 
         return services;
     }

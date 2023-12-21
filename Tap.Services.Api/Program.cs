@@ -3,18 +3,20 @@ using Tap.Application;
 using Tap.Infrastructure;
 using Tap.Persistence;
 using Tap.Services.Api;
-using Tap.Services.Api.Extentions;
+using Tap.Services.Api.Extensions;
 using Tap.Services.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Host.UseSerilog(
-    (context, configuration) => configuration.ReadFrom.Configuration(context.Configuration)
-);
+builder
+    .Host
+    .UseSerilog(
+        (context, configuration) => configuration.ReadFrom.Configuration(context.Configuration)
+    );
 
 var configuration = builder.Configuration;
 
-builder.Services
+builder
+    .Services
     .AddApi()
     .AddApplication()
     .AddInfrastructure(configuration)
@@ -33,7 +35,10 @@ if (app.Environment.IsDevelopment())
 
 app.MapControllers();
 
+app.UseStaticFiles();
+
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 //app.UseHttpsRedirection();

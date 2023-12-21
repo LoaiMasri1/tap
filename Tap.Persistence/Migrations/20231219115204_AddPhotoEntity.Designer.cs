@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tap.Persistence;
 
@@ -11,9 +12,11 @@ using Tap.Persistence;
 namespace Tap.Persistence.Migrations
 {
     [DbContext(typeof(TapDbContext))]
-    partial class TapDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231219115204_AddPhotoEntity")]
+    partial class AddPhotoEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,7 +114,7 @@ namespace Tap.Persistence.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("UpdatedAtUtc")
                         .HasColumnType("datetime2");
@@ -122,6 +125,9 @@ namespace Tap.Persistence.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Type", "ItemId")
+                        .IsUnique();
 
                     b.ToTable("Photo", (string)null);
                 });

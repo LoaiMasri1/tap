@@ -66,4 +66,21 @@ public static class Ensure
             throw new ArgumentException(message, argumentName);
         }
     }
+
+    public static void Positive(int value, string message, string argumentName)
+    {
+        if (value <= 0)
+        {
+            throw new ArgumentException(message, argumentName);
+        }
+    }
+
+    public static void Of<TEnum>(TEnum value, string message, string argumentName)
+        where TEnum : struct, Enum
+    {
+        if (!Enum.IsDefined(typeof(TEnum), value))
+        {
+            throw new ArgumentException(message, argumentName);
+        }
+    }
 }

@@ -14,6 +14,8 @@ services:
     - "7194:80"
     depends_on:
     - tap.sqlserver
+    volumes:
+    -  tap.api:/app/wwwroot
   tap.sqlserver:
     image: "mcr.microsoft.com/mssql/server:2019-latest"
     ports:
@@ -24,10 +26,11 @@ services:
     - ACCEPT_EULA=Y
     - SA_PASSWORD=Password123
     volumes:  
-    - tap.sqlserver:/var/opt/mssql
+    - tap.sqlserver:/var/opt/mssql 
     
 volumes:
   tap.sqlserver:
+  tap.api:
 
 networks:
   tap:

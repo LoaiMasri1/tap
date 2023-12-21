@@ -95,6 +95,24 @@ public static class DomainErrors
             new("Authentication.AccountNotActive", "The account is not active.");
     }
 
+    public static class Photo
+    {
+        public static Error UrlNullOrEmpty =>
+            new("Photo.UrlNullOrEmpty", "The photo url is required.");
+        public static Error TypeInvalid => new("Photo.TypeInvalid", "The photo type is invalid.");
+        public static Error ItemIdInvalid =>
+            new("Photo.ItemIdInvalid", "The photo item id is invalid.");
+        public static Error EnsurePhotosCount =>
+            new("Photo.EnsurePhotosCount", "The photos count must be between 1 and 5.");
+        public static Error EnsurePhotosType =>
+            new("Photo.EnsurePhotosType", "The photos type must be jpeg or png.");
+        public static Error EnsurePhotosSize =>
+            new("Photo.EnsurePhotosSize", "The photos size must be less than 5MB.");
+
+        public static Error PhotoNotFound =>
+            new("Photo.PhotoNotFound", "The photo with the specified identifier was not found.");
+    }
+
     public static class General
     {
         public static Error UnProcessableRequest =>

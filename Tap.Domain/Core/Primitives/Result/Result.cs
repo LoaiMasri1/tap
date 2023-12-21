@@ -32,4 +32,17 @@ public class Result
 
         return Success();
     }
+
+    public static Result Combine<TIn>(params Result<TIn>[] results)
+    {
+        foreach (var result in results)
+        {
+            if (result.IsFailure)
+            {
+                return result;
+            }
+        }
+
+        return Success();
+    }
 }
