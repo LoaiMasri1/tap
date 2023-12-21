@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Tap.Application.Core.Abstractions.Common;
 using Tap.Application.Core.Abstractions.Cryptography;
 using Tap.Application.Core.Abstractions.Email;
@@ -10,6 +12,7 @@ using Tap.Domain.Common.Services;
 using Tap.Infrastructure.Authentication;
 using Tap.Infrastructure.Authentication.Options;
 using Tap.Infrastructure.Common;
+using Tap.Infrastructure.Common.Options;
 using Tap.Infrastructure.Cryptography;
 using Tap.Infrastructure.Emails;
 using Tap.Infrastructure.Emails.Options;
@@ -37,9 +40,11 @@ public static class DependencyInjection
         services.AddScoped<IUserIdentifierProvider, UserIdentifierProvider>();
 
         services.AddTransient<IFileService, FileService>();
-        services.AddTransient<IUploadFileService, LocalUploadFileService>();
+        services.AddTransient<IUploadFileService, AzureBlobService>();
 
         services.AddAuthentication(configuration);
+
+        services.AddAzureBlob();
 
         return services;
     }
@@ -55,6 +60,19 @@ public static class DependencyInjection
         services.ConfigureOptions<ConfigureJwtBearerOptions>();
 
         services.AddAuthorization();
+
+        return services;
+    }
+
+    public static IServiceCollection AddAzureBlob(this IServiceCollection services)
+    {
+        services.ConfigureOptions<ConfigureAzureBlobOptions>();
+
+        services.AddSingleton(provider =>
+        {
+            var options = provider.GetRequiredService<IOptions<AzureBlobOptions>>().Value;
+            return new BlobServiceClient(options.ConnectionString);
+        });
 
         return services;
     }
