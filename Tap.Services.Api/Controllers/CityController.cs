@@ -6,7 +6,6 @@ using Tap.Application.Features.Photos.UploadPhoto;
 using Tap.Contracts.Features.Cities;
 using Tap.Contracts.Features.Hotels;
 using Tap.Domain.Common.Enumerations;
-using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Services.Api.Contracts;
 using Tap.Services.Api.Infrastructure;
@@ -38,9 +37,6 @@ public class CityController : ApiController
     public async Task<IActionResult> UploadPhotos(int id, [FromForm] IFormCollection files) =>
         await Result
             .Create((id, files))
-            .Ensure(x => x.files.Count > 5, DomainErrors.Photo.EnsurePhotosCount)
-            .Ensure(x => x.files.IsImageFile(), DomainErrors.Photo.EnsurePhotosType)
-            .Ensure(x => x.files.IsExceededSize(), DomainErrors.Photo.EnsurePhotosSize)
             .Map(x => new UploadPhotosCommand(x.id, ItemType.City, x.files.CreateFileRequest()))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
