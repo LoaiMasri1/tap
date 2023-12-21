@@ -7,14 +7,14 @@ using Tap.Domain.Features.Photos;
 
 namespace Tap.Application.Features.Photos.UploadPhoto;
 
-public class UploadPhotosHandler
+public class UploadPhotosCommandHandler
     : IRequestHandler<UploadPhotosCommand, Result<UploadPhotosResponse>>
 {
     private readonly IUploadFileService _uploadFileService;
     private readonly IPhotoRepository _photoRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UploadPhotosHandler(
+    public UploadPhotosCommandHandler(
         IUploadFileService uploadFileService,
         IPhotoRepository photoRepository,
         IUnitOfWork unitOfWork
@@ -30,7 +30,7 @@ public class UploadPhotosHandler
         CancellationToken cancellationToken
     )
     {
-        var filesResult = request.Files.CreateFileRequest();
+        var filesResult = request.Files.ValidateFileRequest();
 
         if (filesResult.IsFailure)
         {

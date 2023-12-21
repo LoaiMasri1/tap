@@ -40,7 +40,7 @@ public class UpdatePhotoCommandHandler
 
         var photo = maybePhoto.Value;
 
-        var fileResult = request.File.CreateFileRequest();
+        var fileResult = request.File.ValidateFileRequest();
 
         if (fileResult.IsFailure)
         {

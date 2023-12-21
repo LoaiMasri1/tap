@@ -19,7 +19,7 @@ public static class PhotoHelper
     public static readonly Func<FileRequest[], bool> EnsurePhotosSize = x =>
         x.All(file => file.Content.Length <= MaxPhotoSize);
 
-    public static Result<FileRequest[]> CreateFileRequest(this FileRequest[] files) =>
+    public static Result<FileRequest[]> ValidateFileRequest(this FileRequest[] files) =>
         Result
             .Create(files)
             .Ensure(x => x.Length is > 0 and <= MaxPhotoCount, DomainErrors.Photo.EnsurePhotosCount)
@@ -32,7 +32,7 @@ public static class PhotoHelper
                 DomainErrors.Photo.EnsurePhotosSize
             );
 
-    public static Result<FileRequest> CreateFileRequest(this FileRequest file) =>
+    public static Result<FileRequest> ValidateFileRequest(this FileRequest file) =>
         Result
             .Create(file)
             .Ensure(x => PhotoTypes.Contains(x.ContentType), DomainErrors.Photo.EnsurePhotosType)
