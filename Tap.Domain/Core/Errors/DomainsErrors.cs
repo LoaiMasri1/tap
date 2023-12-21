@@ -108,6 +108,9 @@ public static class DomainErrors
             new("Photo.EnsurePhotosType", "The photos type must be jpeg or png.");
         public static Error EnsurePhotosSize =>
             new("Photo.EnsurePhotosSize", "The photos size must be less than 5MB.");
+
+        public static Error PhotoNotFound =>
+            new("Photo.PhotoNotFound", "The photo with the specified identifier was not found.");
     }
 
     public static class General

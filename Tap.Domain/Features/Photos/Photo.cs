@@ -34,4 +34,11 @@ public class Photo : Entity, IAuditableEntity
     public int ItemId { get; private set; }
     public DateTime CreatedAtUtc { get; }
     public DateTime? UpdatedAtUtc { get; }
+
+    public void UpdateUrl(string url)
+    {
+        // TODO: Validate url
+
+        Url = url;
+    }
 }
