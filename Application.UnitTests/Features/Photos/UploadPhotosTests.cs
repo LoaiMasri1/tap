@@ -8,7 +8,7 @@ using Tap.Domain.Common.Enumerations;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Features.Photos;
 
-namespace Application.UnitTests.Features.Hotels;
+namespace Application.UnitTests.Features.Photos;
 
 public class UploadPhotosTests
 {

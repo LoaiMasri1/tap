@@ -35,7 +35,6 @@
   <ItemGroup>
     <Folder Include="Features\Cities\" />
     <Folder Include="Features\Hotels\" />
-    <Folder Include="Features\Photos\" />
   </ItemGroup>
 
 </Project>
