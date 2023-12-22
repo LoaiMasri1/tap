@@ -51,7 +51,7 @@ public static class WebApplicationExtensions
                     content: var(--logo-url);
                     height: 35px;
                   }
-                  .swagger-ui .topbar .download-url-wrapper .select-label {
+                  .swagger-ui label {
                     color: "#3b4151" !important;
                   }
                 
