@@ -7,16 +7,13 @@ using Tap.Services.Api.Extensions;
 using Tap.Services.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
-builder
-    .Host
-    .UseSerilog(
-        (context, configuration) => configuration.ReadFrom.Configuration(context.Configuration)
-    );
+builder.Host.UseSerilog(
+    (context, configuration) => configuration.ReadFrom.Configuration(context.Configuration)
+);
 
 var configuration = builder.Configuration;
 
-builder
-    .Services
+builder.Services
     .AddApi()
     .AddApplication()
     .AddInfrastructure(configuration)
@@ -28,8 +25,7 @@ app.UseMiddleware<ExceptionHandlerMiddlware>();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.AddSwagger();
     app.ApplyMigration();
 }
 
