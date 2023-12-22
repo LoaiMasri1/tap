@@ -24,13 +24,13 @@ jobs:
     - name: Build
       run: dotnet build ./tap.sln --configuration Release --no-restore
 
-    - name: Publish
-      run: dotnet publish ./tap.sln --configuration Release --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+    - name: Publish API
+      run: dotnet publish ./Tap.Services.Api/Tap.Services.Api.csproj --configuration Release --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/Tap.Services.Api'
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         slot-name: 'production'
-        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/Tap.Services.Api
         publish-profile: "${{ secrets.AZURE_PUBLISH_PROFILE }}"
