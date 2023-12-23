@@ -15,10 +15,7 @@ public class Result
 
     public static implicit operator Result(Error error) => Failure(error);
 
-    public static Result<TIn> Create<TIn>(TIn value) =>
-        value is null
-            ? Result<TIn>.Failure(Error.NullValue)
-            : new Result<TIn>(value, true, Error.None);
+    public static Result<TIn> Create<TIn>(TIn value) => new(value, true, Error.None);
 
     public static Result Combine(params Result[] results)
     {

@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using Tap.Domain.Core.Primitives;
 
-namespace Tap.Application.Core.Extentions;
+namespace Tap.Application.Core.Extensions;
 
-public static class FluentValidationExtention
+public static class FluentValidationExtensions
 {
     public static IRuleBuilderOptions<T, TProperty> WithError<T, TProperty>(
         this IRuleBuilderOptions<T, TProperty> ruleBuilder,

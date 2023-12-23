@@ -21,13 +21,14 @@ builder.Services
 
 var app = builder.Build();
 
-app.UseMiddleware<ExceptionHandlerMiddlware>();
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
-if (app.Environment.IsDevelopment())
-{
-    app.AddSwagger();
-    app.ApplyMigration();
-}
+//if (app.Environment.IsDevelopment())
+//{
+app.AddSwagger();
+app.ApplyMigration();
+
+//}
 
 app.MapControllers();
 

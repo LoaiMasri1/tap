@@ -12,12 +12,12 @@ public class PasswordHasher : IPasswordHasher, IPasswordHashChecker
 
     public string HashPassword(string password)
     {
-        byte[] bytes = SHA256.HashData(Encoding.UTF8.GetBytes(password));
+        var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(password));
 
         StringBuilder builder = new();
-        for (int i = 0; i < bytes.Length; i++)
+        foreach (var t in bytes)
         {
-            builder.Append(bytes[i].ToString("x2"));
+            builder.Append(t.ToString("x2"));
         }
 
         return builder.ToString();

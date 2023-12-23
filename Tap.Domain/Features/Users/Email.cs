@@ -9,11 +9,11 @@ namespace Tap.Domain.Features.Users;
 public sealed class Email : ValueObject
 {
     private const string EmailRegexPattern =
-        @"^(?!\.)(""([^""\r\\]|\\[""\r\\])*""|([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$";
+        """^(?!\.)("([^"\r\\]|\\["\r\\])*"|([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$""";
 
     public const int MaxLength = 254;
 
-    private static readonly Lazy<Regex> _emailRegex =
+    private static readonly Lazy<Regex> EmailRegex =
         new(() => new Regex(EmailRegexPattern, RegexOptions.Compiled));
 
     private Email(string value) => Value = value;
@@ -25,7 +25,7 @@ public sealed class Email : ValueObject
             .Create(email)
             .Ensure(e => !string.IsNullOrWhiteSpace(e), DomainErrors.Email.NullOrEmpty)
             .Ensure(e => e.Length <= MaxLength, DomainErrors.Email.LongerThanAllowed)
-            .Ensure(e => _emailRegex.Value.IsMatch(e), DomainErrors.Email.InvalidFormat)
+            .Ensure(e => EmailRegex.Value.IsMatch(e), DomainErrors.Email.InvalidFormat)
             .Map(e => new Email(e));
 
     protected override IEnumerable<object> GetAtomicValues()

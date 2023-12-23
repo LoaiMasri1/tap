@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Tap.Application.Core.Abstractions.Common;
 using Tap.Domain.Features.Users;
 
 namespace Tap.Persistence.Configurations;

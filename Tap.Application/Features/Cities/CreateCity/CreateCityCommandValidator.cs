@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Tap.Application.Core.Errors;
-using Tap.Application.Core.Extentions;
+using Tap.Application.Core.Extensions;
 
 namespace Tap.Application.Features.Cities.CreateCity;
 

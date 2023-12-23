@@ -1,6 +1,6 @@
 ﻿namespace Tap.Domain.Core.Primitives.Result;
 
-public static class ResultExtentions
+public static class ResultExtensions
 {
     public static Result<T> Ensure<T>(this Result<T> result, Func<T, bool> predicate, Error error)
     {

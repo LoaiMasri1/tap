@@ -1,6 +1,6 @@
 ﻿namespace Tap.Domain.Core.Primitives.Maybe;
 
-public static class MaybeExtentions
+public static class MaybeExtensions
 {
     public static async Task<Maybe<TOut>> Bind<TIn, TOut>(
         this Maybe<TIn> maybe,
@@ -13,7 +13,7 @@ public static class MaybeExtentions
         Func<TOut> onFailure
     )
     {
-        Maybe<TIn> maybe = await resultTask;
+        var maybe = await resultTask;
 
         return maybe.HasValue ? onSuccess(maybe.Value) : onFailure();
     }

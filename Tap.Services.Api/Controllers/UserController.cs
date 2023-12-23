@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tap.Application.Features.Users.ActivateUser;
 using Tap.Application.Features.Users.CreateUser;
@@ -37,7 +38,7 @@ public class UserController : ApiController
             );
 
     [HttpGet(ApiRoutes.User.Activate)]
-    public async Task<IActionResult> Activate([FromQuery(Name = "t")] string token) =>
+    public async Task<IActionResult> Activate([FromQuery(Name = "t")] [Required] string token) =>
         await Result
             .Create(token)
             .Map(t => new ActivateUserCommand(t))

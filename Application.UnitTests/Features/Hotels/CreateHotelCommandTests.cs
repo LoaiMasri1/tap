@@ -5,7 +5,6 @@ using Tap.Application.Features.Authentication;
 using Tap.Application.Features.Hotels.CreateHotel;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives.Maybe;
-using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Features.Cities;
 using Tap.Domain.Features.Users;
 

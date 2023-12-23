@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc;
 using Tap.Services.Api.Middlewares;
 
 namespace Tap.Services.Api;
@@ -11,7 +12,11 @@ public static class DependencyInjection
     {
         services.AddControllers();
 
-        services.AddHttpContextAccessor().AddSwagger().AddVersioning().AddMiddlware();
+        services.Configure<ApiBehaviorOptions>(
+            options => options.SuppressModelStateInvalidFilter = true
+        );
+
+        services.AddHttpContextAccessor().AddSwagger().AddVersioning().AddMiddleware();
 
         return services;
     }
@@ -75,9 +80,9 @@ public static class DependencyInjection
         return services;
     }
 
-    public static IServiceCollection AddMiddlware(this IServiceCollection services)
+    public static IServiceCollection AddMiddleware(this IServiceCollection services)
     {
-        services.AddScoped<ExceptionHandlerMiddlware>();
+        services.AddScoped<ExceptionHandlerMiddleware>();
 
         return services;
     }

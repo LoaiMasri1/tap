@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Text.Json;
 using Tap.Application.Core.Exceptions;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Exceptions;
@@ -8,11 +7,12 @@ using Tap.Services.Api.Contracts;
 
 namespace Tap.Services.Api.Middlewares;
 
-public class ExceptionHandlerMiddlware : IMiddleware
+public class ExceptionHandlerMiddleware : IMiddleware
 {
-    private readonly ILogger<ExceptionHandlerMiddlware> _logger;
+    private readonly ILogger<ExceptionHandlerMiddleware> _logger;
 
-    public ExceptionHandlerMiddlware(ILogger<ExceptionHandlerMiddlware> logger) => _logger = logger;
+    public ExceptionHandlerMiddleware(ILogger<ExceptionHandlerMiddleware> logger) =>
+        _logger = logger;
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
@@ -29,9 +29,7 @@ public class ExceptionHandlerMiddlware : IMiddleware
 
     private static async Task HandleExceptionAsync(HttpContext context, Exception ex)
     {
-        var (statusCode, errors) = GetHttpStatusCodeAndError(
-            ex
-        );
+        var (statusCode, errors) = GetHttpStatusCodeAndError(ex);
 
         context.Response.StatusCode = (int)statusCode;
 
