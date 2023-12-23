@@ -51,6 +51,9 @@ public static class WebApplicationExtensions
                     content: var(--logo-url);
                     height: 35px;
                   }
+                  .swagger-ui label {
+                    color: #3b4151 !important;
+                  }
                 
                   .swagger-ui .info .title small.version-stamp {
                     background-color: var(--primary-color);
