@@ -121,4 +121,47 @@ public static class DomainErrors
         public static Error ServerError =>
             new("General.ServerError", "The server encountered an unrecoverable error.");
     }
+
+    public class Hotel
+    {
+        public static Error NotFound =>
+            new("Hotel.NotFound", "The hotel with the specified identifier was not found.");
+
+        public static Error NothingToUpdate =>
+            new("Hotel.NothingToUpdate", "Nothing to update. The hotel is already up to date.");
+        public static Error AmenityTypeShouldBeHotel =>
+            new("Hotel.AmenityTypeShouldBeHotel", "The amenity type should be Hotel.");
+    }
+
+    public class Amenity
+    {
+        public static Error InvalidType =>
+            new("Amenity.InvalidType", "The amenity type is invalid.");
+
+        public static Error NameIsRequired =>
+            new("Amenity.NameIsRequired", "The amenity name is required.");
+
+        public static Error DescriptionIsRequired =>
+            new("Amenity.DescriptionIsRequired", "The amenity description is required.");
+        public static Error TypeShouldBeOneOfTheFollowingHotelRoom =>
+            new(
+                "Amenity.TypeShouldBeOneOfTheFollowingHotelRoom",
+                "The amenity type should be one of the following: Hotel, Room"
+            );
+
+        public static Error TypeIdIsRequired =>
+            new("Amenity.TypeIdIsRequired", "The amenity type id is required.");
+
+        public static Error NothingToUpdate =>
+            new("Amenity.NothingToUpdate", "Nothing to update. The amenity is already up to date.");
+
+        public static Error NotFound =>
+            new("Amenity.NotFound", "The amenity with the specified identifier was not found.");
+    }
+
+    public class Room
+    {
+        public static Error AmenityTypeShouldBeRoom =>
+            new("Room.AmenityTypeShouldBeRoom", "The amenity type should be Room.");
+    }
 }

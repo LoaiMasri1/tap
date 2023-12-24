@@ -9,6 +9,7 @@ using Tap.Application.Core.Abstractions.Email;
 using Tap.Application.Core.Abstractions.Notification;
 using Tap.Application.Features.Authentication;
 using Tap.Domain.Common.Services;
+using Tap.Domain.Features.Amenities;
 using Tap.Infrastructure.Authentication;
 using Tap.Infrastructure.Authentication.Options;
 using Tap.Infrastructure.Common;
@@ -25,29 +26,22 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
         IConfiguration configuration
-    )
-    {
-        services.Configure<MailOptions>(configuration.GetSection(MailOptions.SectionName).Bind);
-
-        services.AddTransient<IDateTime, DateTimeProvider>();
-        services.AddTransient<IPasswordHasher, PasswordHasher>();
-        services.AddTransient<IPasswordHashChecker, PasswordHasher>();
-        services.AddTransient<IJwtProvider, JwtProvider>();
-
-        services.AddScoped<IEmailService, EmailService>();
-        services.AddScoped<ITokenGenerator, GuidTokenGenerator>();
-        services.AddScoped<IEmailNotificationService, EmailNotificationService>();
-        services.AddScoped<IUserIdentifierProvider, UserIdentifierProvider>();
-
-        services.AddTransient<IFileService, FileService>();
-        services.AddTransient<IUploadFileService, AzureBlobService>();
-
-        services.AddAuthentication(configuration);
-
-        services.AddAzureBlob();
-
-        return services;
-    }
+    ) =>
+        services
+            .Configure<MailOptions>(configuration.GetSection(MailOptions.SectionName).Bind)
+            .AddTransient<IDateTime, DateTimeProvider>()
+            .AddTransient<IPasswordHasher, PasswordHasher>()
+            .AddTransient<IPasswordHashChecker, PasswordHasher>()
+            .AddTransient<IJwtProvider, JwtProvider>()
+            .AddScoped<IEmailService, EmailService>()
+            .AddScoped<ITokenGenerator, GuidTokenGenerator>()
+            .AddScoped<IEmailNotificationService, EmailNotificationService>()
+            .AddScoped<IUserIdentifierProvider, UserIdentifierProvider>()
+            .AddTransient<IFileService, FileService>()
+            .AddTransient<IUploadFileService, AzureBlobService>()
+            .AddTransient<IAmenityService, AmenityService>()
+            .AddAuthentication(configuration)
+            .AddAzureBlob();
 
     public static IServiceCollection AddAuthentication(
         this IServiceCollection services,
