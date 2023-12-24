@@ -32,7 +32,9 @@ public static class ApiRoutes
         private const string Base = "hotels";
         public const string Get = Base;
         public const string Post = Base;
+        public const string Update = $"{Base}/{{id}}";
         public const string UploadPhotos = $"{Base}/{{id}}/photos";
+        public const string CreateAmenities = $"{Base}/{{id}}/amenities";
     }
 
     public static class Room
@@ -41,9 +43,9 @@ public static class ApiRoutes
         public const string Get = Base;
         public const string Post = Base;
         public const string UploadPhotos = $"{Base}/{{id}}/photos";
+        public const string AddAmenities = $"{Base}/{{id}}/amenities";
     }
 
-    // upload photos
     public static class Photo
     {
         private const string Base = "photos";
@@ -51,5 +53,14 @@ public static class ApiRoutes
         public const string Update = $"{Base}/{{id}}";
         public const string Delete = $"{Base}/{{id}}";
         public const string Upload = $"{Base}/items/{{id}}/type/{{type}}";
+    }
+
+    public static class Amenity
+    {
+        private const string Base = "amenities";
+        public const string Get = Base;
+        public const string Post = Base;
+        public const string Update = $"{Base}/{{id}}";
+        public const string Delete = $"{Base}/{{id}}";
     }
 }
