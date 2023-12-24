@@ -92,4 +92,42 @@ public static class ValidationErrors
         public static Error PhotoIdRequired =>
             new("DeletePhoto.PhotoIdRequired", "The photo id is required.");
     }
+
+    public class UpdateHotel
+    {
+        public static Error HotelIdRequired =>
+            new("UpdateHotel.HotelIdRequired", "The hotel id is required.");
+
+        public static Error NameIsRequired =>
+            new("UpdateHotel.NameIsRequired", "The name is required.");
+
+        public static Error DescriptionIsRequired =>
+            new("UpdateHotel.DescriptionIsRequired", "The description is required.");
+
+        public static Error LatitudeIsRequired =>
+            new("UpdateHotel.LatitudeIsRequired", "The latitude is required.");
+
+        public static Error LongitudeIsRequired =>
+            new("UpdateHotel.LongitudeIsRequired", "The longitude is required.");
+    }
+
+    public class CreateAmenity { }
+
+    public class UpdateAmenity
+    {
+        public static Error AmenityIdRequired =>
+            new("UpdateAmenity.AmenityIdRequired", "The amenity id is required.");
+
+        public static Error NameIsRequired =>
+            new("UpdateAmenity.NameIsRequired", "The name is required.");
+
+        public static Error DescriptionIsRequired =>
+            new("UpdateAmenity.DescriptionIsRequired", "The description is required.");
+    }
+
+    public class DeleteAmenity
+    {
+        public static Error AmenityIdRequired =>
+            new("DeleteAmenity.AmenityIdRequired", "The amenity id is required.");
+    }
 }
