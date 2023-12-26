@@ -35,6 +35,7 @@ public static class ApiRoutes
         public const string Update = $"{Base}/{{id}}";
         public const string UploadPhotos = $"{Base}/{{id}}/photos";
         public const string CreateAmenities = $"{Base}/{{id}}/amenities";
+        public const string CreateRoom = $"{Base}/{{id}}/rooms";
     }
 
     public static class Room
@@ -42,8 +43,10 @@ public static class ApiRoutes
         private const string Base = "rooms";
         public const string Get = Base;
         public const string Post = Base;
+        public const string Update = $"{Base}/{{id}}";
         public const string UploadPhotos = $"{Base}/{{id}}/photos";
         public const string AddAmenities = $"{Base}/{{id}}/amenities";
+        public const string AddDiscount = $"{Base}/{{id}}/discounts";
     }
 
     public static class Photo

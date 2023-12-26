@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tap.Application.Features.Amenities.CreateAmenity;
+using Tap.Application.Features.Discounts.CreateDiscount;
 using Tap.Application.Features.Photos.UploadPhoto;
+using Tap.Application.Features.Rooms.UpdateRoom;
 using Tap.Contracts.Features.Amenities;
+using Tap.Contracts.Features.Discounts;
+using Tap.Contracts.Features.Rooms;
 using Tap.Domain.Common.Enumerations;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives.Result;
@@ -36,6 +40,47 @@ public class RoomController : ApiController
                         x.command.Description,
                         AmenityType.Room,
                         x.command.TypeId
+                    )
+            )
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    [HttpPost(ApiRoutes.Room.AddDiscount)]
+    [Authorize]
+    public async Task<IActionResult> AddDiscount(int id, CreateDiscountRequest command) =>
+        await Result
+            .Create((id, command))
+            .Ensure(x => x.command.RoomId == x.id, DomainErrors.General.UnProcessableRequest)
+            .Map(
+                x =>
+                    new CreateDiscountCommand(
+                        x.command.RoomId,
+                        x.command.Name,
+                        x.command.Description,
+                        x.command.DiscountPercentage,
+                        x.command.StartDate,
+                        x.command.EndDate
+                    )
+            )
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    [HttpPut(ApiRoutes.Room.Update)]
+    [Authorize]
+    public async Task<IActionResult> Update(int id, UpdateRoomRequest request) =>
+        await Result
+            .Create((id, request))
+            .Ensure(x => x.id == x.request.Id, DomainErrors.General.UnProcessableRequest)
+            .Map(
+                x =>
+                    new UpdateRoomCommand(
+                        x.id,
+                        x.request.Number,
+                        x.request.Price,
+                        x.request.Currency,
+                        x.request.Type,
+                        x.request.CapacityOfAdults,
+                        x.request.CapacityOfChildren
                     )
             )
             .Bind(x => Mediator.Send(x))

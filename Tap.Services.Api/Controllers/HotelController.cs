@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Tap.Application.Features.Amenities.CreateAmenity;
 using Tap.Application.Features.Hotels.UpdateHotel;
 using Tap.Application.Features.Photos.UploadPhoto;
+using Tap.Application.Features.Rooms.CreateRoom;
 using Tap.Contracts.Features.Amenities;
 using Tap.Contracts.Features.Hotels;
+using Tap.Contracts.Features.Rooms;
 using Tap.Domain.Common.Enumerations;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives.Result;
@@ -57,6 +59,27 @@ public class HotelController : ApiController
                         x.request.Description,
                         AmenityType.Hotel,
                         x.request.TypeId
+                    )
+            )
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    [HttpPost(ApiRoutes.Hotel.CreateRoom)]
+    [Authorize]
+    public async Task<IActionResult> CreateRoom(int id, CreateRoomRequest request) =>
+        await Result
+            .Create((id, request))
+            .Ensure(x => x.id == x.request.HotelId, DomainErrors.General.UnProcessableRequest)
+            .Map(
+                x =>
+                    new CreateRoomCommand(
+                        x.request.HotelId,
+                        x.request.Number,
+                        x.request.Price,
+                        x.request.Currency,
+                        x.request.Type,
+                        x.request.CapacityOfAdults,
+                        x.request.CapacityOfChildren
                     )
             )
             .Bind(x => Mediator.Send(x))

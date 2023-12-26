@@ -1,8 +1,10 @@
-﻿using Tap.Domain.Core.Abstraction;
+﻿using Tap.Domain.Common.ValueObjects;
+using Tap.Domain.Core.Abstraction;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Core.Utility;
+using Tap.Domain.Features.Rooms;
 using Tap.Domain.Features.Users;
 
 namespace Tap.Domain.Features.Hotels;
@@ -16,6 +18,7 @@ public class Hotel : Entity, IAuditableEntity
     public int UserId { get; private set; }
     public DateTime CreatedAtUtc { get; private set; }
     public DateTime? UpdatedAtUtc { get; private set; }
+    public ICollection<Room> Rooms { get; private set; } = new List<Room>();
 
     private Hotel() { }
 
@@ -48,5 +51,12 @@ public class Hotel : Entity, IAuditableEntity
         Location = location;
 
         return Result.Success();
+    }
+
+    public void AddRoom(Room room)
+    {
+        Ensure.NotNull(room, "The room is required.", nameof(room));
+
+        Rooms.Add(room);
     }
 }

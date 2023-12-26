@@ -130,4 +130,84 @@ public static class ValidationErrors
         public static Error AmenityIdRequired =>
             new("DeleteAmenity.AmenityIdRequired", "The amenity id is required.");
     }
+
+    public class CreateDiscount
+    {
+        public static Error NameIsRequired =>
+            new("CreateDiscount.NameIsRequired", "The name is required.");
+
+        public static Error DescriptionIsRequired =>
+            new("CreateDiscount.DescriptionIsRequired", "The description is required.");
+
+        public static Error DiscountPercentageIsRequired =>
+            new(
+                "CreateDiscount.DiscountPercentageIsRequired",
+                "The discount percentage is required."
+            );
+
+        public static Error StartDateIsRequired =>
+            new("CreateDiscount.StartDateIsRequired", "The start date is required.");
+
+        public static Error EndDateIsRequired =>
+            new("CreateDiscount.EndDateIsRequired", "The end date is required.");
+
+        public static Error StartDateMustBeGreaterThanOrEqualToToday =>
+            new(
+                "CreateDiscount.StartDateMustBeGreaterThanOrEqualToToday",
+                "The start date must be greater than or equal to today."
+            );
+
+        public static Error EndDateMustBeGreaterThanOrEqualToToday =>
+            new(
+                "CreateDiscount.EndDateMustBeGreaterThanOrEqualToToday",
+                "The end date must be greater than or equal to today."
+            );
+
+        public static Error EndDateMustBeGreaterThanOrEqualToStartDate =
+            new(
+                "CreateDiscount.EndDateMustBeGreaterThanOrEqualToStartDate",
+                "The end date must be greater than or equal to start date."
+            );
+    }
+
+    public class CreateRoom
+    {
+        public static Error PriceIsRequired =>
+            new("CreateRoom.PriceIsRequired", "The price is required.");
+
+        public static Error HotelIdIsRequired =>
+            new("CreateRoom.HotelIdIsRequired", "The hotel id is required.");
+
+        public static Error CurrencyIsRequired =>
+            new("CreateRoom.CurrencyIsRequired", "The currency is required.");
+
+        public static Error TypeIsRequired =>
+            new("CreateRoom.TypeIsRequired", "The type is required.");
+        public static Error TypeIsInvalid =>
+            new("CreateRoom.TypeIsInvalid", "The type is invalid.");
+        public static Error CapacityOfAdultsIsRequired =>
+            new("CreateRoom.CapacityOfAdultsIsRequired", "The capacity of adults is required.");
+        public static Error CapacityOfChildrenIsRequired =>
+            new("CreateRoom.CapacityOfChildrenIsRequired", "The capacity of children is required.");
+
+        public static Error NumberIsRequired =>
+            new("CreateRoom.NumberIsRequired", "The number is required.");
+    }
+
+    public class UpdateRoom
+    {
+        public static Error IdIsRequired => new("UpdateRoom.IdIsRequired", "The id is required.");
+        public static Error NumberIsRequired =>
+            new("UpdateRoom.NumberIsRequired", "The number is required.");
+        public static Error PriceIsRequired =>
+            new("UpdateRoom.PriceIsRequired", "The price is required.");
+        public static Error CurrencyIsRequired =>
+            new("UpdateRoom.CurrencyIsRequired", "The currency is required.");
+        public static Error TypeIsRequired =>
+            new("UpdateRoom.TypeIsRequired", "The type is required.");
+        public static Error CapacityOfAdultsIsRequired =>
+            new("UpdateRoom.CapacityOfAdultsIsRequired", "The capacity of adults is required.");
+        public static Error CapacityOfChildrenIsRequired =>
+            new("UpdateRoom.CapacityOfChildrenIsRequired", "The capacity of children is required.");
+    }
 }

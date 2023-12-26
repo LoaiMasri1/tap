@@ -163,5 +163,8 @@ public static class DomainErrors
     {
         public static Error AmenityTypeShouldBeRoom =>
             new("Room.AmenityTypeShouldBeRoom", "The amenity type should be Room.");
+
+        public static Error NotFound =>
+            new("Room.NotFound", "The room with the specified identifier was not found.");
     }
 }
