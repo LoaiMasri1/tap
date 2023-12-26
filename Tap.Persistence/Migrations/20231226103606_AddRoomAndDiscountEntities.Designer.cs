@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tap.Persistence;
 
@@ -11,9 +12,11 @@ using Tap.Persistence;
 namespace Tap.Persistence.Migrations
 {
     [DbContext(typeof(TapDbContext))]
-    partial class TapDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231226103606_AddRoomAndDiscountEntities")]
+    partial class AddRoomAndDiscountEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,9 +225,6 @@ namespace Tap.Persistence.Migrations
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("DiscountedPrice")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("HotelId")
                         .HasColumnType("int");
 
@@ -343,20 +343,39 @@ namespace Tap.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsOne("Tap.Domain.Common.ValueObjects.Money", "DiscountedPrice", b1 =>
+                        {
+                            b1.Property<int>("RoomId")
+                                .HasColumnType("int");
+
+                            b1.Property<decimal>("Amount")
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("DiscountedPrice");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("RoomId");
+
+                            b1.ToTable("Room");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RoomId");
+                        });
+
                     b.OwnsOne("Tap.Domain.Common.ValueObjects.Money", "Price", b1 =>
                         {
                             b1.Property<int>("RoomId")
                                 .HasColumnType("int");
 
                             b1.Property<decimal>("Amount")
-                                .HasPrecision(18, 2)
                                 .HasColumnType("decimal(18,2)")
-                                .HasColumnName("Amount");
+                                .HasColumnName("Price");
 
                             b1.Property<string>("Currency")
                                 .IsRequired()
-                                .HasMaxLength(3)
-                                .HasColumnType("char(3)")
+                                .HasColumnType("nvarchar(max)")
                                 .HasColumnName("Currency");
 
                             b1.HasKey("RoomId");
@@ -366,6 +385,9 @@ namespace Tap.Persistence.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("RoomId");
                         });
+
+                    b.Navigation("DiscountedPrice")
+                        .IsRequired();
 
                     b.Navigation("Hotel");
 
