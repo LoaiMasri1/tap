@@ -10,18 +10,18 @@ namespace Tap.Application.Features.Hotels.UpdateHotel;
 public class UpdateHotelCommandHandler : ICommandHandler<UpdateHotelCommand, Result>
 {
     private readonly IHotelRepository _hotelRepository;
-    private readonly IUserIdentifierProvider _userIdentifierProvider;
+    private readonly IUserContext _userContext;
     private readonly IUnitOfWork _unitOfWork;
 
     public UpdateHotelCommandHandler(
         IHotelRepository hotelRepository,
         IUnitOfWork unitOfWork,
-        IUserIdentifierProvider userIdentifierProvider
+        IUserContext userContext
     )
     {
         _hotelRepository = hotelRepository;
         _unitOfWork = unitOfWork;
-        _userIdentifierProvider = userIdentifierProvider;
+        _userContext = userContext;
     }
 
     public async Task<Result> Handle(
@@ -38,7 +38,7 @@ public class UpdateHotelCommandHandler : ICommandHandler<UpdateHotelCommand, Res
 
         var hotel = maybeHotel.Value;
 
-        if (hotel.UserId != _userIdentifierProvider.Id)
+        if (hotel.UserId != _userContext.Id)
         {
             return DomainErrors.User.Unauthorized;
         }

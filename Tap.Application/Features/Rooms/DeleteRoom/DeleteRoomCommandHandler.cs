@@ -11,23 +11,23 @@ namespace Tap.Application.Features.Rooms.DeleteRoom;
 public class DeleteRoomCommandHandler : ICommandHandler<DeleteRoomCommand, Result>
 {
     private readonly IRoomRepository _roomRepository;
-    private readonly IUserIdentifierProvider _userIdentifierProvider;
+    private readonly IUserContext _userContext;
     private readonly IUnitOfWork _unitOfWork;
 
     public DeleteRoomCommandHandler(
         IUnitOfWork unitOfWork,
         IRoomRepository roomRepository,
-        IUserIdentifierProvider userIdentifierProvider
+        IUserContext userContext
     )
     {
         _unitOfWork = unitOfWork;
         _roomRepository = roomRepository;
-        _userIdentifierProvider = userIdentifierProvider;
+        _userContext = userContext;
     }
 
     public async Task<Result> Handle(DeleteRoomCommand command, CancellationToken cancellationToken)
     {
-        var userRole = _userIdentifierProvider.Role;
+        var userRole = _userContext.Role;
 
         if (userRole != UserRole.Admin)
         {

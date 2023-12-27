@@ -16,7 +16,7 @@ public class CreateRoomCommandTests
 {
     private readonly IHotelRepository _hotelRepositoryMock;
     private readonly IUnitOfWork _unitOfWorkMock;
-    private readonly IUserIdentifierProvider _userIdentifierProviderMock;
+    private readonly IUserContext _userContextMock;
 
     private static readonly CreateRoomCommand Command =
         new(1, 1, 100, "USD", RoomType.Single, 1, 0);
@@ -27,19 +27,19 @@ public class CreateRoomCommandTests
     {
         _hotelRepositoryMock = Substitute.For<IHotelRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-        _userIdentifierProviderMock = Substitute.For<IUserIdentifierProvider>();
+        _userContextMock = Substitute.For<IUserContext>();
 
         _sut = new CreateRoomCommandHandler(
             _hotelRepositoryMock,
             _unitOfWorkMock,
-            _userIdentifierProviderMock
+            _userContextMock
         );
     }
 
     [Fact]
     public async Task Handle_WhenUserIsNotAdmin_ReturnsUnauthorizedError()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.User);
+        _userContextMock.Role.Returns(UserRole.User);
 
         var result = await _sut.Handle(Command, CancellationToken.None);
 
@@ -49,7 +49,7 @@ public class CreateRoomCommandTests
     [Fact]
     public async Task Handle_WhenHotelDoesNotExist_ReturnsHotelNotFoundError()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _hotelRepositoryMock
             .GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(Maybe<Hotel>.None);
@@ -62,7 +62,7 @@ public class CreateRoomCommandTests
     [Fact]
     public async Task Handle_WhenHotelExists_ReturnsRoomResponse()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _hotelRepositoryMock
             .GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(
@@ -88,7 +88,7 @@ public class CreateRoomCommandTests
     [Fact]
     public async Task Handle_WhenHotelExists_AddsRoomToHotel()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _hotelRepositoryMock
             .GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(
@@ -114,7 +114,7 @@ public class CreateRoomCommandTests
     [Fact]
     public async Task Handle_WhenHotelExists_SavesChanges()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _hotelRepositoryMock
             .GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(

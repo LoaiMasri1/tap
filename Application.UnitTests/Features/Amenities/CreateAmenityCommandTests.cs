@@ -15,7 +15,7 @@ public class CreateAmenityCommandTests
     private readonly IAmenityRepository _amenityRepositoryMock;
     private readonly IUnitOfWork _unitOfWorkMock;
     private readonly IAmenityService _amenityServiceMock;
-    private readonly IUserIdentifierProvider _userIdentifierProviderMock;
+    private readonly IUserContext _userContextMock;
 
     private static readonly CreateAmenityCommand Command =
         new("Amenity Name", "Amenity Description", AmenityType.Hotel, 1);
@@ -27,13 +27,13 @@ public class CreateAmenityCommandTests
         _amenityRepositoryMock = Substitute.For<IAmenityRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
         _amenityServiceMock = Substitute.For<IAmenityService>();
-        _userIdentifierProviderMock = Substitute.For<IUserIdentifierProvider>();
+        _userContextMock = Substitute.For<IUserContext>();
 
         _sut = new CreateAmenityCommandHandler(
             _amenityRepositoryMock,
             _unitOfWorkMock,
             _amenityServiceMock,
-            _userIdentifierProviderMock
+            _userContextMock
         );
     }
 
@@ -41,7 +41,7 @@ public class CreateAmenityCommandTests
     public async Task Handle_WhenUserIsNotAdmin_ShouldReturnUnauthorizedError()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.User);
+        _userContextMock.Role.Returns(UserRole.User);
 
         // Act
         var result = await _sut.Handle(Command, CancellationToken.None);
@@ -55,8 +55,8 @@ public class CreateAmenityCommandTests
     public async Task Handle_WhenUserIsAdmin_ShouldReturnSuccessResult()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
-        _userIdentifierProviderMock.Id.Returns(1);
+        _userContextMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Id.Returns(1);
 
         _amenityServiceMock
             .CheckAmenityTypeAndUserOwnerShipAsync(1, 1, AmenityType.Hotel, CancellationToken.None)
@@ -73,8 +73,8 @@ public class CreateAmenityCommandTests
     public async Task Handle_WhenUserIsAdminAndAmenityTypeAndUserOwnershipCheckFails_ShouldReturnError()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
-        _userIdentifierProviderMock.Id.Returns(1);
+        _userContextMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Id.Returns(1);
 
         _amenityServiceMock
             .CheckAmenityTypeAndUserOwnerShipAsync(1, 1, AmenityType.Hotel, CancellationToken.None)
@@ -92,8 +92,8 @@ public class CreateAmenityCommandTests
     public async Task Handle_WhenUserIsAdminAndAmenityTypeAndUserOwnershipCheckSucceeds_ShouldReturnSuccessResult()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
-        _userIdentifierProviderMock.Id.Returns(1);
+        _userContextMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Id.Returns(1);
 
         _amenityServiceMock
             .CheckAmenityTypeAndUserOwnerShipAsync(1, 1, AmenityType.Hotel, CancellationToken.None)
@@ -110,8 +110,8 @@ public class CreateAmenityCommandTests
     public async Task Handle_WhenUserIsAdminAndAmenityTypeAndUserOwnershipCheckSucceeds_ShouldCreateAmenity()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
-        _userIdentifierProviderMock.Id.Returns(1);
+        _userContextMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Id.Returns(1);
 
         _amenityServiceMock
             .CheckAmenityTypeAndUserOwnerShipAsync(1, 1, AmenityType.Hotel, CancellationToken.None)
@@ -128,8 +128,8 @@ public class CreateAmenityCommandTests
     public async Task Handle_WhenUserIsAdminAndAmenityTypeAndUserOwnershipCheckSucceeds_ShouldSaveChanges()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
-        _userIdentifierProviderMock.Id.Returns(1);
+        _userContextMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Id.Returns(1);
 
         _amenityServiceMock
             .CheckAmenityTypeAndUserOwnerShipAsync(1, 1, AmenityType.Hotel, CancellationToken.None)

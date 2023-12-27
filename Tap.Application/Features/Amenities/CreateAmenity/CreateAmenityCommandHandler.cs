@@ -15,19 +15,19 @@ public class CreateAmenityCommandHandler
     private readonly IAmenityRepository _amenityRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IAmenityService _amenityService;
-    private readonly IUserIdentifierProvider _userIdentifierProvider;
+    private readonly IUserContext _userContext;
 
     public CreateAmenityCommandHandler(
         IAmenityRepository amenityRepository,
         IUnitOfWork unitOfWork,
         IAmenityService amenityService,
-        IUserIdentifierProvider userIdentifierProvider
+        IUserContext userContext
     )
     {
         _amenityRepository = amenityRepository;
         _unitOfWork = unitOfWork;
         _amenityService = amenityService;
-        _userIdentifierProvider = userIdentifierProvider;
+        _userContext = userContext;
     }
 
     public async Task<Result<AmenityResponse>> Handle(
@@ -35,14 +35,14 @@ public class CreateAmenityCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var userRole = _userIdentifierProvider.Role;
+        var userRole = _userContext.Role;
 
         if (userRole != UserRole.Admin)
         {
             return DomainErrors.User.Unauthorized;
         }
 
-        var userId = _userIdentifierProvider.Id;
+        var userId = _userContext.Id;
 
         var result = await _amenityService.CheckAmenityTypeAndUserOwnerShipAsync(
             userId,

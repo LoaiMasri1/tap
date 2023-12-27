@@ -13,7 +13,7 @@ namespace Application.UnitTests.Features.Amenities;
 public class DeleteAmenityCommandTests
 {
     private readonly IAmenityRepository _amenityRepositoryMock;
-    private readonly IUserIdentifierProvider _userIdentifierProviderMock;
+    private readonly IUserContext _userContextMock;
     private readonly IUnitOfWork _unitOfWorkMock;
 
     private static readonly DeleteAmenityCommand Command = new(1);
@@ -23,13 +23,13 @@ public class DeleteAmenityCommandTests
     public DeleteAmenityCommandTests()
     {
         _amenityRepositoryMock = Substitute.For<IAmenityRepository>();
-        _userIdentifierProviderMock = Substitute.For<IUserIdentifierProvider>();
+        _userContextMock = Substitute.For<IUserContext>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
 
         _sut = new DeleteAmenityCommandHandler(
             _unitOfWorkMock,
             _amenityRepositoryMock,
-            _userIdentifierProviderMock
+            _userContextMock
         );
 
         _amenityRepositoryMock
@@ -43,7 +43,7 @@ public class DeleteAmenityCommandTests
     public async Task Handle_WhenUserIsNotAdmin_ShouldReturnUnauthorizedError()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.User);
+        _userContextMock.Role.Returns(UserRole.User);
 
         // Act
         var result = await _sut.Handle(Command, CancellationToken.None);
@@ -57,8 +57,8 @@ public class DeleteAmenityCommandTests
     public async Task Handle_WhenUserIsAdmin_ShouldReturnSuccessResult()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
-        _userIdentifierProviderMock.Id.Returns(1);
+        _userContextMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Id.Returns(1);
 
         // Act
         var result = await _sut.Handle(Command, CancellationToken.None);
@@ -71,8 +71,8 @@ public class DeleteAmenityCommandTests
     public async Task Handle_WhenUserIsAdmin_ShouldCallRemove()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
-        _userIdentifierProviderMock.Id.Returns(1);
+        _userContextMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Id.Returns(1);
 
         // Act
         await _sut.Handle(Command, CancellationToken.None);
@@ -85,8 +85,8 @@ public class DeleteAmenityCommandTests
     public async Task Handle_WhenUserIsAdmin_ShouldCallSaveChangesAsync()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
-        _userIdentifierProviderMock.Id.Returns(1);
+        _userContextMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Id.Returns(1);
 
         // Act
         await _sut.Handle(Command, CancellationToken.None);
@@ -99,8 +99,8 @@ public class DeleteAmenityCommandTests
     public async Task Handle_WhenUserIsAdminAndAmenityDoesNotExist_ShouldReturnError()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
-        _userIdentifierProviderMock.Id.Returns(1);
+        _userContextMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Id.Returns(1);
 
         _amenityRepositoryMock.GetByIdAsync(1, CancellationToken.None).Returns(Maybe<Amenity>.None);
 
@@ -116,8 +116,8 @@ public class DeleteAmenityCommandTests
     public async Task Handle_WhenUserIsAdminAndAmenityExists_ShouldReturnSuccessResult()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
-        _userIdentifierProviderMock.Id.Returns(1);
+        _userContextMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Id.Returns(1);
 
         // Act
         var result = await _sut.Handle(Command, CancellationToken.None);
@@ -130,8 +130,8 @@ public class DeleteAmenityCommandTests
     public async Task Handle_WhenUserIsAdminAndAmenityExists_ShouldCallRemove()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
-        _userIdentifierProviderMock.Id.Returns(1);
+        _userContextMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Id.Returns(1);
 
         // Act
         await _sut.Handle(Command, CancellationToken.None);

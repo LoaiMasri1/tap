@@ -15,17 +15,17 @@ public class CreateRoomCommandHandler : ICommandHandler<CreateRoomCommand, Resul
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IUserIdentifierProvider _userIdentifierProvider;
+    private readonly IUserContext _userContext;
 
     public CreateRoomCommandHandler(
         IHotelRepository hotelRepository,
         IUnitOfWork unitOfWork,
-        IUserIdentifierProvider userIdentifierProvider
+        IUserContext userContext
     )
     {
         _hotelRepository = hotelRepository;
         _unitOfWork = unitOfWork;
-        _userIdentifierProvider = userIdentifierProvider;
+        _userContext = userContext;
     }
 
     public async Task<Result<RoomResponse>> Handle(
@@ -33,7 +33,7 @@ public class CreateRoomCommandHandler : ICommandHandler<CreateRoomCommand, Resul
         CancellationToken cancellationToken
     )
     {
-        var userRole = _userIdentifierProvider.Role;
+        var userRole = _userContext.Role;
         if (userRole != UserRole.Admin)
         {
             return DomainErrors.User.Unauthorized;

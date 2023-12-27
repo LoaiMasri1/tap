@@ -16,7 +16,7 @@ public class UpdateAmenityCommandTests
 {
     private readonly IAmenityRepository _amenityRepositoryMock;
     private readonly IUnitOfWork _unitOfWorkMock;
-    private readonly IUserIdentifierProvider _userIdentifierProviderMock;
+    private readonly IUserContext _userContextMock;
 
     private static readonly UpdateAmenityCommand Command =
         new(1, "Amenity Name", "Amenity Description");
@@ -26,19 +26,19 @@ public class UpdateAmenityCommandTests
     {
         _amenityRepositoryMock = Substitute.For<IAmenityRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-        _userIdentifierProviderMock = Substitute.For<IUserIdentifierProvider>();
+        _userContextMock = Substitute.For<IUserContext>();
 
         _sut = new UpdateAmenityCommandHandler(
             _unitOfWorkMock,
             _amenityRepositoryMock,
-            _userIdentifierProviderMock
+            _userContextMock
         );
     }
 
     [Fact]
     public async Task Handle_WhenUserIsNotAdmin_ReturnsUnauthorizedError()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.User);
+        _userContextMock.Role.Returns(UserRole.User);
 
         var result = await _sut.Handle(Command, CancellationToken.None);
 
@@ -49,7 +49,7 @@ public class UpdateAmenityCommandTests
     [Fact]
     public async Task Handle_WhenAmenityDoesNotExist_ReturnsNotFoundError()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _amenityRepositoryMock
             .GetByIdAsync(Command.Id, CancellationToken.None)
             .Returns(Maybe<Amenity>.None);
@@ -65,7 +65,7 @@ public class UpdateAmenityCommandTests
     [InlineData(AmenityType.Room)]
     public async Task Handle_WhenAmenityExists_ReturnsUpdatedAmenityResponse(AmenityType type)
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _amenityRepositoryMock
             .GetByIdAsync(Command.Id, CancellationToken.None)
             .Returns(Amenity.Create("Old Name", "Old Description", type, 1));
@@ -83,7 +83,7 @@ public class UpdateAmenityCommandTests
         AmenityType type
     )
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
 
         var amenity = Amenity.Create("Old Name", "Old Description", type, 1);
 

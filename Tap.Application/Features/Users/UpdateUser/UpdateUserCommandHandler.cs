@@ -13,24 +13,24 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, Resul
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IUserIdentifierProvider _userIdentifierProvider;
+    private readonly IUserContext _userContext;
 
     public UpdateUserCommandHandler(
         IUnitOfWork unitOfWork,
         IPasswordHasher passwordHasher,
         IUserRepository userRepository,
-        IUserIdentifierProvider userIdentifierProvider
+        IUserContext userContext
     )
     {
         _unitOfWork = unitOfWork;
         _passwordHasher = passwordHasher;
         _userRepository = userRepository;
-        _userIdentifierProvider = userIdentifierProvider;
+        _userContext = userContext;
     }
 
     public async Task<Result> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
     {
-        if (command.Id != _userIdentifierProvider.Id)
+        if (command.Id != _userContext.Id)
             return DomainErrors.User.Unauthorized;
 
         var maybeUser = await _userRepository.GetByIdAsync(command.Id, cancellationToken);

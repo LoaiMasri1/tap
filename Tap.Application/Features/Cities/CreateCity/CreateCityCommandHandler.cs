@@ -13,17 +13,17 @@ public class CreateCityCommandHandler : ICommandHandler<CreateCityCommand, Resul
 {
     private readonly ICityRepository _cityRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IUserIdentifierProvider _userIdentifierProvider;
+    private readonly IUserContext _userContext;
 
     public CreateCityCommandHandler(
         ICityRepository cityRepository,
         IUnitOfWork unitOfWork,
-        IUserIdentifierProvider userIdentifierProvider
+        IUserContext userContext
     )
     {
         _cityRepository = cityRepository;
         _unitOfWork = unitOfWork;
-        _userIdentifierProvider = userIdentifierProvider;
+        _userContext = userContext;
     }
 
     public async Task<Result<CityResponse>> Handle(
@@ -31,7 +31,7 @@ public class CreateCityCommandHandler : ICommandHandler<CreateCityCommand, Resul
         CancellationToken cancellationToken
     )
     {
-        var userRole = _userIdentifierProvider.Role;
+        var userRole = _userContext.Role;
         if (userRole != UserRole.Admin)
         {
             return DomainErrors.User.Unauthorized;

@@ -15,7 +15,7 @@ public class DeleteRoomCommandTests
 {
     private readonly IRoomRepository _roomRepositoryMock;
     private readonly IUnitOfWork _unitOfWorkMock;
-    private readonly IUserIdentifierProvider _userIdentifierProviderMock;
+    private readonly IUserContext _userContextMock;
 
     private static readonly DeleteRoomCommand Command = new(1);
 
@@ -25,19 +25,19 @@ public class DeleteRoomCommandTests
     {
         _roomRepositoryMock = Substitute.For<IRoomRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-        _userIdentifierProviderMock = Substitute.For<IUserIdentifierProvider>();
+        _userContextMock = Substitute.For<IUserContext>();
 
         _sut = new DeleteRoomCommandHandler(
             _unitOfWorkMock,
             _roomRepositoryMock,
-            _userIdentifierProviderMock
+            _userContextMock
         );
     }
 
     [Fact]
     public async Task Handle_WhenUserIsNotAdmin_ReturnsUnauthorizedError()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.User);
+        _userContextMock.Role.Returns(UserRole.User);
 
         var result = await _sut.Handle(Command, CancellationToken.None);
 
@@ -47,7 +47,7 @@ public class DeleteRoomCommandTests
     [Fact]
     public async Task Handle_WhenRoomDoesNotExist_ReturnsRoomNotFoundError()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _roomRepositoryMock
             .GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(Maybe<Room>.None);
@@ -60,7 +60,7 @@ public class DeleteRoomCommandTests
     [Fact]
     public async Task Handle_WhenRoomExists_ReturnsSuccess()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _roomRepositoryMock
             .GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(Room.Create(1, Money.Create(1, "USD"), RoomType.Cabana));
@@ -73,7 +73,7 @@ public class DeleteRoomCommandTests
     [Fact]
     public async Task Handle_WhenRoomExists_DeletesRoom()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _roomRepositoryMock
             .GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(Room.Create(1, Money.Create(1, "USD"), RoomType.Cabana));
@@ -87,7 +87,7 @@ public class DeleteRoomCommandTests
     [Fact]
     public async Task Handle_WhenRoomExists_SavesChanges()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _roomRepositoryMock
             .GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(Room.Create(1, Money.Create(1, "USD"), RoomType.Cabana));

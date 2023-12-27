@@ -14,7 +14,7 @@ public class CreateCityCommandTests
 {
     private readonly ICityRepository _cityRepositoryMock;
     private readonly IUnitOfWork _unitOfWorkMock;
-    private readonly IUserIdentifierProvider _userIdentifierProviderMock;
+    private readonly IUserContext _userContextMock;
 
     private static readonly CreateCityCommand Command = new("City", "Description", "Country");
 
@@ -24,12 +24,12 @@ public class CreateCityCommandTests
     {
         _cityRepositoryMock = Substitute.For<ICityRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-        _userIdentifierProviderMock = Substitute.For<IUserIdentifierProvider>();
+        _userContextMock = Substitute.For<IUserContext>();
 
         _sut = new CreateCityCommandHandler(
             _cityRepositoryMock,
             _unitOfWorkMock,
-            _userIdentifierProviderMock
+            _userContextMock
         );
     }
 
@@ -37,7 +37,7 @@ public class CreateCityCommandTests
     public async Task Handle_Should_ReturnError_When_UserIsNotAdmin()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.User);
+        _userContextMock.Role.Returns(UserRole.User);
 
         // Act
         var result = await _sut.Handle(Command, CancellationToken.None);
@@ -50,7 +50,7 @@ public class CreateCityCommandTests
     public async Task Handle_Should_ReturnError_When_CityAlreadyExists()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _cityRepositoryMock
             .GetByNameAsync(Command.Name, CancellationToken.None)
             .Returns(new City(Command.Name, Command.Description, Command.Country));
@@ -66,7 +66,7 @@ public class CreateCityCommandTests
     public async Task Handle_Should_ReturnSuccess_When_CityDoesNotExist()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _cityRepositoryMock
             .GetByNameAsync(Command.Name, CancellationToken.None)
             .Returns(Maybe<City>.None);
@@ -83,7 +83,7 @@ public class CreateCityCommandTests
     public async Task Handle_Should_CallUnitOfWork_When_CityDoesNotExist()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _cityRepositoryMock
             .GetByNameAsync(Command.Name, CancellationToken.None)
             .Returns(Maybe<City>.None);

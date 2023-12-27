@@ -16,7 +16,7 @@ public class UpdateRoomCommandTests
 {
     private readonly IRoomRepository _roomRepositoryMock;
     private readonly IUnitOfWork _unitOfWorkMock;
-    private readonly IUserIdentifierProvider _userIdentifierProviderMock;
+    private readonly IUserContext _userContextMock;
 
     private static readonly UpdateRoomCommand Command =
         new(1, 1, 100, "EUR", RoomType.Single, 1, 1);
@@ -27,11 +27,11 @@ public class UpdateRoomCommandTests
     {
         _roomRepositoryMock = Substitute.For<IRoomRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-        _userIdentifierProviderMock = Substitute.For<IUserIdentifierProvider>();
+        _userContextMock = Substitute.For<IUserContext>();
 
         _sut = new UpdateRoomCommandHandler(
             _unitOfWorkMock,
-            _userIdentifierProviderMock,
+            _userContextMock,
             _roomRepositoryMock
         );
     }
@@ -39,7 +39,7 @@ public class UpdateRoomCommandTests
     [Fact]
     public async Task Handle_WhenUserIsNotAdmin_ReturnsUnauthorizedError()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.User);
+        _userContextMock.Role.Returns(UserRole.User);
 
         var result = await _sut.Handle(Command, CancellationToken.None);
 
@@ -49,7 +49,7 @@ public class UpdateRoomCommandTests
     [Fact]
     public async Task Handle_WhenRoomDoesNotExist_ReturnsRoomNotFoundError()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _roomRepositoryMock
             .GetByIdWithDiscountsAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(Maybe<Room>.None);
@@ -62,7 +62,7 @@ public class UpdateRoomCommandTests
     [Fact]
     public async Task Handle_WhenRoomExists_ReturnsRoomResponse()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _roomRepositoryMock
             .GetByIdWithDiscountsAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(Room.Create(1, Money.Create(1, "USD"), RoomType.Single, 10, 1, false));
@@ -76,7 +76,7 @@ public class UpdateRoomCommandTests
     [Fact]
     public async Task Handle_WhenRoomExists_UpdatesRoom()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _roomRepositoryMock
             .GetByIdWithDiscountsAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(Room.Create(1, Money.Create(1, "USD"), RoomType.Single, 10, 1, false));
@@ -90,7 +90,7 @@ public class UpdateRoomCommandTests
     [Fact]
     public async Task Handle_WhenRoomExists_SavesChanges()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _roomRepositoryMock
             .GetByIdWithDiscountsAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(Room.Create(1, Money.Create(1, "USD"), RoomType.Single, 10, 1, false));
@@ -103,7 +103,7 @@ public class UpdateRoomCommandTests
     [Fact]
     public async Task Handle_WhenRoomExistsAndNothingToUpdate_ReturnsNothingToUpdateError()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _roomRepositoryMock
             .GetByIdWithDiscountsAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(Room.Create(1, Money.Create(1, "USD"), RoomType.Single, 10, 1, false));

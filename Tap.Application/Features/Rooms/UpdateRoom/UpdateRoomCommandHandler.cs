@@ -14,16 +14,16 @@ public class UpdateRoomCommandHandler : ICommandHandler<UpdateRoomCommand, Resul
 {
     private readonly IRoomRepository _roomRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IUserIdentifierProvider _userIdentifierProvider;
+    private readonly IUserContext _userContext;
 
     public UpdateRoomCommandHandler(
         IUnitOfWork unitOfWork,
-        IUserIdentifierProvider userIdentifierProvider,
+        IUserContext userContext,
         IRoomRepository roomRepository
     )
     {
         _unitOfWork = unitOfWork;
-        _userIdentifierProvider = userIdentifierProvider;
+        _userContext = userContext;
         _roomRepository = roomRepository;
     }
 
@@ -32,7 +32,7 @@ public class UpdateRoomCommandHandler : ICommandHandler<UpdateRoomCommand, Resul
         CancellationToken cancellationToken
     )
     {
-        var userRole = _userIdentifierProvider.Role;
+        var userRole = _userContext.Role;
         if (userRole != UserRole.Admin)
         {
             return DomainErrors.User.Unauthorized;

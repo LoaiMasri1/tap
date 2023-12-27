@@ -2,7 +2,7 @@
 
 namespace Tap.Application.Features.Authentication;
 
-public interface IUserIdentifierProvider
+public interface IUserContext
 {
     int Id { get; }
     UserRole Role { get; }

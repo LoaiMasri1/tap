@@ -15,19 +15,19 @@ public class CreateHotelCommandHandler : ICommandHandler<CreateHotelCommand, Res
     private readonly ICityRepository _cityRepository;
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IUserIdentifierProvider _userIdentifierProvider;
+    private readonly IUserContext _userContext;
 
     public CreateHotelCommandHandler(
         ICityRepository cityRepository,
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,
-        IUserIdentifierProvider userIdentifierProvider
+        IUserContext userContext
     )
     {
         _cityRepository = cityRepository;
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
-        _userIdentifierProvider = userIdentifierProvider;
+        _userContext = userContext;
     }
 
     public async Task<Result<HotelResponse>> Handle(
@@ -35,7 +35,7 @@ public class CreateHotelCommandHandler : ICommandHandler<CreateHotelCommand, Res
         CancellationToken cancellationToken
     )
     {
-        var userRole = _userIdentifierProvider.Role;
+        var userRole = _userContext.Role;
         if (userRole != UserRole.Admin)
         {
             return DomainErrors.User.Unauthorized;
@@ -50,7 +50,7 @@ public class CreateHotelCommandHandler : ICommandHandler<CreateHotelCommand, Res
         var city = maybeCity.Value;
 
         var maybeUser = await _userRepository.GetByIdAsync(
-            _userIdentifierProvider.Id,
+            _userContext.Id,
             cancellationToken
         );
         if (maybeUser.HasNoValue)

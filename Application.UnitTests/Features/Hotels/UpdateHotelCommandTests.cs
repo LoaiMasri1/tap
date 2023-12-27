@@ -13,7 +13,7 @@ namespace Application.UnitTests.Features.Hotels;
 public class UpdateHotelCommandTests
 {
     private readonly IHotelRepository _hotelRepositoryMock;
-    private readonly IUserIdentifierProvider _userIdentifierProviderMock;
+    private readonly IUserContext _userContextMock;
     private readonly IUnitOfWork _unitOfWorkMock;
 
     private static readonly UpdateHotelCommand Command =
@@ -32,20 +32,20 @@ public class UpdateHotelCommandTests
     public UpdateHotelCommandTests()
     {
         _hotelRepositoryMock = Substitute.For<IHotelRepository>();
-        _userIdentifierProviderMock = Substitute.For<IUserIdentifierProvider>();
+        _userContextMock = Substitute.For<IUserContext>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
 
         _sut = new UpdateHotelCommandHandler(
             _hotelRepositoryMock,
             _unitOfWorkMock,
-            _userIdentifierProviderMock
+            _userContextMock
         );
     }
 
     [Fact]
     public async Task Handle_WhenHotelDoesNotExist_ReturnsNotFoundError()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _hotelRepositoryMock
             .GetByIdAsync(Command.Id, CancellationToken.None)
             .Returns(Maybe<Hotel>.None);
@@ -59,7 +59,7 @@ public class UpdateHotelCommandTests
     [Fact]
     public async Task Handle_WhenUserIsNotTheHotelOwner_ReturnsUnauthorizedError()
     {
-        _userIdentifierProviderMock.Id.Returns(2);
+        _userContextMock.Id.Returns(2);
         _hotelRepositoryMock.GetByIdAsync(Command.Id, CancellationToken.None).Returns(Hotel);
 
         var result = await _sut.Handle(Command, CancellationToken.None);
@@ -71,7 +71,7 @@ public class UpdateHotelCommandTests
     [Fact]
     public async Task Handle_WhenHotelExistsAndNewLocationIsInvalid_ReturnsInvalidLocationError()
     {
-        _userIdentifierProviderMock.Id.Returns(Hotel.UserId);
+        _userContextMock.Id.Returns(Hotel.UserId);
         _hotelRepositoryMock.GetByIdAsync(Command.Id, CancellationToken.None).Returns(Hotel);
 
         var result = await _sut.Handle(Command with { Latitude = 100.0 }, CancellationToken.None);
@@ -83,7 +83,7 @@ public class UpdateHotelCommandTests
     [Fact]
     public async Task Handle_WhenUserProvideSameData_ReturnsNothingToUpdateError()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _hotelRepositoryMock.GetByIdAsync(Command.Id, CancellationToken.None).Returns(Hotel);
         Hotel.Update(
             Command.Name,
@@ -100,7 +100,7 @@ public class UpdateHotelCommandTests
     [Fact]
     public async Task Handle_WhenHotelExistsAndNewLocationIsValid_ReturnsSuccessResult()
     {
-        _userIdentifierProviderMock.Id.Returns(Hotel.UserId);
+        _userContextMock.Id.Returns(Hotel.UserId);
         _hotelRepositoryMock.GetByIdAsync(Command.Id, CancellationToken.None).Returns(Hotel);
 
         var result = await _sut.Handle(Command with { Latitude = 36.0 }, CancellationToken.None);
@@ -111,7 +111,7 @@ public class UpdateHotelCommandTests
     [Fact]
     public async Task Handle_WhenHotelExistsAndNewLocationIsValid_ShouldCallUnitOfWorkSaveChanges()
     {
-        _userIdentifierProviderMock.Id.Returns(Hotel.UserId);
+        _userContextMock.Id.Returns(Hotel.UserId);
         _hotelRepositoryMock.GetByIdAsync(Command.Id, CancellationToken.None).Returns(Hotel);
 
         Hotel.Update(

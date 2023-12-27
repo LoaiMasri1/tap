@@ -14,17 +14,17 @@ public class UpdateAmenityCommandHandler
 {
     private readonly IAmenityRepository _amenityRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IUserIdentifierProvider _userIdentifierProvider;
+    private readonly IUserContext _userContext;
 
     public UpdateAmenityCommandHandler(
         IUnitOfWork unitOfWork,
         IAmenityRepository amenityRepository,
-        IUserIdentifierProvider userIdentifierProvider
+        IUserContext userContext
     )
     {
         _unitOfWork = unitOfWork;
         _amenityRepository = amenityRepository;
-        _userIdentifierProvider = userIdentifierProvider;
+        _userContext = userContext;
     }
 
     public async Task<Result<AmenityResponse>> Handle(
@@ -32,7 +32,7 @@ public class UpdateAmenityCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var userRole = _userIdentifierProvider.Role;
+        var userRole = _userContext.Role;
         if (userRole != UserRole.Admin)
         {
             return DomainErrors.User.Unauthorized;

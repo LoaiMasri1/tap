@@ -15,7 +15,7 @@ public class UpdateUserCommandTests
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IUserIdentifierProvider _userIdentifierProvider;
+    private readonly IUserContext _userContext;
 
     private static readonly UpdateUserCommand Command =
         new(1, "Loai", "Masri", "validDDD1!", "validDDD1!");
@@ -30,13 +30,13 @@ public class UpdateUserCommandTests
         _unitOfWork = Substitute.For<IUnitOfWork>();
         _passwordHasher = Substitute.For<IPasswordHasher>();
         _userRepository = Substitute.For<IUserRepository>();
-        _userIdentifierProvider = Substitute.For<IUserIdentifierProvider>();
+        _userContext = Substitute.For<IUserContext>();
 
         _sut = new UpdateUserCommandHandler(
             _unitOfWork,
             _passwordHasher,
             _userRepository,
-            _userIdentifierProvider
+            _userContext
         );
     }
 
@@ -44,7 +44,7 @@ public class UpdateUserCommandTests
     public async Task Handle_WhenUserIsNotAuthenticated_ReturnsUnauthorized()
     {
         // Arrange
-        _userIdentifierProvider.Id.Returns(2);
+        _userContext.Id.Returns(2);
 
         // Act
         var result = await _sut.Handle(Command, CancellationToken.None);
@@ -57,7 +57,7 @@ public class UpdateUserCommandTests
     public async Task Handle_WhenUserIsNotFound_ReturnsNotFound()
     {
         // Arrange
-        _userIdentifierProvider.Id.Returns(1);
+        _userContext.Id.Returns(1);
         _userRepository.GetByIdAsync(1, CancellationToken.None).Returns(Maybe<User>.None);
 
         // Act
@@ -71,7 +71,7 @@ public class UpdateUserCommandTests
     public async Task Handle_WhenPasswordIsNotProvided_ReturnsSuccess()
     {
         // Arrange
-        _userIdentifierProvider.Id.Returns(1);
+        _userContext.Id.Returns(1);
         _userRepository.GetByIdAsync(1, CancellationToken.None).Returns(Maybe<User>.From(User));
 
         _passwordHasher.HashPassword(Arg.Any<string>()).Returns(Command.Password);
@@ -89,7 +89,7 @@ public class UpdateUserCommandTests
     public async Task Handle_WhenPasswordIsProvided_ReturnsSuccess()
     {
         // Arrange
-        _userIdentifierProvider.Id.Returns(1);
+        _userContext.Id.Returns(1);
         _userRepository.GetByIdAsync(1, default).Returns(Maybe<User>.From(User));
 
         _passwordHasher.HashPassword(Arg.Any<string>()).Returns(Command.Password);
@@ -106,7 +106,7 @@ public class UpdateUserCommandTests
     public async Task Handle_WhenPasswordAndConfirmPasswordDoNotMatch_ReturnsPasswordsDoNotMatch()
     {
         // Arrange
-        _userIdentifierProvider.Id.Returns(1);
+        _userContext.Id.Returns(1);
         _userRepository.GetByIdAsync(1, default).Returns(Maybe<User>.From(User));
 
         var command = Command with { ConfirmPassword = "invalid" };
@@ -122,7 +122,7 @@ public class UpdateUserCommandTests
     public async Task Handle_WhenPasswordIsInvalid_ReturnsPasswordInvalid()
     {
         // Arrange
-        _userIdentifierProvider.Id.Returns(1);
+        _userContext.Id.Returns(1);
         _userRepository.GetByIdAsync(1, default).Returns(Maybe<User>.From(User));
 
         var command = Command with { Password = "invalid", ConfirmPassword = "invalid" };
@@ -140,7 +140,7 @@ public class UpdateUserCommandTests
     public async Task Handle_WhenPasswordIsTheSameAsTheOldOne_ReturnsCannotChangePassword()
     {
         // Arrange
-        _userIdentifierProvider.Id.Returns(1);
+        _userContext.Id.Returns(1);
         _userRepository.GetByIdAsync(1, default).Returns(Maybe<User>.From(User));
         _passwordHasher.HashPassword(Arg.Any<string>()).Returns("validDDD1!");
 

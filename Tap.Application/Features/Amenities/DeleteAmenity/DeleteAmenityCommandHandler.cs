@@ -11,18 +11,18 @@ namespace Tap.Application.Features.Amenities.DeleteAmenity;
 public class DeleteAmenityCommandHandler : ICommandHandler<DeleteAmenityCommand, Result>
 {
     private readonly IAmenityRepository _amenityRepository;
-    private readonly IUserIdentifierProvider _userIdentifierProvider;
+    private readonly IUserContext _userContext;
     private readonly IUnitOfWork _unitOfWork;
 
     public DeleteAmenityCommandHandler(
         IUnitOfWork unitOfWork,
         IAmenityRepository amenityRepository,
-        IUserIdentifierProvider userIdentifierProvider
+        IUserContext userContext
     )
     {
         _unitOfWork = unitOfWork;
         _amenityRepository = amenityRepository;
-        _userIdentifierProvider = userIdentifierProvider;
+        _userContext = userContext;
     }
 
     public async Task<Result> Handle(
@@ -30,7 +30,7 @@ public class DeleteAmenityCommandHandler : ICommandHandler<DeleteAmenityCommand,
         CancellationToken cancellationToken
     )
     {
-        var userRole = _userIdentifierProvider.Role;
+        var userRole = _userContext.Role;
         if (userRole != UserRole.Admin)
         {
             return DomainErrors.User.Unauthorized;

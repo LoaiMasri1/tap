@@ -36,7 +36,7 @@ public static class DependencyInjection
             .AddScoped<IEmailService, EmailService>()
             .AddScoped<ITokenGenerator, GuidTokenGenerator>()
             .AddScoped<IEmailNotificationService, EmailNotificationService>()
-            .AddScoped<IUserIdentifierProvider, UserIdentifierProvider>()
+            .AddScoped<IUserContext, UserContext>()
             .AddTransient<IFileService, FileService>()
             .AddTransient<IUploadFileService, AzureBlobService>()
             .AddTransient<IAmenityService, AmenityService>()

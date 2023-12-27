@@ -5,9 +5,9 @@ using Tap.Domain.Features.Users;
 
 namespace Tap.Infrastructure.Authentication;
 
-public class UserIdentifierProvider : IUserIdentifierProvider
+public class UserContext : IUserContext
 {
-    public UserIdentifierProvider(IHttpContextAccessor httpContextAccessor)
+    public UserContext(IHttpContextAccessor httpContextAccessor)
     {
         Id = int.Parse(
             httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)!.Value

@@ -15,17 +15,17 @@ public class CreateDiscountCommandHandler
 {
     private readonly IRoomRepository _roomRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IUserIdentifierProvider _userIdentifierProvider;
+    private readonly IUserContext _userContext;
 
     public CreateDiscountCommandHandler(
         IRoomRepository roomRepository,
         IUnitOfWork unitOfWork,
-        IUserIdentifierProvider userIdentifierProvider
+        IUserContext userContext
     )
     {
         _roomRepository = roomRepository;
         _unitOfWork = unitOfWork;
-        _userIdentifierProvider = userIdentifierProvider;
+        _userContext = userContext;
     }
 
     public async Task<Result<DiscountResponse>> Handle(
@@ -33,7 +33,7 @@ public class CreateDiscountCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var userRole = _userIdentifierProvider.Role;
+        var userRole = _userContext.Role;
         if (userRole != UserRole.Admin)
         {
             return DomainErrors.User.Unauthorized;

@@ -15,7 +15,7 @@ public class CreateHotelCommandTests
     private readonly ICityRepository _cityRepositoryMock;
     private readonly IUserRepository _userRepositoryMock;
     private readonly IUnitOfWork _unitOfWorkMock;
-    private readonly IUserIdentifierProvider _userIdentifierProviderMock;
+    private readonly IUserContext _userContextMock;
 
     private static readonly CreateHotelCommand Command =
         new("Hotel Name", "Hotel Description", 34.4, 35.6, 1);
@@ -27,20 +27,20 @@ public class CreateHotelCommandTests
         _cityRepositoryMock = Substitute.For<ICityRepository>();
         _userRepositoryMock = Substitute.For<IUserRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-        _userIdentifierProviderMock = Substitute.For<IUserIdentifierProvider>();
+        _userContextMock = Substitute.For<IUserContext>();
 
         _sut = new CreateHotelCommandHandler(
             _cityRepositoryMock,
             _userRepositoryMock,
             _unitOfWorkMock,
-            _userIdentifierProviderMock
+            _userContextMock
         );
     }
 
     [Fact]
     public async Task Handle_WhenUserIsNotAdmin_ReturnsUnauthorizedError()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.User);
+        _userContextMock.Role.Returns(UserRole.User);
 
         var result = await _sut.Handle(Command, CancellationToken.None);
 
@@ -50,7 +50,7 @@ public class CreateHotelCommandTests
     [Fact]
     public async Task Handle_WhenCityDoesNotExist_ReturnsCityNotFoundError()
     {
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _cityRepositoryMock
             .GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(Maybe<City>.None);
@@ -64,7 +64,7 @@ public class CreateHotelCommandTests
     public async Task Handle_WhenUserDoesNotExist_ReturnsUserNotFoundError()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _cityRepositoryMock
             .GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(new City(Command.Name, Command.Description, "PS"));
@@ -84,7 +84,7 @@ public class CreateHotelCommandTests
     public async Task Handle_WhenLatitudeOutOfRange_ReturnsLatitudeOutOfRangeError()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _cityRepositoryMock
             .GetByIdAsync(Arg.Any<int>(), default)
             .Returns(new City(Command.Name, Command.Description, "PS"));
@@ -111,7 +111,7 @@ public class CreateHotelCommandTests
             Longitude = 200
         };
 
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _cityRepositoryMock
             .GetByIdAsync(Arg.Any<int>(), default)
             .Returns(new City(command.Name, command.Description, "PS"));
@@ -136,7 +136,7 @@ public class CreateHotelCommandTests
             Latitude = double.NaN
         };
 
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _cityRepositoryMock
             .GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(new City(command.Name, command.Description, "PS"));
@@ -160,7 +160,7 @@ public class CreateHotelCommandTests
             Longitude = double.NaN
         };
 
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _cityRepositoryMock
             .GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(new City(command.Name, command.Description, "PS"));
@@ -180,7 +180,7 @@ public class CreateHotelCommandTests
     public async Task Handle_WhenLocationIsNull_ReturnsNullOrEmptyError()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _cityRepositoryMock
             .GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(new City(Command.Name, Command.Description, "PS"));
@@ -202,7 +202,7 @@ public class CreateHotelCommandTests
     public async Task Handle_WhenHotelIsCreated_ReturnsHotelResponse()
     {
         // Arrange
-        _userIdentifierProviderMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.Admin);
         _cityRepositoryMock
             .GetByIdAsync(Arg.Any<int>(), default)
             .Returns(new City(Command.Name, Command.Description, "PS"));
