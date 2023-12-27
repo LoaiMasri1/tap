@@ -40,8 +40,8 @@ public class User : Entity, IAuditableEntity
     public Token? ActivationToken { get; private set; }
     public ICollection<Hotel> Hotels { get; private set; } = new List<Hotel>();
     public bool IsActivate { get; private set; } = false;
-    public DateTime CreatedAtUtc { get; }
-    public DateTime? UpdatedAtUtc { get; }
+    public DateTime CreatedAtUtc { get; private set; }
+    public DateTime? UpdatedAtUtc { get; private set; }
 
     public void Activate() => IsActivate = true;
 

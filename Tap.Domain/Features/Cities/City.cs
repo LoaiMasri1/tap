@@ -11,8 +11,8 @@ public class City : Entity, IAuditableEntity
     public string Description { get; private set; }
     public string Country { get; private set; }
     public ICollection<Hotel> Hotels { get; private set; } = new List<Hotel>();
-    public DateTime CreatedAtUtc { get; }
-    public DateTime? UpdatedAtUtc { get; }
+    public DateTime CreatedAtUtc { get; private set; }
+    public DateTime? UpdatedAtUtc { get; private set; }
 
     private City() { }
 

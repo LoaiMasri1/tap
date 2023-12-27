@@ -32,8 +32,8 @@ public class Photo : Entity, IAuditableEntity
     public string Url { get; private set; }
     public ItemType Type { get; private set; }
     public int ItemId { get; private set; }
-    public DateTime CreatedAtUtc { get; }
-    public DateTime? UpdatedAtUtc { get; }
+    public DateTime CreatedAtUtc { get; private set; }
+    public DateTime? UpdatedAtUtc { get; private set; }
 
     public void UpdateUrl(string url)
     {
