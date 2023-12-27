@@ -59,17 +59,8 @@ public class CreateDiscountCommandHandler
             command.EndDate
         );
 
-        foreach (var d in room.Discounts)
-        {
-            Console.WriteLine(d.DiscountPercentage);
-        }
-
-        Console.WriteLine($"Discounted price before adding discount: {room.DiscountedPrice}");
-
         room.AddDiscount(discount);
         room.UpdateDiscountedPrice();
-
-        Console.WriteLine($"Discounted price after adding discount: {room.DiscountedPrice}");
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
