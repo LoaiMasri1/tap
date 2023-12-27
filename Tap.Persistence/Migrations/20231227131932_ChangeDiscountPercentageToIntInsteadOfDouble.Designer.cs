@@ -12,15 +12,15 @@ using Tap.Persistence;
 namespace Tap.Persistence.Migrations
 {
     [DbContext(typeof(TapDbContext))]
-    [Migration("20231226120222_ChangePriceColumnNameInRoomEntity")]
-    partial class ChangePriceColumnNameInRoomEntity
+    [Migration("20231227131932_ChangeDiscountPercentageToIntInsteadOfDouble")]
+    partial class ChangeDiscountPercentageToIntInsteadOfDouble
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0")
+                .HasAnnotation("ProductVersion", "7.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -111,8 +111,8 @@ namespace Tap.Persistence.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<decimal>("DiscountPercentage")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("DiscountPercentage")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -354,7 +354,7 @@ namespace Tap.Persistence.Migrations
                             b1.Property<decimal>("Amount")
                                 .HasPrecision(18, 2)
                                 .HasColumnType("decimal(18,2)")
-                                .HasColumnName("Amount");
+                                .HasColumnName("Price");
 
                             b1.Property<string>("Currency")
                                 .IsRequired()
