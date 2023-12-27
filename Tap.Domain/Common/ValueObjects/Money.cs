@@ -12,7 +12,7 @@ public class Money : ValueObject
 
     public static Money Create(decimal amount, string currency)
     {
-        return new Money(amount, currency);
+        return new Money(amount, currency.ToUpper());
     }
 
     public decimal Amount { get; private set; }

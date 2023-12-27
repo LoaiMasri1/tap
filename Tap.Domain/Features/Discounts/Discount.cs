@@ -11,7 +11,7 @@ public class Discount : Entity, IAuditableEntity
     private Discount(
         string name,
         string description,
-        decimal discountPercentage,
+        int discountPercentage,
         DateTime startDate,
         DateTime endDate
     )
@@ -26,7 +26,7 @@ public class Discount : Entity, IAuditableEntity
     public static Discount Create(
         string name,
         string description,
-        decimal discountPercentage,
+        int discountPercentage,
         DateTime startDate,
         DateTime endDate
     )
@@ -36,7 +36,7 @@ public class Discount : Entity, IAuditableEntity
 
     public string Name { get; private set; }
     public string Description { get; private set; }
-    public decimal DiscountPercentage { get; private set; }
+    public int DiscountPercentage { get; private set; }
     public DateTime StartDate { get; private set; }
     public DateTime EndDate { get; private set; }
     public DateTime CreatedAtUtc { get; private set; }

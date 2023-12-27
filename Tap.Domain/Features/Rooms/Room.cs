@@ -1,12 +1,14 @@
 ﻿using Tap.Domain.Common.ValueObjects;
 using Tap.Domain.Core.Abstraction;
+using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives;
+using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Features.Discounts;
 using Tap.Domain.Features.Hotels;
 
 namespace Tap.Domain.Features.Rooms;
 
-public class Room : Entity, IAuditableEntity
+public class Room : AggregateRoot, IAuditableEntity
 {
     private Room() { }
 
@@ -25,8 +27,6 @@ public class Room : Entity, IAuditableEntity
         CapacityOfAdults = capacityOfAdults;
         CapacityOfChildren = capacityOfChildren;
         Type = type;
-
-        UpdateDiscountedPrice();
     }
 
     public static Room Create(
@@ -47,28 +47,32 @@ public class Room : Entity, IAuditableEntity
 
         foreach (var discount in Discounts)
         {
-            if (discount.IsApplicable())
+            if (!discount.IsApplicable())
             {
                 discountedPrice = discount.Apply(Price);
             }
         }
 
-        Console.WriteLine(
-            $"Room {Number} has a price of {Price.Amount} {Price.Currency} and a discounted price of {discountedPrice.Amount} {discountedPrice.Currency}"
-        );
-
         DiscountedPrice = discountedPrice.Amount;
     }
 
-    public void AddDiscount(Discount discount)
-    {
-        if (discount is null)
-        {
-            throw new ArgumentNullException(nameof(discount));
-        }
-
-        Discounts.Add(discount);
-    }
+    public Result AddDiscount(Discount discount) =>
+        Result
+            .Create(discount)
+            .Ensure(x => x.IsApplicable(), DomainErrors.Discount.NotApplicable)
+            .Ensure(
+                x => Discounts.Any(y => y.Name == discount.Name),
+                DomainErrors.Discount.AlreadyExists
+            )
+            .Ensure(
+                x => discount.DiscountPercentage is > 0 and < 100,
+                DomainErrors.Discount.InvalidDiscountPercentage
+            )
+            .Ensure(
+                x => discount.StartDate <= discount.EndDate,
+                DomainErrors.Discount.InvalidDateRange
+            )
+            .Tap(Discounts.Add);
 
     public int Number { get; private set; }
     public Money Price { get; private set; }

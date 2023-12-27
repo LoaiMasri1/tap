@@ -25,6 +25,16 @@ public static class ResultExtensions
         Func<TIn, Task<Result<TOut>>> func
     ) => result.IsSuccess ? await func(result.Value) : Result<TOut>.Failure(result.Error);
 
+    public static Result<T> Tap<T>(this Result<T> result, Action<T> action)
+    {
+        if (result.IsSuccess)
+        {
+            action(result.Value);
+        }
+
+        return result;
+    }
+
     public static async Task<T> Match<T>(
         this Task<Result> resultTask,
         Func<T> onSuccess,

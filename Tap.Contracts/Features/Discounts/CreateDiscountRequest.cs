@@ -4,7 +4,7 @@ public record CreateDiscountRequest(
     int RoomId,
     string Name,
     string Description,
-    decimal DiscountPercentage,
+    int DiscountPercentage,
     DateTime StartDate,
     DateTime EndDate
 );

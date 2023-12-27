@@ -39,7 +39,10 @@ public class CreateDiscountCommandHandler
             return DomainErrors.User.Unauthorized;
         }
 
-        var maybeRoom = await _roomRepository.GetByIdAsync(command.RoomId, cancellationToken);
+        var maybeRoom = await _roomRepository.GetByIdWithDiscountsAsync(
+            command.RoomId,
+            cancellationToken
+        );
 
         if (maybeRoom.HasNoValue)
         {
@@ -56,8 +59,17 @@ public class CreateDiscountCommandHandler
             command.EndDate
         );
 
+        foreach (var d in room.Discounts)
+        {
+            Console.WriteLine(d.DiscountPercentage);
+        }
+
+        Console.WriteLine($"Discounted price before adding discount: {room.DiscountedPrice}");
+
         room.AddDiscount(discount);
         room.UpdateDiscountedPrice();
+
+        Console.WriteLine($"Discounted price after adding discount: {room.DiscountedPrice}");
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

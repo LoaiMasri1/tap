@@ -1,4 +1,5 @@
 ﻿using Tap.Domain.Core.Primitives;
+using Tap.Domain.Core.Primitives.Result;
 
 namespace Tap.Domain.Core.Errors;
 
@@ -166,5 +167,22 @@ public static class DomainErrors
 
         public static Error NotFound =>
             new("Room.NotFound", "The room with the specified identifier was not found.");
+    }
+
+    public class Discount
+    {
+        public static Error NotApplicable =>
+            new("Discount.NotApplicable", "The discount is not applicable.");
+
+        public static Error AlreadyExists =>
+            new("Discount.AlreadyExists", "The discount with the specified name already exists.");
+
+        public static Error InvalidDiscountPercentage =>
+            new(
+                "Discount.InvalidDiscountPercentage",
+                "The discount percentage should be greater than 0 and less than 100."
+            );
+        public static Error InvalidDateRange =>
+            new("Discount.InvalidDateRange", "The start date should be less than the end date.");
     }
 }

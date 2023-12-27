@@ -38,7 +38,10 @@ public class UpdateRoomCommandHandler : ICommandHandler<UpdateRoomCommand, Resul
             return DomainErrors.User.Unauthorized;
         }
 
-        var maybeRoom = await _roomRepository.GetByIdAsync(command.Id, cancellationToken);
+        var maybeRoom = await _roomRepository.GetByIdWithDiscountsAsync(
+            command.Id,
+            cancellationToken
+        );
 
         if (maybeRoom.HasNoValue)
         {
