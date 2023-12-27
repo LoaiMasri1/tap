@@ -6,16 +6,15 @@ public static class ApiRoutes
     {
         private const string Base = "users";
         public const string Get = Base;
-        public const string Post = Base;
         public const string Update = $"{Base}/{{id}}";
-
-        public const string Activate = $"{Base}/activate";
     }
 
     public static class Auth
     {
         private const string Base = "auth";
         public const string Login = $"{Base}/login";
+        public const string Register = $"{Base}/register";
+        public const string Activate = $"{Base}/activate";
     }
 
     public static class City

@@ -11,10 +11,10 @@ using Tap.Services.Api.Infrastructure;
 
 namespace Tap.Services.Api.Controllers;
 
+[Authorize]
 public class PhotoController : ApiController
 {
     [HttpPost(ApiRoutes.Photo.Upload)]
-    [Authorize]
     public async Task<IActionResult> Upload(
         int id,
         ItemType type,
@@ -27,7 +27,6 @@ public class PhotoController : ApiController
             .Match(Ok, BadRequest);
 
     [HttpPut(ApiRoutes.Photo.Update)]
-    [Authorize]
     public async Task<IActionResult> Update(int id, [FromForm] IFormFile file) =>
         await Result
             .Create((id, file))
@@ -37,7 +36,6 @@ public class PhotoController : ApiController
             .Match(Ok, BadRequest);
 
     [HttpDelete(ApiRoutes.Photo.Delete)]
-    [Authorize]
     public async Task<IActionResult> Delete(int id) =>
         await Result
             .Create(id)

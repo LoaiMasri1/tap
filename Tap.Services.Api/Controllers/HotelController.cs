@@ -16,10 +16,10 @@ using Tap.Services.Api.Infrastructure;
 
 namespace Tap.Services.Api.Controllers;
 
+[Authorize]
 public class HotelController : ApiController
 {
     [HttpPost(ApiRoutes.Hotel.UploadPhotos)]
-    [Authorize]
     public async Task<IActionResult> UploadPhotos(int id, [FromForm] IFormCollection files) =>
         await Result
             .Create((id, files))
@@ -28,7 +28,6 @@ public class HotelController : ApiController
             .Match(Ok, BadRequest);
 
     [HttpPut(ApiRoutes.Hotel.Update)]
-    [Authorize]
     public async Task<IActionResult> Update(int id, UpdateHotelRequest request) =>
         await Result
             .Create((id, request))
@@ -47,7 +46,6 @@ public class HotelController : ApiController
             .Match(Ok, BadRequest);
 
     [HttpPost(ApiRoutes.Hotel.CreateAmenities)]
-    [Authorize]
     public async Task<IActionResult> CreateAmenities(int id, CreateAmenityRequest request) =>
         await Result
             .Create((id, request))
