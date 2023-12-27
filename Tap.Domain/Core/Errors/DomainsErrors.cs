@@ -167,6 +167,8 @@ public static class DomainErrors
 
         public static Error NotFound =>
             new("Room.NotFound", "The room with the specified identifier was not found.");
+        public static Error NothingToUpdate =>
+            new("Room.NothingToUpdate", "Nothing to update. The room is already up to date.");
     }
 
     public class Discount

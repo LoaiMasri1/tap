@@ -210,4 +210,10 @@ public static class ValidationErrors
         public static Error CapacityOfChildrenIsRequired =>
             new("UpdateRoom.CapacityOfChildrenIsRequired", "The capacity of children is required.");
     }
+
+    public class DeleteRoom
+    {
+        public static Error RoomIdIsRequired =>
+            new("DeleteRoom.RoomIdIsRequired", "The room id is required.");
+    }
 }

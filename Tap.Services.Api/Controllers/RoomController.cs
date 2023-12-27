@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tap.Application.Features.Amenities.CreateAmenity;
 using Tap.Application.Features.Discounts.CreateDiscount;
 using Tap.Application.Features.Photos.UploadPhoto;
+using Tap.Application.Features.Rooms.DeleteRoom;
 using Tap.Application.Features.Rooms.UpdateRoom;
 using Tap.Contracts.Features.Amenities;
 using Tap.Contracts.Features.Discounts;
@@ -16,10 +17,10 @@ using Tap.Services.Api.Infrastructure;
 
 namespace Tap.Services.Api.Controllers;
 
+[Authorize]
 public class RoomController : ApiController
 {
     [HttpPost(ApiRoutes.Room.UploadPhotos)]
-    [Authorize]
     public async Task<IActionResult> UploadPhotos(int id, [FromForm] IFormCollection files) =>
         await Result
             .Create((id, files))
@@ -28,7 +29,6 @@ public class RoomController : ApiController
             .Match(Ok, BadRequest);
 
     [HttpPost(ApiRoutes.Room.AddAmenities)]
-    [Authorize]
     public async Task<IActionResult> AddAmenities(int id, CreateAmenityRequest command) =>
         await Result
             .Create((id, command))
@@ -46,7 +46,6 @@ public class RoomController : ApiController
             .Match(Ok, BadRequest);
 
     [HttpPost(ApiRoutes.Room.AddDiscount)]
-    [Authorize]
     public async Task<IActionResult> AddDiscount(int id, CreateDiscountRequest command) =>
         await Result
             .Create((id, command))
@@ -66,7 +65,6 @@ public class RoomController : ApiController
             .Match(Ok, BadRequest);
 
     [HttpPut(ApiRoutes.Room.Update)]
-    [Authorize]
     public async Task<IActionResult> Update(int id, UpdateRoomRequest request) =>
         await Result
             .Create((id, request))
@@ -83,6 +81,14 @@ public class RoomController : ApiController
                         x.request.CapacityOfChildren
                     )
             )
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    [HttpDelete(ApiRoutes.Room.Delete)]
+    public async Task<IActionResult> Delete(int id) =>
+        await Result
+            .Create(id)
+            .Map(x => new DeleteRoomCommand(x))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }

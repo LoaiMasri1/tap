@@ -87,7 +87,7 @@ public class Room : AggregateRoot, IAuditableEntity
     public DateTime CreatedAtUtc { get; private set; }
     public DateTime? UpdatedAtUtc { get; private set; }
 
-    public void Update(
+    public Result Update(
         int commandNumber,
         Money price,
         RoomType commandType,
@@ -95,10 +95,23 @@ public class Room : AggregateRoot, IAuditableEntity
         int commandCapacityOfChildren
     )
     {
+        if (
+            Number == commandNumber
+            && Price == price
+            && Type == commandType
+            && CapacityOfAdults == commandCapacityOfAdults
+            && CapacityOfChildren == commandCapacityOfChildren
+        )
+        {
+            return DomainErrors.Room.NothingToUpdate;
+        }
+
         Number = commandNumber;
         Price = price;
         Type = commandType;
         CapacityOfAdults = commandCapacityOfAdults;
         CapacityOfChildren = commandCapacityOfChildren;
+
+        return Result.Success();
     }
 }

@@ -52,13 +52,18 @@ public class UpdateRoomCommandHandler : ICommandHandler<UpdateRoomCommand, Resul
 
         var price = Money.Create(command.Price, command.Currency);
 
-        room.Update(
+        var result = room.Update(
             command.Number,
             price,
             command.Type,
             command.CapacityOfAdults,
             command.CapacityOfChildren
         );
+
+        if (result.IsFailure)
+        {
+            return result.Error;
+        }
 
         room.UpdateDiscountedPrice();
 

@@ -44,6 +44,7 @@ public static class ApiRoutes
         public const string Get = Base;
         public const string Post = Base;
         public const string Update = $"{Base}/{{id}}";
+        public const string Delete = $"{Base}/{{id}}";
         public const string UploadPhotos = $"{Base}/{{id}}/photos";
         public const string AddAmenities = $"{Base}/{{id}}/amenities";
         public const string AddDiscount = $"{Base}/{{id}}/discounts";
