@@ -1,16 +1,19 @@
 ﻿using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Features.Hotels;
+using Tap.Domain.Features.Rooms;
 
 namespace Tap.Domain.Features.Amenities;
 
 public class AmenityService : IAmenityService
 {
     private readonly IHotelRepository _hotelRepository;
+    private readonly IRoomRepository _roomRepository;
 
-    public AmenityService(IHotelRepository hotelRepository)
+    public AmenityService(IHotelRepository hotelRepository, IRoomRepository roomRepository)
     {
         _hotelRepository = hotelRepository;
+        _roomRepository = roomRepository;
     }
 
     public Task<Result> CheckAmenityTypeAndUserOwnerShipAsync(
@@ -23,19 +26,17 @@ public class AmenityService : IAmenityService
         {
             AmenityType.Hotel
                 => CheckHotelAmenityTypeAndUserOwnerShipAsync(userId, typeId, cancellationToken),
-            AmenityType.Room
-                => CheckRoomAmenityTypeAndUserOwnerShipAsync(userId, typeId, cancellationToken),
+            AmenityType.Room => CheckRoomAmenityType(typeId, cancellationToken),
             _ => throw new ArgumentOutOfRangeException(nameof(amenityType), amenityType, null)
         };
 
-    private Task<Result> CheckRoomAmenityTypeAndUserOwnerShipAsync(
-        int userId,
+    private async Task<Result> CheckRoomAmenityType(
         int typeId,
         CancellationToken cancellationToken = default
     )
     {
-        // TODO: Implement this method when the room feature is implemented.
-        throw new NotImplementedException();
+        var maybeRoom = await _roomRepository.GetByIdAsync(typeId, cancellationToken);
+        return maybeRoom.HasNoValue ? DomainErrors.Room.NotFound : Result.Success();
     }
 
     private async Task<Result> CheckHotelAmenityTypeAndUserOwnerShipAsync(
