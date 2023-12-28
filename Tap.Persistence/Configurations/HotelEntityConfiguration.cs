@@ -29,6 +29,8 @@ internal class HotelEntityConfiguration : IEntityTypeConfiguration<Hotel>
             }
         );
 
+        builder.Property(x => x.Rating).IsRequired();
+
         builder.Property(x => x.CreatedAtUtc).IsRequired();
 
         builder.Property(x => x.UpdatedAtUtc);

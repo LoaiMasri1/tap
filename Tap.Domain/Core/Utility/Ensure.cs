@@ -83,4 +83,32 @@ public static class Ensure
             throw new ArgumentException(message, argumentName);
         }
     }
+
+    public static void LessThan<TValue>(
+        TValue value,
+        TValue max,
+        string message,
+        string argumentName
+    )
+        where TValue : struct, IComparable<TValue>
+    {
+        if (value.CompareTo(max) > 0)
+        {
+            throw new ArgumentException(message, argumentName);
+        }
+    }
+
+    public static void GreaterThan<TValue>(
+        TValue value,
+        TValue min,
+        string message,
+        string argumentName
+    )
+        where TValue : struct, IComparable<TValue>
+    {
+        if (value.CompareTo(min) < 0)
+        {
+            throw new ArgumentException(message, argumentName);
+        }
+    }
 }
