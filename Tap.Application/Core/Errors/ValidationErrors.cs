@@ -216,4 +216,26 @@ public static class ValidationErrors
         public static Error RoomIdIsRequired =>
             new("DeleteRoom.RoomIdIsRequired", "The room id is required.");
     }
+
+    public class CreateReview
+    {
+        public static Error TitleIsRequired =>
+            new("CreateReview.TitleIsRequired", "The title is required.");
+        public static Error ContentIsRequired =>
+            new("CreateReview.ContentIsRequired", "The content is required.");
+        public static Error RatingIsRequired =>
+            new("CreateReview.RatingIsRequired", "The rating is required.");
+        public static Error RatingIsInvalid =>
+            new("CreateReview.RatingIsInvalid", "The rating is invalid.");
+        public static Error HotelIdIsRequired =>
+            new("CreateReview.HotelIdIsRequired", "The hotel id is required.");
+        public static Error UserIdIsRequired =>
+            new("CreateReview.UserIdIsRequired", "The user id is required.");
+    }
+
+    public class DeleteReview
+    {
+        public static Error ReviewIdIsRequired =>
+            new("DeleteReview.ReviewIdIsRequired", "The review id is required.");
+    }
 }
