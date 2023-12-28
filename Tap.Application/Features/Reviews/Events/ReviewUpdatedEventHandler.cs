@@ -1,18 +1,19 @@
 ﻿using Tap.Domain.Core.Events;
 using Tap.Domain.Features.Hotels;
+using Tap.Domain.Features.Reviews.Events;
 
-namespace Tap.Application.Features.Reviews.DeleteReview.Events;
+namespace Tap.Application.Features.Reviews.Events;
 
-public class ReviewDeletedEventHandler : IDomainEventHandler<ReviewDeletedEvent>
+public class ReviewUpdatedEventHandler : IDomainEventHandler<ReviewUpdatedEvent>
 {
     private readonly IHotelRepository _hotelRepository;
 
-    public ReviewDeletedEventHandler(IHotelRepository hotelRepository)
+    public ReviewUpdatedEventHandler(IHotelRepository hotelRepository)
     {
         _hotelRepository = hotelRepository;
     }
 
-    public async Task Handle(ReviewDeletedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(ReviewUpdatedEvent notification, CancellationToken cancellationToken)
     {
         if (notification.HotelId is null)
         {

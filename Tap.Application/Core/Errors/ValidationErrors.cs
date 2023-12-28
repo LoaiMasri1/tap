@@ -238,4 +238,16 @@ public static class ValidationErrors
         public static Error ReviewIdIsRequired =>
             new("DeleteReview.ReviewIdIsRequired", "The review id is required.");
     }
+
+    public class UpdateReview
+    {
+        public static Error ReviewIdIsRequired =>
+            new("UpdateReview.ReviewIdIsRequired", "The review id is required.");
+        public static Error TitleIsRequired =>
+            new("UpdateReview.TitleIsRequired", "The title is required.");
+        public static Error ContentIsRequired =>
+            new("UpdateReview.ContentIsRequired", "The content is required.");
+        public static Error RatingIsRequired =>
+            new("UpdateReview.RatingIsRequired", "The rating is required.");
+    }
 }

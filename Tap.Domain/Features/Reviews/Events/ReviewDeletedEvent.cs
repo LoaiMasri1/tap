@@ -1,6 +1,6 @@
 ﻿using Tap.Domain.Core.Events;
 
-namespace Tap.Application.Features.Reviews.DeleteReview.Events;
+namespace Tap.Domain.Features.Reviews.Events;
 
 public class ReviewDeletedEvent : IDomainEvent
 {

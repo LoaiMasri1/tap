@@ -1,10 +1,10 @@
 ﻿using Tap.Application.Core.Abstractions.Data;
 using Tap.Application.Core.Messaging;
 using Tap.Application.Features.Authentication;
-using Tap.Application.Features.Reviews.DeleteReview.Events;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Features.Reviews;
+using Tap.Domain.Features.Reviews.Events;
 
 namespace Tap.Application.Features.Reviews.DeleteReview
 {

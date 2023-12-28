@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tap.Application.Features.Reviews.CreateReview;
 using Tap.Application.Features.Reviews.DeleteReview;
+using Tap.Application.Features.Reviews.UpdateReview;
 using Tap.Contracts.Features.Reviews;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives.Result;
@@ -40,4 +41,24 @@ public class ReviewController : ApiController
     [HttpDelete(ApiRoutes.Review.Delete)]
     public async Task<IActionResult> DeleteReview(int id) =>
         await Mediator.Send(new DeleteReviewCommand(id)).Match(Ok, BadRequest);
+
+    [HttpPut(ApiRoutes.Review.Update)]
+    public async Task<IActionResult> UpdateReview(
+        [Required] int id,
+        [FromBody] UpdateReviewRequest request
+    ) =>
+        await Result
+            .Create((id, request))
+            .Ensure(x => x.id == request.Id, DomainErrors.General.UnProcessableRequest)
+            .Map(
+                x =>
+                    new UpdateReviewCommand(
+                        x.request.Id,
+                        x.request.Title,
+                        x.request.Content,
+                        x.request.Rating
+                    )
+            )
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
 }
