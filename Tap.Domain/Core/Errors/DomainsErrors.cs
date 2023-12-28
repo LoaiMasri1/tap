@@ -121,6 +121,24 @@ public static class DomainErrors
 
         public static Error ServerError =>
             new("General.ServerError", "The server encountered an unrecoverable error.");
+
+        public static Error LessThan => new("General.LessThan", "The value is less than allowed.");
+
+        public static Error GreaterThan =>
+            new("General.GreaterThan", "The value is greater than allowed.");
+        public static Error Of => new("General.Of", "The value is not one of the allowed values.");
+
+        public static Error NotDefault => new("General.NotDefault", "The value is not default.");
+
+        public static Error NotNull => new("General.NotNull", "The value is not null.");
+
+        public static Error NotEmpty => new("General.NotEmpty", "The value is not empty.");
+
+        public static Error NotFuture => new("General.NotFuture", "The value is not future.");
+
+        public static Error NotPast => new("General.NotPast", "The value is not past.");
+
+        public static Error Positive => new("General.Positive", "The value is not positive.");
     }
 
     public class Hotel
@@ -186,5 +204,13 @@ public static class DomainErrors
             );
         public static Error InvalidDateRange =>
             new("Discount.InvalidDateRange", "The start date should be less than the end date.");
+    }
+
+    public class Review
+    {
+        public static Error NotFound =>
+            new("Review.NotFound", "The review with the specified identifier was not found.");
+        public static Error NothingToUpdate =>
+            new("Review.NothingToUpdate", "Nothing to update. The review is already up to date.");
     }
 }

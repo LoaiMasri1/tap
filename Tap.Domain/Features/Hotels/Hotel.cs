@@ -73,4 +73,13 @@ public class Hotel : Entity, IAuditableEntity
 
         Rating = (int)Math.Round(Reviews.Average(x => x.Rating));
     }
+
+    public void AddReview(Review review)
+    {
+        Ensure.NotNull(review, "The review is required.", nameof(review));
+
+        Reviews.Add(review);
+
+        UpdateRating();
+    }
 }

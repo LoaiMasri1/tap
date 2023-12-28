@@ -4,8 +4,6 @@ public class Error
 {
     public static readonly Error None = new(string.Empty, string.Empty);
 
-    public static readonly Error NullValue = new("Error.NullValue", "Value cannot be null");
-
     public Error(string code, string message) => (Code, Message) = (code, message);
 
     public string Code { get; }
@@ -23,6 +21,8 @@ public class Error
 
         return Code == other.Code && Message == other.Message;
     }
+
+    public Error WithMessage(string message) => new(Code, message);
 
     public override int GetHashCode() => HashCode.Combine(Code, Message);
 }
