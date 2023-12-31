@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tap.Application.Features.Amenities.CreateAmenity;
+using Tap.Application.Features.Hotels.SearchHotel;
 using Tap.Application.Features.Hotels.UpdateHotel;
 using Tap.Application.Features.Photos.UploadPhoto;
 using Tap.Application.Features.Rooms.CreateRoom;
@@ -9,6 +10,7 @@ using Tap.Contracts.Features.Hotels;
 using Tap.Contracts.Features.Rooms;
 using Tap.Domain.Common.Enumerations;
 using Tap.Domain.Core.Errors;
+using Tap.Domain.Core.Primitives.Maybe;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Features.Amenities;
 using Tap.Services.Api.Contracts;
@@ -79,6 +81,32 @@ public class HotelController : ApiController
                         x.request.CapacityOfAdults,
                         x.request.CapacityOfChildren
                     )
+            )
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    [HttpGet(ApiRoutes.Hotel.Get)]
+    [AllowAnonymous]
+    public async Task<IActionResult> Get(
+        string city,
+        int? rating,
+        int? numberOfAvailableRooms,
+        string sortBy = "name",
+        string sortOrder = "asc",
+        int pageNumber = 1,
+        int pageSize = 10
+    ) =>
+        await Maybe<SearchHotelsQuery>
+            .From(
+                new SearchHotelsQuery(
+                    city,
+                    rating,
+                    numberOfAvailableRooms,
+                    pageSize,
+                    pageNumber,
+                    sortBy,
+                    sortOrder
+                )
             )
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);

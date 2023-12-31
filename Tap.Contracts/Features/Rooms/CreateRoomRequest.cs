@@ -8,6 +8,6 @@ public record CreateRoomRequest(
     decimal Price,
     string Currency,
     RoomType Type,
-    int CapacityOfAdults,
-    int CapacityOfChildren
+    int CapacityOfAdults = 2,
+    int CapacityOfChildren = 0
 );

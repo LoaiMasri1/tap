@@ -3,6 +3,7 @@ using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Core.Utility;
+using Tap.Domain.Features.Cities;
 using Tap.Domain.Features.Reviews;
 using Tap.Domain.Features.Rooms;
 using Tap.Domain.Features.Users;
@@ -16,6 +17,7 @@ public class Hotel : Entity, IAuditableEntity
     public Location Location { get; private set; }
     public int Rating { get; private set; }
     public int CityId { get; private set; }
+    public City City { get; private set; }
     public int UserId { get; private set; }
     public DateTime CreatedAtUtc { get; private set; }
     public DateTime? UpdatedAtUtc { get; private set; }

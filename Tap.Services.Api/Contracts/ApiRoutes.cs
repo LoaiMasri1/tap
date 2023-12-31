@@ -30,6 +30,7 @@ public static class ApiRoutes
     {
         private const string Base = "hotels";
         public const string Get = Base;
+        public const string GetById = $"{Base}/{{id}}";
         public const string Post = Base;
         public const string Update = $"{Base}/{{id}}";
         public const string UploadPhotos = $"{Base}/{{id}}/photos";
