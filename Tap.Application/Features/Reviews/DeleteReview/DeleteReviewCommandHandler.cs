@@ -5,6 +5,7 @@ using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Features.Reviews;
 using Tap.Domain.Features.Reviews.Events;
+using Tap.Domain.Features.Users;
 
 namespace Tap.Application.Features.Reviews.DeleteReview
 {
@@ -30,6 +31,11 @@ namespace Tap.Application.Features.Reviews.DeleteReview
             CancellationToken cancellationToken
         )
         {
+            if (_userContext.Role == UserRole.Admin)
+            {
+                return DomainErrors.User.Unauthorized;
+            }
+
             var userId = _userContext.Id;
 
             var maybeReview = await _reviewRepository.GetByIdAsync(command.Id, cancellationToken);

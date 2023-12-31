@@ -36,6 +36,11 @@ public class CreateReviewCommandHandler
         CancellationToken cancellationToken
     )
     {
+        if (_userContext.Role == UserRole.Admin)
+        {
+            return DomainErrors.User.Unauthorized;
+        }
+
         var userId = _userContext.Id;
 
         if (userId != request.UserId)

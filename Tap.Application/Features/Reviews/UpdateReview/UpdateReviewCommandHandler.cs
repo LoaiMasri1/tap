@@ -5,6 +5,7 @@ using Tap.Contracts.Features.Reviews;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Features.Reviews;
+using Tap.Domain.Features.Users;
 
 namespace Tap.Application.Features.Reviews.UpdateReview;
 
@@ -31,6 +32,11 @@ public class UpdateReviewCommandHandler
         CancellationToken cancellationToken
     )
     {
+        if (_userContext.Role == UserRole.Admin)
+        {
+            return DomainErrors.User.Unauthorized;
+        }
+
         var userId = _userContext.Id;
 
         var maybeReview = await _reviewRepository.GetByIdAsync(request.Id, cancellationToken);

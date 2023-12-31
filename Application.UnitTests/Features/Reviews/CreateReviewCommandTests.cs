@@ -50,7 +50,7 @@ public class CreateReviewCommandTests
     public async Task Handle_WhenUserIsAdmin_ReturnsUnauthorized()
     {
         // Arrange
-        _userContextMock.Role.Returns(UserRole.User);
+        _userContextMock.Role.Returns(UserRole.Admin);
 
         // Act
         var result = await _sut.Handle(Command, CancellationToken.None);
@@ -63,7 +63,7 @@ public class CreateReviewCommandTests
     public async Task Handle_WhenHotelNotFound_ReturnsNotFound()
     {
         // Arrange
-        _userContextMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.User);
         _hotelRepositoryMock
             .GetHotelIncludeRatingsAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(Maybe<Hotel>.None);
@@ -81,7 +81,7 @@ public class CreateReviewCommandTests
     public async Task Handle_WhenUserNotFound_ReturnsNotFound()
     {
         // Arrange
-        _userContextMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.User);
         _userContextMock.Id.Returns(1);
 
         _hotelRepositoryMock
@@ -124,7 +124,7 @@ public class CreateReviewCommandTests
     public async Task Handle_WhenUserIsAuthorized_ReturnsReview()
     {
         // Arrange
-        _userContextMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.User);
 
         _hotelRepositoryMock
             .GetHotelIncludeRatingsAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
@@ -147,7 +147,7 @@ public class CreateReviewCommandTests
     public async Task Handle_WhenUserIsAuthorized_SaveChanges()
     {
         // Arrange
-        _userContextMock.Role.Returns(UserRole.Admin);
+        _userContextMock.Role.Returns(UserRole.User);
 
         _hotelRepositoryMock
             .GetHotelIncludeRatingsAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
