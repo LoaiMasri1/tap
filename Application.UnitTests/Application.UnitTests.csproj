@@ -36,7 +36,6 @@
     <Folder Include="Features\Cities\" />
     <Folder Include="Features\Hotels\" />
     <Folder Include="Features\Discounts\" />
-    <Folder Include="Features\Reviews\" />
   </ItemGroup>
 
 </Project>
