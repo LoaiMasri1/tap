@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Tap.Domain.Features.Reviews;
 using Tap.Domain.Features.Users;
 
 namespace Tap.Persistence.Configurations;

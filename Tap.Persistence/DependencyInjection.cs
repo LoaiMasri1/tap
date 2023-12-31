@@ -6,6 +6,7 @@ using Tap.Domain.Features.Amenities;
 using Tap.Domain.Features.Cities;
 using Tap.Domain.Features.Hotels;
 using Tap.Domain.Features.Photos;
+using Tap.Domain.Features.Reviews;
 using Tap.Domain.Features.Rooms;
 using Tap.Domain.Features.Users;
 using Tap.Persistence.Infrastructure;
@@ -40,6 +41,7 @@ public static class DependencyInjection
         services.AddScoped<IPhotoRepository, PhotoRepository>();
         services.AddScoped<IAmenityRepository, AmenityRepository>();
         services.AddScoped<IRoomRepository, RoomRepository>();
+        services.AddScoped<IReviewRepository, ReviewRepository>();
 
         return services;
     }
