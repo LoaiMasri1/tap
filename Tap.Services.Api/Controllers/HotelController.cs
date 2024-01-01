@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tap.Application.Features.Amenities.CreateAmenity;
+using Tap.Application.Features.Hotels.GetHotelById;
 using Tap.Application.Features.Hotels.SearchHotel;
 using Tap.Application.Features.Hotels.UpdateHotel;
 using Tap.Application.Features.Photos.UploadPhoto;
@@ -108,6 +109,14 @@ public class HotelController : ApiController
                     sortOrder
                 )
             )
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    [HttpGet(ApiRoutes.Hotel.GetById)]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetById(int id, bool includeRooms = false) =>
+        await Maybe<GetHotelByIdQuery>
+            .From(new GetHotelByIdQuery(id, includeRooms))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }

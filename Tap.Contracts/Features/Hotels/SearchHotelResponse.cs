@@ -1,5 +1,6 @@
 ﻿using Tap.Application.Features.Hotels;
 using Tap.Contracts.Features.Amenities;
+using Tap.Contracts.Features.Rooms;
 
 namespace Tap.Contracts.Features.Hotels;
 
@@ -12,5 +13,6 @@ public record SearchHotelResponse(
     double Latitude,
     int NumberOfAvailableRooms,
     FilteredAmenityResponse[] Amenities,
-    PhotoResponse[] Photos
+    PhotoResponse[] Photos,
+    FilteredRoomResponse[]? Rooms = null
 );

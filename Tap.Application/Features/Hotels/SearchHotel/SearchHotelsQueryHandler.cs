@@ -61,7 +61,8 @@ public class SearchHotelsQueryHandler
                         photos
                             .Where(p => p.ItemId == h.Id)
                             .Select(p => new PhotoResponse(p.Url))
-                            .ToArray()
+                            .ToArray(),
+                        null
                     )
             )
             .ToArrayAsync(cancellationToken);
