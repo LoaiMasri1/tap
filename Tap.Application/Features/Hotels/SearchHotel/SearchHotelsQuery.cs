@@ -11,5 +11,7 @@ public record SearchHotelsQuery(
     int PageSize,
     int PageNumber,
     string SortBy,
-    string SortOrder
+    string SortOrder,
+    string? FilterBy,
+    string? FilterQuery
 ) : IPagedQuery<Maybe<SearchHotelResponse[]>>;

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Tap.Application.Features.Cities.CreateCity;
 using Tap.Application.Features.Cities.GetCities;
+using Tap.Application.Features.Cities.GetCityById;
 using Tap.Application.Features.Hotels.CreateHotel;
 using Tap.Application.Features.Photos.UploadPhoto;
 using Tap.Contracts.Features.Cities;
@@ -44,13 +45,25 @@ public class CityController : ApiController
     [HttpGet(ApiRoutes.City.Get)]
     [AllowAnonymous]
     public async Task<IActionResult> Get(
+        string? filterBy,
+        string? filterQuery,
         string sortBy = "name",
         string sortOrder = "asc",
         int pageNumber = 1,
         int pageSize = 10
     ) =>
         await Maybe<GetCitiesQuery>
-            .From(new GetCitiesQuery(pageSize, pageNumber, sortBy, sortOrder))
+            .From(
+                new GetCitiesQuery(pageSize, pageNumber, sortBy, sortOrder, filterBy, filterQuery)
+            )
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    [HttpGet(ApiRoutes.City.GetById)]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetById(int id) =>
+        await Maybe<GetCityByIdQuery>
+            .From(new GetCityByIdQuery(id))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }

@@ -92,6 +92,8 @@ public class HotelController : ApiController
         string city,
         int? rating,
         int? numberOfAvailableRooms,
+        string? filterBy,
+        string? filterQuery,
         string sortBy = "name",
         string sortOrder = "asc",
         int pageNumber = 1,
@@ -106,7 +108,9 @@ public class HotelController : ApiController
                     pageSize,
                     pageNumber,
                     sortBy,
-                    sortOrder
+                    sortOrder,
+                    filterBy,
+                    filterQuery
                 )
             )
             .Bind(x => Mediator.Send(x))

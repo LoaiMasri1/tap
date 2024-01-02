@@ -64,6 +64,7 @@ public class GetHotelByIdQueryHandler : IQueryHandler<GetHotelByIdQuery, Maybe<S
             hotel.Id,
             hotel.Name,
             hotel.City.Name,
+            hotel.Description,
             hotel.Rating,
             hotel.Location.Longitude,
             hotel.Location.Latitude,

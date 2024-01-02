@@ -7,6 +7,7 @@ namespace Tap.Contracts.Features.Hotels;
 public record SearchHotelResponse(
     int Id,
     string Name,
+    string Description,
     string City,
     int Rating,
     double Longitude,

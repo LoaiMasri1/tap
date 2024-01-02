@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
-using Microsoft.EntityFrameworkCore;
+using Tap.Domain.Core.Exceptions;
 
 namespace Tap.Application.Core.Extensions;
 
@@ -23,7 +23,7 @@ public static class QueryableExtensions
         );
         if (propertyInfo is null)
         {
-            throw new ArgumentException(
+            throw new PropertyNotFoundException(
                 $"No property '{propertyName}' found on type '{typeof(T).Name}'"
             );
         }
@@ -49,11 +49,10 @@ public static class QueryableExtensions
         return result;
     }
 
-    public static async Task<List<T>> WhereAsync<T>(
+    public static IQueryable<T> Where<T>(
         this IQueryable<T> source,
         string propertyName,
-        string filterQuery,
-        CancellationToken cancellationToken = default
+        string filterQuery
     )
     {
         if (source == null)
@@ -69,14 +68,16 @@ public static class QueryableExtensions
         );
         if (propertyInfo is null)
         {
-            throw new ArgumentException(
+            throw new PropertyNotFoundException(
                 $"No property '{propertyName}' found on type '{typeof(T).Name}'"
             );
         }
 
         if (propertyInfo.PropertyType != typeof(string))
         {
-            throw new ArgumentException($"Property '{propertyName}' is not of type string.");
+            throw new PropertyNotFoundException(
+                $"Property '{propertyName}' is not of type string."
+            );
         }
 
         var parameter = Expression.Parameter(typeof(T), "x");
@@ -86,9 +87,6 @@ public static class QueryableExtensions
         var containsExpression = Expression.Call(propertyAccess, containsMethod, constant);
         var whereExpression = Expression.Lambda<Func<T, bool>>(containsExpression, parameter);
 
-        // Use ToListAsync for asynchronous operation
-        var filteredData = await source.Where(whereExpression).ToListAsync(cancellationToken);
-
-        return filteredData;
+        return source.Where(whereExpression);
     }
 }

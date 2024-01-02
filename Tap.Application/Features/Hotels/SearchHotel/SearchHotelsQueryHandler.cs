@@ -43,6 +43,11 @@ public class SearchHotelsQueryHandler
             .Skip(request.PageSize * (request.PageNumber - 1))
             .Take(request.PageSize);
 
+        if (!string.IsNullOrEmpty(request.FilterBy) && !string.IsNullOrEmpty(request.FilterQuery))
+        {
+            hotels = hotels.Where(request.FilterBy, request.FilterQuery);
+        }
+
         var hotelsResponse = await hotels
             .Select(
                 h =>
@@ -50,6 +55,7 @@ public class SearchHotelsQueryHandler
                         h.Id,
                         h.Name,
                         h.City.Name,
+                        h.Description,
                         h.Rating,
                         h.Location.Longitude,
                         h.Location.Latitude,
