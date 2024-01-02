@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 
 namespace Tap.Application.Core.Extensions;
 
@@ -20,7 +21,7 @@ public static class QueryableExtensions
             propertyName,
             BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase
         );
-        if (propertyInfo == null)
+        if (propertyInfo is null)
         {
             throw new ArgumentException(
                 $"No property '{propertyName}' found on type '{typeof(T).Name}'"
@@ -46,5 +47,48 @@ public static class QueryableExtensions
             (IQueryable<T>)genericMethod.Invoke(null, new object[] { source, orderByExpression })!;
 
         return result;
+    }
+
+    public static async Task<List<T>> WhereAsync<T>(
+        this IQueryable<T> source,
+        string propertyName,
+        string filterQuery,
+        CancellationToken cancellationToken = default
+    )
+    {
+        if (source == null)
+            throw new ArgumentNullException(nameof(source));
+        if (propertyName == null)
+            throw new ArgumentNullException(nameof(propertyName));
+        if (filterQuery == null)
+            throw new ArgumentNullException(nameof(filterQuery));
+
+        var propertyInfo = typeof(T).GetProperty(
+            propertyName,
+            BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase
+        );
+        if (propertyInfo is null)
+        {
+            throw new ArgumentException(
+                $"No property '{propertyName}' found on type '{typeof(T).Name}'"
+            );
+        }
+
+        if (propertyInfo.PropertyType != typeof(string))
+        {
+            throw new ArgumentException($"Property '{propertyName}' is not of type string.");
+        }
+
+        var parameter = Expression.Parameter(typeof(T), "x");
+        var propertyAccess = Expression.MakeMemberAccess(parameter, propertyInfo);
+        var constant = Expression.Constant(filterQuery);
+        var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) })!;
+        var containsExpression = Expression.Call(propertyAccess, containsMethod, constant);
+        var whereExpression = Expression.Lambda<Func<T, bool>>(containsExpression, parameter);
+
+        // Use ToListAsync for asynchronous operation
+        var filteredData = await source.Where(whereExpression).ToListAsync(cancellationToken);
+
+        return filteredData;
     }
 }

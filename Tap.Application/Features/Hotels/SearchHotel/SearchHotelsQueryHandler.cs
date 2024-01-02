@@ -39,9 +39,9 @@ public class SearchHotelsQueryHandler
                     request.NumberOfAvailableRooms == null
                     || h.Rooms.Count(r => r.IsAvailable) == request.NumberOfAvailableRooms
             )
+            .OrderBy(request.SortBy, request.SortOrder)
             .Skip(request.PageSize * (request.PageNumber - 1))
-            .Take(request.PageSize)
-            .OrderBy(request.SortBy, request.SortOrder);
+            .Take(request.PageSize);
 
         var hotelsResponse = await hotels
             .Select(
