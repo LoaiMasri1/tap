@@ -24,7 +24,7 @@ public class CreateRoomCommandValidator : AbstractValidator<CreateRoomCommand>
             .WithError(ValidationErrors.CreateRoom.CapacityOfAdultsIsRequired);
 
         RuleFor(x => x.CapacityOfChildren)
-            .NotEmpty()
+            .GreaterThanOrEqualTo(0)
             .WithError(ValidationErrors.CreateRoom.CapacityOfChildrenIsRequired);
     }
 }

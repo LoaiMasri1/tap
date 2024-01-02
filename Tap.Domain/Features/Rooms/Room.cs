@@ -27,6 +27,8 @@ public class Room : AggregateRoot, IAuditableEntity
         CapacityOfAdults = capacityOfAdults;
         CapacityOfChildren = capacityOfChildren;
         Type = type;
+
+        DiscountedPrice = price.Amount;
     }
 
     public static Room Create(

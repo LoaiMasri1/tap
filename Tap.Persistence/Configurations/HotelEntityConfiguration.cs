@@ -36,7 +36,7 @@ internal class HotelEntityConfiguration : IEntityTypeConfiguration<Hotel>
         builder.Property(x => x.UpdatedAtUtc);
 
         builder
-            .HasOne<City>()
+            .HasOne<City>(h => h.City)
             .WithMany(x => x.Hotels)
             .HasForeignKey(x => x.CityId)
             .OnDelete(DeleteBehavior.Cascade);
