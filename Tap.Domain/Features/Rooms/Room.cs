@@ -116,4 +116,16 @@ public class Room : AggregateRoot, IAuditableEntity
 
         return Result.Success();
     }
+
+    public Result UpdateAvailability(bool isAvailable)
+    {
+        if (IsAvailable == isAvailable)
+        {
+            return DomainErrors.Room.NothingToUpdate;
+        }
+
+        IsAvailable = isAvailable;
+
+        return Result.Success();
+    }
 }

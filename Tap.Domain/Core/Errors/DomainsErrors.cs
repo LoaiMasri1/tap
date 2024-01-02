@@ -187,6 +187,8 @@ public static class DomainErrors
             new("Room.NotFound", "The room with the specified identifier was not found.");
         public static Error NothingToUpdate =>
             new("Room.NothingToUpdate", "Nothing to update. The room is already up to date.");
+
+        public static Error NotAvailable => new("Room.NotAvailable", "The room is not available.");
     }
 
     public class Discount
@@ -212,5 +214,32 @@ public static class DomainErrors
             new("Review.NotFound", "The review with the specified identifier was not found.");
         public static Error NothingToUpdate =>
             new("Review.NothingToUpdate", "Nothing to update. The review is already up to date.");
+    }
+
+    public class Booking
+    {
+        public static Error NotFound =>
+            new("Booking.NotFound", "The booking with the specified identifier was not found.");
+        public static Error NothingToUpdate =>
+            new("Booking.NothingToUpdate", "Nothing to update. The booking is already up to date.");
+        public static Error InvalidDateRange =>
+            new(
+                "Booking.InvalidDateRange",
+                "The check in date should be less than the check out date."
+            );
+        public static Error RoomNotAvailable =>
+            new("Booking.RoomNotAvailable", "The room is not available.");
+        public static Error RoomNotFound =>
+            new("Booking.RoomNotFound", "The room with the specified identifier was not found.");
+        public static Error UserNotFound =>
+            new("Booking.UserNotFound", "The user with the specified identifier was not found.");
+        public static Error UserNotAuthorized =>
+            new("Booking.UserNotAuthorized", "The user is not authorized to perform this action.");
+
+        public static Error AlreadyConfirmed =>
+            new("Booking.AlreadyConfirmed", "The booking is already confirmed.");
+
+        public static Error AlreadyCancelled =>
+            new("Booking.AlreadyCancelled", "The booking is already cancelled.");
     }
 }
