@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tap.Application.Features.Amenities.CreateAmenity;
+using Tap.Application.Features.Bookings;
 using Tap.Application.Features.Discounts.CreateDiscount;
 using Tap.Application.Features.Photos.UploadPhoto;
 using Tap.Application.Features.Rooms.DeleteRoom;
@@ -89,6 +90,14 @@ public class RoomController : ApiController
         await Result
             .Create(id)
             .Map(x => new DeleteRoomCommand(x))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    [HttpPost(ApiRoutes.Room.Book)]
+    public async Task<IActionResult> Book(int id, DateTime checkInDate, DateTime checkOutDate) =>
+        await Result
+            .Create((id, checkInDate, checkOutDate))
+            .Map(x => new BookRoomCommand(x.id, x.checkInDate, x.checkOutDate))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }

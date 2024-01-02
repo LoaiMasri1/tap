@@ -49,6 +49,8 @@ public static class ApiRoutes
         public const string UploadPhotos = $"{Base}/{{id}}/photos";
         public const string AddAmenities = $"{Base}/{{id}}/amenities";
         public const string AddDiscount = $"{Base}/{{id}}/discounts";
+
+        public const string Book = $"{Base}/{{id}}/bookings";
     }
 
     public static class Photo
