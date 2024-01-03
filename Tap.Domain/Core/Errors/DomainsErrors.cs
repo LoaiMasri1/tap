@@ -244,5 +244,14 @@ public static class DomainErrors
 
         public static Error CannotCancel =>
             new("Booking.CannotCancel", "The booking cannot be cancelled.");
+
+        public static Error NotConfirmed =>
+            new("Booking.NotConfirmed", "The booking is not confirmed.");
+    }
+
+    public class Session
+    {
+        public static Error NotFound =>
+            new("Session.NotFound", "The session with the specified identifier was not found.");
     }
 }

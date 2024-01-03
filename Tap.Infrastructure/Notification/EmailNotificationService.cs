@@ -20,6 +20,8 @@ public class EmailNotificationService : IEmailNotificationService
                     Welcome to Tap, {welcomeEmail.Name}!
 
                     Please click the following link to verify your email address: {BaseUrl}/users/activate?t={welcomeEmail.Token}
+                    
+                    Thank you for using Tap!
                     """;
 
         var mailRequest = new MailRequest(welcomeEmail.EmailTo, "Welcome to Tap", body);
@@ -62,6 +64,8 @@ public class EmailNotificationService : IEmailNotificationService
                     total price: {bookingConfirmedEmail.TotalPrice} {bookingConfirmedEmail.Currency}
                     
                     to checkout, please click the following link: {BaseUrl}/bookings/{bookingConfirmedEmail.BookingId}/checkout
+                    
+                    Thank you for using Tap!
                     """;
 
         var mailRequest = new MailRequest(bookingConfirmedEmail.EmailTo, "Booking Confirmed", body);

@@ -1,4 +1,5 @@
-﻿using Tap.Domain.Core.Abstraction;
+﻿using Tap.Domain.Common;
+using Tap.Domain.Core.Abstraction;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives;
 using Tap.Domain.Core.Primitives.Result;
@@ -16,6 +17,7 @@ public class Booking : AggregateRoot, IAuditableEntity
     public DateTime CheckOutDate { get; private set; }
     public decimal TotalPrice { get; private set; }
     public BookingStatus Status { get; private set; }
+    public string? SessionId { get; private set; }
     public User User { get; private set; }
     public int UserId { get; private set; }
     public Room Room { get; private set; }
@@ -78,12 +80,26 @@ public class Booking : AggregateRoot, IAuditableEntity
         TotalPrice = pricePerNight * (decimal)CheckOutDate.Subtract(CheckInDate).TotalDays;
     }
 
-    public Result Confirm() =>
-        Result
-            .Create(Status)
-            .Ensure(x => x == BookingStatus.Confirmed, DomainErrors.Booking.AlreadyConfirmed)
-            .Tap(_ => Status = BookingStatus.Confirmed)
-            .Tap(_ => AddDomainEvent(new BookingConfirmedEvent(Id)));
+    public void AddSession(string sessionId)
+    {
+        Ensure.NotDefault(sessionId, "The session id is required.", nameof(sessionId));
+
+        SessionId = sessionId;
+    }
+
+    public Result Confirm()
+    {
+        if (Status == BookingStatus.Confirmed)
+        {
+            return DomainErrors.Booking.AlreadyConfirmed;
+        }
+
+        Status = BookingStatus.Confirmed;
+
+        AddDomainEvent(new BookingConfirmedEvent(Id));
+
+        return Result.Success();
+    }
 
     public Result Cancel(DateTime now)
     {
@@ -123,6 +139,18 @@ public class Booking : AggregateRoot, IAuditableEntity
         CheckOutDate = checkOutDate;
 
         CalculateTotalPrice(Room.DiscountedPrice);
+
+        return Result.Success();
+    }
+
+    public Result Pay()
+    {
+        if (Status != BookingStatus.Confirmed)
+        {
+            return DomainErrors.Booking.NotConfirmed;
+        }
+
+        Status = BookingStatus.Paid;
 
         return Result.Success();
     }

@@ -18,4 +18,8 @@ public interface IBookingRepository
         int id,
         CancellationToken cancellation = default
     );
+    Task<Maybe<Booking>> GetBySessionIdAsync(
+        string sessionId,
+        CancellationToken cancellationToken = default
+    );
 }
