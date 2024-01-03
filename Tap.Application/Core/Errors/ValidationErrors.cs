@@ -279,6 +279,18 @@ public static class ValidationErrors
     public class CancelBooking
     {
         public static Error BookingIdIsRequired =>
-            new("CancelBooking.BookingIdIsRequired", "The booking id is required.");
+            new("CancelBooking.SessionIdIsRequired", "The booking id is required.");
+    }
+
+    public class CheckoutRoom
+    {
+        public static Error BookingIdIsRequired =>
+            new("CheckoutRoom.SessionIdIsRequired", "The booking id is required.");
+    }
+
+    public class SuccessPayment
+    {
+        public static Error SessionIdIsRequired =>
+            new("SuccessPayment.SessionIdIsRequired", "The session id is required.");
     }
 }
