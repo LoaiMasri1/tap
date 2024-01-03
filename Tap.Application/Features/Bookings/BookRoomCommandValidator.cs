@@ -4,9 +4,9 @@ using Tap.Application.Core.Extensions;
 
 namespace Tap.Application.Features.Bookings;
 
-public class CreateBookingCommandValidator : AbstractValidator<BookRoomCommand>
+public class BookRoomCommandValidator : AbstractValidator<BookRoomCommand>
 {
-    public CreateBookingCommandValidator()
+    public BookRoomCommandValidator()
     {
         RuleFor(x => x.RoomId).NotEmpty().WithError(ValidationErrors.CreateBooking.RoomIdRequired);
         RuleFor(x => x.CheckInDate)

@@ -3,6 +3,7 @@ using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Core.Utility;
+using Tap.Domain.Features.Bookings.Events;
 using Tap.Domain.Features.Hotels;
 using Tap.Domain.Features.Rooms;
 using Tap.Domain.Features.Users;
@@ -45,6 +46,17 @@ public class Booking : AggregateRoot, IAuditableEntity
         Status = BookingStatus.Pending;
 
         CalculateTotalPrice(room.DiscountedPrice);
+
+        AddDomainEvent(
+            new BookingCreatedEvent(
+                user.Id,
+                hotel.Id,
+                checkInDate,
+                checkOutDate,
+                TotalPrice,
+                room.Price.Currency
+            )
+        );
     }
 
     public static Booking Create(
