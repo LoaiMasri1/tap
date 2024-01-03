@@ -241,5 +241,8 @@ public static class DomainErrors
 
         public static Error AlreadyCancelled =>
             new("Booking.AlreadyCancelled", "The booking is already cancelled.");
+
+        public static Error CannotCancel =>
+            new("Booking.CannotCancel", "The booking cannot be cancelled.");
     }
 }

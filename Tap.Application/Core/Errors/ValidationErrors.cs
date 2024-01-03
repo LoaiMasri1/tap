@@ -269,4 +269,16 @@ public static class ValidationErrors
                 "The check out date must be greater than check in date."
             );
     }
+
+    public class ConfirmBook
+    {
+        public static Error BookingIdRequired =>
+            new("ConfirmBook.BookingIdRequired", "The booking id is required.");
+    }
+
+    public class CancelBooking
+    {
+        public static Error BookingIdIsRequired =>
+            new("CancelBooking.BookingIdIsRequired", "The booking id is required.");
+    }
 }

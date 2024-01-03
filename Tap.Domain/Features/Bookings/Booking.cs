@@ -49,10 +49,11 @@ public class Booking : AggregateRoot, IAuditableEntity
 
         AddDomainEvent(
             new BookingCreatedEvent(
-                user.Id,
-                hotel.Id,
-                checkInDate,
-                checkOutDate,
+                user.Name,
+                user.Email,
+                hotel.Name,
+                CheckInDate,
+                CheckOutDate,
                 TotalPrice,
                 room.Price.Currency
             )
@@ -77,26 +78,33 @@ public class Booking : AggregateRoot, IAuditableEntity
         TotalPrice = pricePerNight * (decimal)CheckOutDate.Subtract(CheckInDate).TotalDays;
     }
 
-    public Result Confirm()
-    {
-        if (Status == BookingStatus.Confirmed)
-        {
-            return DomainErrors.Booking.AlreadyConfirmed;
-        }
+    public Result Confirm() =>
+        Result
+            .Create(Status)
+            .Ensure(x => x == BookingStatus.Confirmed, DomainErrors.Booking.AlreadyConfirmed)
+            .Tap(_ => Status = BookingStatus.Confirmed)
+            .Tap(_ => AddDomainEvent(new BookingConfirmedEvent(Id)));
 
-        Status = BookingStatus.Confirmed;
-
-        return Result.Success();
-    }
-
-    public Result Cancel()
+    public Result Cancel(DateTime now)
     {
         if (Status == BookingStatus.Cancelled)
         {
             return DomainErrors.Booking.AlreadyCancelled;
         }
 
+        if (Status == BookingStatus.Confirmed)
+        {
+            return DomainErrors.Booking.AlreadyConfirmed;
+        }
+
+        if (CheckInDate < now.AddDays(1))
+        {
+            return DomainErrors.Booking.CannotCancel;
+        }
+
         Status = BookingStatus.Cancelled;
+
+        AddDomainEvent(new BookingCanceledEvent(Id));
 
         return Result.Success();
     }

@@ -3,8 +3,9 @@
 namespace Tap.Domain.Features.Bookings.Events;
 
 public record BookingCreatedEvent(
-    int UserId,
-    int HotelId,
+    string GuestName,
+    string GuestEmail,
+    string HotelName,
     DateTime CheckInDate,
     DateTime CheckOutDate,
     decimal TotalPrice,

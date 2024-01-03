@@ -6,5 +6,7 @@ namespace Tap.Application.Core.Abstractions.Notification
     {
         Task SendWelcomeEmail(WelcomeEmail welcomeEmail);
         Task SendBookingSuccessEmail(BookingSuccessEmail bookingSuccessEmail);
+        Task SendBookingConfirmedEmail(BookingConfirmedEmail bookingConfirmedEmail);
+        Task SendBookingCanceledEmail(BookingCanceledEmail bookingCanceledEmail);
     }
 }
