@@ -8,7 +8,7 @@ using Tap.Domain.Features.Bookings;
 using Tap.Domain.Features.Rooms;
 using Tap.Domain.Features.Users;
 
-namespace Tap.Application.Features.Bookings;
+namespace Tap.Application.Features.Bookings.BookRoom;
 
 public class BookRoomCommandHandler : ICommandHandler<BookRoomCommand, Result<BookingResponse>>
 {
