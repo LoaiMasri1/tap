@@ -51,4 +51,16 @@ public class BookingRepository : GenericRepository<Booking>, IBookingRepository
 
         return booking is null ? Maybe<Booking>.None : Maybe<Booking>.From(booking);
     }
+
+    public async Task<Maybe<Booking>> GetBySessionIdAsync(
+        string sessionId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var booking = await DbContext
+            .Set<Booking>()
+            .FirstOrDefaultAsync(b => b.SessionId == sessionId, cancellationToken);
+
+        return booking is null ? Maybe<Booking>.None : Maybe<Booking>.From(booking);
+    }
 }

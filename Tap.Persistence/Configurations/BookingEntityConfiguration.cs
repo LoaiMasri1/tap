@@ -24,6 +24,9 @@ public class BookingEntityConfiguration : IEntityTypeConfiguration<Booking>
                 v => v.ToString(),
                 v => (BookingStatus)Enum.Parse(typeof(BookingStatus), v)
             );
+
+        builder.Property(x => x.SessionId).IsRequired(false);
+
         builder.Property(x => x.CreatedAtUtc).IsRequired();
 
         builder.Property(x => x.UpdatedAtUtc);
