@@ -3,6 +3,7 @@ using Tap.Domain.Core.Abstraction;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives;
 using Tap.Domain.Core.Primitives.Result;
+using Tap.Domain.Features.Bookings;
 using Tap.Domain.Features.Discounts;
 using Tap.Domain.Features.Hotels;
 
@@ -88,6 +89,7 @@ public class Room : AggregateRoot, IAuditableEntity
     public Hotel Hotel { get; private set; }
     public DateTime CreatedAtUtc { get; private set; }
     public DateTime? UpdatedAtUtc { get; private set; }
+    public ICollection<Booking> Bookings { get; private set; } = new List<Booking>();
 
     public Result Update(
         int commandNumber,
@@ -115,5 +117,27 @@ public class Room : AggregateRoot, IAuditableEntity
         CapacityOfChildren = commandCapacityOfChildren;
 
         return Result.Success();
+    }
+
+    public Result UpdateAvailability(bool isAvailable)
+    {
+        if (IsAvailable == isAvailable)
+        {
+            return DomainErrors.Room.NothingToUpdate;
+        }
+
+        IsAvailable = isAvailable;
+
+        return Result.Success();
+    }
+
+    public int GetDiscountedPercentage()
+    {
+        var discountedPercentage = Discounts.Aggregate(
+            0,
+            (current, discount) => current + discount.DiscountPercentage
+        );
+
+        return discountedPercentage;
     }
 }

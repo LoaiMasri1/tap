@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tap.Application.Core.Abstractions.Data;
 using Tap.Domain.Features.Amenities;
+using Tap.Domain.Features.Bookings;
 using Tap.Domain.Features.Cities;
 using Tap.Domain.Features.Hotels;
 using Tap.Domain.Features.Photos;
@@ -42,6 +43,7 @@ public static class DependencyInjection
         services.AddScoped<IAmenityRepository, AmenityRepository>();
         services.AddScoped<IRoomRepository, RoomRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
+        services.AddScoped<IBookingRepository, BookingRepository>();
 
         return services;
     }

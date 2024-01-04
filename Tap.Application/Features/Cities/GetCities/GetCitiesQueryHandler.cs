@@ -17,22 +17,13 @@ public class GetCitiesQueryHandler : IQueryHandler<GetCitiesQuery, Maybe<CityRes
     public async Task<Maybe<CityResponse[]>> Handle(
         GetCitiesQuery request,
         CancellationToken cancellationToken
-    )
-    {
-        var cities = _dbContext
+    ) =>
+        await _dbContext
             .Set<City>()
             .AsNoTracking()
-            .Skip(request.PageSize * (request.PageNumber - 1))
-            .Take(request.PageSize)
-            .OrderBy(request.SortBy, request.SortOrder);
-
-        if (!string.IsNullOrEmpty(request.FilterBy) && !string.IsNullOrEmpty(request.FilterQuery))
-        {
-            cities = cities.Where(request.FilterBy, request.FilterQuery);
-        }
-
-        return await cities
+            .OrderBy(request.SortBy, request.SortOrder)
+            .FilterBy(request.FilterBy, request.FilterQuery)
+            .Paginate(request.PageNumber, request.PageSize)
             .Select(c => new CityResponse(c.Id, c.Name, c.Description, c.Country))
             .ToArrayAsync(cancellationToken);
-    }
 }

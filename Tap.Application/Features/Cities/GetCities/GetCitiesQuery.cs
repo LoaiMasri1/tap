@@ -11,4 +11,4 @@ public record GetCitiesQuery(
     string SortOrder,
     string? FilterBy,
     string? FilterQuery
-) : IPagedQuery<Maybe<CityResponse[]>>;
+) : IQuery<Maybe<CityResponse[]>>, IPageable, ISortable, IFilterable;

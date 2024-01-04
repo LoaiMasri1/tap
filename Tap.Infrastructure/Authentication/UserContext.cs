@@ -24,9 +24,16 @@ public class UserContext : IUserContext
                     nameof(httpContextAccessor)
                 )
         );
+
+        Email =
+            httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Email)!.Value
+            ?? throw new ArgumentException(
+                "The user email claim is required.",
+                nameof(httpContextAccessor)
+            );
     }
 
     public int Id { get; }
-
     public UserRole Role { get; }
+    public string Email { get; }
 }

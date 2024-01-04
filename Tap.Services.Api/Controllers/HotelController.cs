@@ -139,8 +139,7 @@ public class HotelController : ApiController
     [HttpGet(ApiRoutes.Hotel.Get)]
     [AllowAnonymous]
     public async Task<IActionResult> Get(
-        string city,
-        int? rating,
+        string? city,
         int? numberOfAvailableRooms,
         string? filterBy,
         string? filterQuery,
@@ -153,7 +152,6 @@ public class HotelController : ApiController
             .From(
                 new SearchHotelsQuery(
                     city,
-                    rating,
                     numberOfAvailableRooms,
                     pageSize,
                     pageNumber,

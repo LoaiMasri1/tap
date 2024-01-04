@@ -3,10 +3,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Stripe;
+using Stripe.Checkout;
 using Tap.Application.Core.Abstractions.Common;
 using Tap.Application.Core.Abstractions.Cryptography;
 using Tap.Application.Core.Abstractions.Email;
 using Tap.Application.Core.Abstractions.Notification;
+using Tap.Application.Core.Abstractions.Sessions;
 using Tap.Application.Features.Authentication;
 using Tap.Domain.Common.Services;
 using Tap.Domain.Features.Amenities;
@@ -18,6 +21,9 @@ using Tap.Infrastructure.Cryptography;
 using Tap.Infrastructure.Emails;
 using Tap.Infrastructure.Emails.Options;
 using Tap.Infrastructure.Notification;
+using Tap.Infrastructure.Payment;
+using Tap.Infrastructure.Payment.Options;
+using FileService = Tap.Infrastructure.Common.FileService;
 
 namespace Tap.Infrastructure;
 
@@ -41,7 +47,8 @@ public static class DependencyInjection
             .AddTransient<IUploadFileService, AzureBlobService>()
             .AddTransient<IAmenityService, AmenityService>()
             .AddAuthentication(configuration)
-            .AddAzureBlob();
+            .AddAzureBlob()
+            .AddStripe(configuration);
 
     public static IServiceCollection AddAuthentication(
         this IServiceCollection services,
@@ -67,6 +74,26 @@ public static class DependencyInjection
             var options = provider.GetRequiredService<IOptions<AzureBlobOptions>>().Value;
             return new BlobServiceClient(options.ConnectionString);
         });
+
+        return services;
+    }
+
+    public static IServiceCollection AddStripe(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
+    {
+        services.Configure<StripeOptions>(configuration.GetSection(StripeOptions.SectionName));
+
+        var options = services
+            .BuildServiceProvider()
+            .GetRequiredService<IOptions<StripeOptions>>()
+            .Value;
+
+        StripeConfiguration.ApiKey = options.SecretKey;
+
+        services.AddScoped<SessionService>();
+        services.AddScoped<ISessionService, StripeService>();
 
         return services;
     }

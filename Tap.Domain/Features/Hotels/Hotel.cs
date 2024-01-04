@@ -3,6 +3,7 @@ using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Core.Utility;
+using Tap.Domain.Features.Bookings;
 using Tap.Domain.Features.Cities;
 using Tap.Domain.Features.Reviews;
 using Tap.Domain.Features.Rooms;
@@ -22,7 +23,8 @@ public class Hotel : Entity, IAuditableEntity
     public DateTime CreatedAtUtc { get; private set; }
     public DateTime? UpdatedAtUtc { get; private set; }
     public ICollection<Room> Rooms { get; private set; } = new List<Room>();
-    public ICollection<Review> Reviews { get; set; } = new List<Review>();
+    public ICollection<Review> Reviews { get; private set; } = new List<Review>();
+    public ICollection<Booking> Bookings { get; private set; } = new List<Booking>();
 
     private Hotel() { }
 
@@ -83,5 +85,12 @@ public class Hotel : Entity, IAuditableEntity
         Reviews.Add(review);
 
         UpdateRating();
+    }
+
+    public void AddBooking(Booking booking)
+    {
+        Ensure.NotNull(booking, "The booking is required.", nameof(booking));
+
+        Bookings.Add(booking);
     }
 }
