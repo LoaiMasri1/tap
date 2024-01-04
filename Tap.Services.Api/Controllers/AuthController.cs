@@ -11,8 +11,18 @@ using Tap.Services.Api.Infrastructure;
 
 namespace Tap.Services.Api.Controllers;
 
+/// <summary>
+/// Controller for handling authentication related operations.
+/// </summary>
 public class AuthController : ApiController
 {
+    /// <summary>
+    /// Logs in a user.
+    /// </summary>
+    /// <param name="loginRequest">The login request.</param>
+    /// <response code="200">The user was logged in successfully.</response>
+    /// <response code="400">The user was not logged in successfully.</response>
+    /// <returns>The login result.</returns>
     [HttpPost(ApiRoutes.Auth.Login)]
     public async Task<IActionResult> Login(LoginRequest loginRequest) =>
         await Result
@@ -21,6 +31,13 @@ public class AuthController : ApiController
             .Bind(command => Mediator.Send(command))
             .Match(Ok, BadRequest);
 
+    /// <summary>
+    /// Creates a new user.
+    /// </summary>
+    /// <param name="createUserRequest">The create user request.</param>
+    /// <response code="200">The user was created successfully.</response>
+    /// <response code="400">The user was not created successfully.</response>
+    /// <returns>The creation user result.</returns>
     [HttpPost(ApiRoutes.Auth.Register)]
     public async Task<IActionResult> Create(CreateUserRequest createUserRequest) =>
         await Result
@@ -44,6 +61,13 @@ public class AuthController : ApiController
                 BadRequest
             );
 
+    /// <summary>
+    /// Activates a user account.
+    /// </summary>
+    /// <param name="token">The activation token.</param>
+    /// <response code="200">The user was activated successfully.</response>
+    /// <response code="400">The user was not activated successfully.</response>
+    /// <returns>The activation result.</returns>
     [HttpGet(ApiRoutes.Auth.Activate)]
     public async Task<IActionResult> Activate([FromQuery(Name = "t")] [Required] string token) =>
         await Result

@@ -11,9 +11,21 @@ using Tap.Services.Api.Infrastructure;
 
 namespace Tap.Services.Api.Controllers;
 
+/// <summary>
+/// This class represents the PhotoController which handles the upload, update, and delete operations for photos.
+/// </summary>
 [Authorize]
 public class PhotoController : ApiController
 {
+    /// <summary>
+    /// Uploads a photo.
+    /// </summary>
+    /// <param name="id">The ID of the photo.</param>
+    /// <param name="type">The type of the photo.</param>
+    /// <param name="files">The collection of files to upload.</param>
+    /// <response code="200">The photo was uploaded successfully.</response>
+    /// <response code="400">The photo was not uploaded successfully.</response>
+    /// <returns>The result of the upload operation.</returns>
     [HttpPost(ApiRoutes.Photo.Upload)]
     public async Task<IActionResult> Upload(
         int id,
@@ -26,6 +38,14 @@ public class PhotoController : ApiController
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 
+    /// <summary>
+    /// Updates a photo.
+    /// </summary>
+    /// <param name="id">The ID of the photo.</param>
+    /// <param name="file">The file to update.</param>
+    /// <response code="200">The photo was updated successfully.</response>
+    /// <response code="400">The photo was not updated successfully.</response>
+    /// <returns>The result of the update operation.</returns>
     [HttpPut(ApiRoutes.Photo.Update)]
     public async Task<IActionResult> Update(int id, [FromForm] IFormFile file) =>
         await Result
@@ -34,6 +54,14 @@ public class PhotoController : ApiController
             .Map(x => new UpdatePhotoCommand(x.id, x.file.CreateFileRequest()))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Deletes a photo.
+    /// </summary>
+    /// <param name="id">The ID of the photo.</param>
+    /// <response code="200">The photo was deleted successfully.</response>
+    /// <response code="400">The photo was not deleted successfully.</response>
+    /// <returns>The result of the delete operation.</returns>
 
     [HttpDelete(ApiRoutes.Photo.Delete)]
     public async Task<IActionResult> Delete(int id) =>

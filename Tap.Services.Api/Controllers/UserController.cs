@@ -12,6 +12,14 @@ namespace Tap.Services.Api.Controllers;
 [Authorize]
 public class UserController : ApiController
 {
+    /// <summary>
+    /// Updates a user.
+    /// </summary>
+    /// <param name="id">The ID of the user.</param>
+    /// <param name="updateUserRequest">The request object containing the updated user information.</param>
+    /// <response code="200">The user was updated successfully.</response>
+    /// <response code="400">The user was not updated successfully.</response>
+    /// <returns>The result of the update operation.</returns>
     [HttpPut(ApiRoutes.User.Update)]
     public async Task<IActionResult> Update(int id, UpdateUserRequest updateUserRequest) =>
         await Result

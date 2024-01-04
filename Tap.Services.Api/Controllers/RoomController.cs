@@ -17,9 +17,20 @@ using Tap.Services.Api.Infrastructure;
 
 namespace Tap.Services.Api.Controllers;
 
+/// <summary>
+/// Controller for managing rooms.
+/// </summary>
 [Authorize]
 public class RoomController : ApiController
 {
+    /// <summary>
+    /// Uploads photos for a room.
+    /// </summary>
+    /// <param name="id">The ID of the room.</param>
+    /// <param name="files">The collection of files to upload.</param>
+    /// <response code="200">The photos were uploaded successfully.</response>
+    /// <response code="400">The photos were not uploaded successfully.</response>
+    /// <returns>The result of the upload operation.</returns>
     [HttpPost(ApiRoutes.Room.UploadPhotos)]
     public async Task<IActionResult> UploadPhotos(int id, [FromForm] IFormCollection files) =>
         await Result
@@ -28,6 +39,14 @@ public class RoomController : ApiController
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 
+    /// <summary>
+    /// Adds amenities to a room.
+    /// </summary>
+    /// <param name="id">The ID of the room.</param>
+    /// <param name="command">The command containing the amenity details.</param>
+    /// <response code="200">The amenities were added successfully.</response>
+    /// <response code="400">The amenities were not added successfully.</response>
+    /// <returns>The result of the add amenities operation.</returns>
     [HttpPost(ApiRoutes.Room.AddAmenities)]
     public async Task<IActionResult> AddAmenities(int id, CreateAmenityRequest command) =>
         await Result
@@ -45,6 +64,14 @@ public class RoomController : ApiController
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 
+    /// <summary>
+    /// Adds a discount to a room.
+    /// </summary>
+    /// <param name="id">The ID of the room.</param>
+    /// <param name="command">The command containing the discount details.</param>
+    /// <response code="200">The discount was added successfully.</response>
+    /// <response code="400">The discount was not added successfully.</response>
+    /// <returns>The result of the add discount operation.</returns>
     [HttpPost(ApiRoutes.Room.AddDiscount)]
     public async Task<IActionResult> AddDiscount(int id, CreateDiscountRequest command) =>
         await Result
@@ -64,6 +91,14 @@ public class RoomController : ApiController
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 
+    /// <summary>
+    /// Updates a room.
+    /// </summary>
+    /// <param name="id">The ID of the room.</param>
+    /// <param name="request">The request containing the updated room details.</param>
+    /// <response code="200">The room was updated successfully.</response>
+    /// <response code="400">The room was not updated successfully.</response>
+    /// <returns>The result of the update operation.</returns>
     [HttpPut(ApiRoutes.Room.Update)]
     public async Task<IActionResult> Update(int id, UpdateRoomRequest request) =>
         await Result
@@ -84,6 +119,13 @@ public class RoomController : ApiController
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 
+    /// <summary>
+    /// Deletes a room.
+    /// </summary>
+    /// <param name="id">The ID of the room to delete.</param>
+    /// <response code="200">The room was deleted successfully.</response>
+    /// <response code="400">The room was not deleted successfully.</response>
+    /// <returns>The result of the delete operation.</returns>
     [HttpDelete(ApiRoutes.Room.Delete)]
     public async Task<IActionResult> Delete(int id) =>
         await Result
