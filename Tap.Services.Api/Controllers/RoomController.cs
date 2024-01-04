@@ -137,6 +137,15 @@ public class RoomController : ApiController
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 
+    /// <summary>
+    /// Books a room.
+    /// </summary>
+    /// <param name="id">The ID of the room.</param>
+    /// <param name="checkInDate">The check-in date.</param>
+    /// <param name="checkOutDate">The check-out date.</param>
+    /// <response code="200">The room was booked successfully.</response>
+    /// <response code="400">The room was not booked successfully.</response>
+    /// <returns>The result of the booking operation.</returns>
     [HttpPost(ApiRoutes.Room.Book)]
     public async Task<IActionResult> Book(int id, DateTime checkInDate, DateTime checkOutDate) =>
         await Result
@@ -145,6 +154,19 @@ public class RoomController : ApiController
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 
+    /// <summary>
+    /// Retrieves rooms.
+    /// </summary>
+    /// <param name="filterBy">The filter criteria.</param>
+    /// <param name="filterQuery">The filter query.</param>
+    /// <param name="isAvailable">Indicates if the rooms should be available.</param>
+    /// <param name="sortBy">The field to sort by.</param>
+    /// <param name="sortOrder">The sort order.</param>
+    /// <param name="pageNumber">The page number.</param>
+    /// <param name="pageSize">The page size.</param>
+    /// <response code="200">The rooms were retrieved successfully.</response>
+    /// <response code="400">The rooms were not retrieved successfully.</response>
+    /// <returns>The result of the retrieval operation.</returns>
     [HttpGet(ApiRoutes.Room.Get)]
     [AllowAnonymous]
     public async Task<IActionResult> Get(
