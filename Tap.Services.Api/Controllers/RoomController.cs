@@ -5,12 +5,14 @@ using Tap.Application.Features.Bookings.BookRoom;
 using Tap.Application.Features.Discounts.CreateDiscount;
 using Tap.Application.Features.Photos.UploadPhoto;
 using Tap.Application.Features.Rooms.DeleteRoom;
+using Tap.Application.Features.Rooms.GetRooms;
 using Tap.Application.Features.Rooms.UpdateRoom;
 using Tap.Contracts.Features.Amenities;
 using Tap.Contracts.Features.Discounts;
 using Tap.Contracts.Features.Rooms;
 using Tap.Domain.Common.Enumerations;
 using Tap.Domain.Core.Errors;
+using Tap.Domain.Core.Primitives.Maybe;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Features.Amenities;
 using Tap.Services.Api.Contracts;
@@ -98,6 +100,32 @@ public class RoomController : ApiController
         await Result
             .Create((id, checkInDate, checkOutDate))
             .Map(x => new BookRoomCommand(x.id, x.checkInDate, x.checkOutDate))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    [HttpGet(ApiRoutes.Room.Get)]
+    [AllowAnonymous]
+    public async Task<IActionResult> Get(
+        string? filterBy,
+        string? filterQuery,
+        bool isAvailable = true,
+        string sortBy = "number",
+        string sortOrder = "asc",
+        int pageNumber = 1,
+        int pageSize = 10
+    ) =>
+        await Maybe<GetRoomsQuery>
+            .From(
+                new GetRoomsQuery(
+                    isAvailable,
+                    pageNumber,
+                    pageSize,
+                    sortOrder,
+                    sortBy,
+                    filterBy,
+                    filterQuery
+                )
+            )
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }
