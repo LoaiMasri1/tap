@@ -58,6 +58,56 @@ namespace Tap.Persistence.Migrations
                     b.ToTable("Amenity", (string)null);
                 });
 
+            modelBuilder.Entity("Tap.Domain.Features.Bookings.Booking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CheckInDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CheckOutDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HotelId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SessionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HotelId");
+
+                    b.HasIndex("RoomId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Booking", (string)null);
+                });
+
             modelBuilder.Entity("Tap.Domain.Features.Cities.City", b =>
                 {
                     b.Property<int>("Id")
@@ -333,6 +383,33 @@ namespace Tap.Persistence.Migrations
                     b.ToTable("User", (string)null);
                 });
 
+            modelBuilder.Entity("Tap.Domain.Features.Bookings.Booking", b =>
+                {
+                    b.HasOne("Tap.Domain.Features.Hotels.Hotel", "Hotel")
+                        .WithMany("Bookings")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Tap.Domain.Features.Rooms.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Tap.Domain.Features.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
+
+                    b.Navigation("Room");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Tap.Domain.Features.Discounts.Discount", b =>
                 {
                     b.HasOne("Tap.Domain.Features.Rooms.Room", null)
@@ -343,7 +420,7 @@ namespace Tap.Persistence.Migrations
 
             modelBuilder.Entity("Tap.Domain.Features.Hotels.Hotel", b =>
                 {
-                    b.HasOne("Tap.Domain.Features.Cities.City", null)
+                    b.HasOne("Tap.Domain.Features.Cities.City", "City")
                         .WithMany("Hotels")
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -375,6 +452,8 @@ namespace Tap.Persistence.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("HotelId");
                         });
+
+                    b.Navigation("City");
 
                     b.Navigation("Location")
                         .IsRequired();
@@ -465,6 +544,8 @@ namespace Tap.Persistence.Migrations
 
             modelBuilder.Entity("Tap.Domain.Features.Hotels.Hotel", b =>
                 {
+                    b.Navigation("Bookings");
+
                     b.Navigation("Reviews");
 
                     b.Navigation("Rooms");

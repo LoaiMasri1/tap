@@ -250,4 +250,47 @@ public static class ValidationErrors
         public static Error RatingIsRequired =>
             new("UpdateReview.RatingIsRequired", "The rating is required.");
     }
+
+    public class CreateBooking
+    {
+        public static Error HotelIdRequired =>
+            new("CreateBooking.HotelIdRequired", "The hotel id is required.");
+        public static Error RoomIdRequired =>
+            new("CreateBooking.RoomIdRequired", "The room id is required.");
+        public static Error UserIdRequired =>
+            new("CreateBooking.UserIdRequired", "The user id is required.");
+        public static Error CheckInDateRequired =>
+            new("CreateBooking.CheckInDateRequired", "The check in date is required.");
+        public static Error CheckOutDateRequired =>
+            new("CreateBooking.CheckOutDateRequired", "The check out date is required.");
+        public static Error CheckOutDateMustBeGreaterThanCheckInDate =>
+            new(
+                "CreateBooking.CheckOutDateMustBeGreaterThanCheckInDate",
+                "The check out date must be greater than check in date."
+            );
+    }
+
+    public class ConfirmBook
+    {
+        public static Error BookingIdRequired =>
+            new("ConfirmBook.BookingIdRequired", "The booking id is required.");
+    }
+
+    public class CancelBooking
+    {
+        public static Error BookingIdIsRequired =>
+            new("CancelBooking.SessionIdIsRequired", "The booking id is required.");
+    }
+
+    public class CheckoutRoom
+    {
+        public static Error BookingIdIsRequired =>
+            new("CheckoutRoom.SessionIdIsRequired", "The booking id is required.");
+    }
+
+    public class SuccessPayment
+    {
+        public static Error SessionIdIsRequired =>
+            new("SuccessPayment.SessionIdIsRequired", "The session id is required.");
+    }
 }

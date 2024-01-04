@@ -10,6 +10,7 @@
     <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
     <PackageReference Include="MailKit" Version="4.3.0" />
     <PackageReference Include="MimeKit" Version="4.3.0" />
+    <PackageReference Include="Stripe.net" Version="43.8.0" />
   </ItemGroup>
 
   <ItemGroup>

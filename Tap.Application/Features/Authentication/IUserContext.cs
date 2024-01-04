@@ -6,4 +6,5 @@ public interface IUserContext
 {
     int Id { get; }
     UserRole Role { get; }
+    string Email { get; }
 }

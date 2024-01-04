@@ -5,8 +5,7 @@ using Tap.Domain.Core.Primitives.Maybe;
 namespace Tap.Application.Features.Hotels.SearchHotel;
 
 public record SearchHotelsQuery(
-    string City,
-    int? Rating,
+    string? City,
     int? NumberOfAvailableRooms,
     int PageSize,
     int PageNumber,
@@ -14,4 +13,4 @@ public record SearchHotelsQuery(
     string SortOrder,
     string? FilterBy,
     string? FilterQuery
-) : IPagedQuery<Maybe<SearchHotelResponse[]>>;
+) : IQuery<Maybe<SearchHotelResponse[]>>, IPageable, ISortable, IFilterable;
