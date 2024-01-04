@@ -81,7 +81,7 @@ public class GetHotelByIdQueryHandler : IQueryHandler<GetHotelByIdQuery, Maybe<S
             room.Type,
             room.CapacityOfAdults,
             room.CapacityOfChildren,
-            room.Discounts.MaxBy(d => d.DiscountPercentage)?.DiscountPercentage ?? 0,
+            room.GetDiscountedPercentage(),
             room.Price.Amount,
             room.DiscountedPrice,
             room.Price.Currency,

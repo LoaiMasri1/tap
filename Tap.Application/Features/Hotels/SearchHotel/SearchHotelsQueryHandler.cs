@@ -27,28 +27,20 @@ public class SearchHotelsQueryHandler
         var amenities = _dbContext.Set<Amenity>().Where(a => a.Type == AmenityType.Hotel);
         var photos = _dbContext.Set<Photo>().Where(p => p.Type == ItemType.Room);
 
-        var hotels = _dbContext
+        var hotels = await _dbContext
             .Set<Hotel>()
             .AsNoTracking()
             .Include(h => h.City)
             .Include(h => h.Rooms)
-            .Where(h => h.City.Name == request.City)
-            .Where(h => request.Rating == null || h.Rating == request.Rating)
+            .Where(h => request.City == null || h.City.Name == request.City)
             .Where(
                 h =>
                     request.NumberOfAvailableRooms == null
                     || h.Rooms.Count(r => r.IsAvailable) == request.NumberOfAvailableRooms
             )
             .OrderBy(request.SortBy, request.SortOrder)
-            .Skip(request.PageSize * (request.PageNumber - 1))
-            .Take(request.PageSize);
-
-        if (!string.IsNullOrEmpty(request.FilterBy) && !string.IsNullOrEmpty(request.FilterQuery))
-        {
-            hotels = hotels.Where(request.FilterBy, request.FilterQuery);
-        }
-
-        var hotelsResponse = await hotels
+            .FilterBy(request.FilterBy, request.FilterQuery)
+            .Paginate(request.PageNumber, request.PageSize)
             .Select(
                 h =>
                     new SearchHotelResponse(
@@ -73,6 +65,6 @@ public class SearchHotelsQueryHandler
             )
             .ToArrayAsync(cancellationToken);
 
-        return hotelsResponse;
+        return hotels;
     }
 }

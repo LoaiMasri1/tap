@@ -49,18 +49,19 @@ public static class QueryableExtensions
         return result;
     }
 
-    public static IQueryable<T> Where<T>(
+    public static IQueryable<T> FilterBy<T>(
         this IQueryable<T> source,
-        string propertyName,
-        string filterQuery
+        string? propertyName,
+        string? filterQuery
     )
     {
         if (source == null)
             throw new ArgumentNullException(nameof(source));
-        if (propertyName == null)
-            throw new ArgumentNullException(nameof(propertyName));
-        if (filterQuery == null)
-            throw new ArgumentNullException(nameof(filterQuery));
+
+        if (string.IsNullOrEmpty(propertyName) || string.IsNullOrEmpty(filterQuery))
+        {
+            return source;
+        }
 
         var propertyInfo = typeof(T).GetProperty(
             propertyName,
@@ -72,21 +73,43 @@ public static class QueryableExtensions
                 $"No property '{propertyName}' found on type '{typeof(T).Name}'"
             );
         }
-
-        if (propertyInfo.PropertyType != typeof(string))
+        if (propertyInfo.PropertyType != typeof(string) && propertyInfo.PropertyType != typeof(int))
         {
             throw new PropertyNotFoundException(
-                $"Property '{propertyName}' is not of type string."
+                $"Property '{propertyName}' is not of type string or int."
             );
         }
 
         var parameter = Expression.Parameter(typeof(T), "x");
         var propertyAccess = Expression.MakeMemberAccess(parameter, propertyInfo);
-        var constant = Expression.Constant(filterQuery);
-        var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) })!;
-        var containsExpression = Expression.Call(propertyAccess, containsMethod, constant);
-        var whereExpression = Expression.Lambda<Func<T, bool>>(containsExpression, parameter);
+
+        Expression filterExpression;
+        if (propertyInfo.PropertyType == typeof(string))
+        {
+            var constant = Expression.Constant(filterQuery);
+            var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) })!;
+            filterExpression = Expression.Call(propertyAccess, containsMethod, constant);
+        }
+        else
+        {
+            var constant = Expression.Constant(int.Parse(filterQuery));
+            filterExpression = Expression.Equal(propertyAccess, constant);
+        }
+
+        var whereExpression = Expression.Lambda<Func<T, bool>>(filterExpression, parameter);
 
         return source.Where(whereExpression);
+    }
+
+    public static IQueryable<T> Paginate<T>(this IQueryable<T> source, int pageNumber, int pageSize)
+    {
+        if (source == null)
+            throw new ArgumentNullException(nameof(source));
+        if (pageNumber < 1)
+            throw new ArgumentOutOfRangeException(nameof(pageNumber));
+        if (pageSize < 1)
+            throw new ArgumentOutOfRangeException(nameof(pageSize));
+
+        return source.Skip((pageNumber - 1) * pageSize).Take(pageSize);
     }
 }
