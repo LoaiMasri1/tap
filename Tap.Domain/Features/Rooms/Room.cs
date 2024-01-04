@@ -140,4 +140,6 @@ public class Room : AggregateRoot, IAuditableEntity
 
         return discountedPercentage;
     }
+
+    // calculate min
 }

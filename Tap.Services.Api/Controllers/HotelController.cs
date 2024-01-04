@@ -125,7 +125,6 @@ public class HotelController : ApiController
     /// Gets a list of hotels based on the specified criteria.
     /// </summary>
     /// <param name="city">The city to search for hotels.</param>
-    /// <param name="rating">The minimum rating of the hotels.</param>
     /// <param name="numberOfAvailableRooms">The number of available rooms in the hotels.</param>
     /// <param name="filterBy">The field to filter the hotels by.</param>
     /// <param name="filterQuery">The query to filter the hotels.</param>

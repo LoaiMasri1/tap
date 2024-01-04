@@ -112,6 +112,9 @@ public static class DomainErrors
 
         public static Error PhotoNotFound =>
             new("Photo.PhotoNotFound", "The photo with the specified identifier was not found.");
+
+        public static Error UrlInvalidFormat =>
+            new("Photo.UrlInvalidFormat", "The photo url format is invalid.");
     }
 
     public static class General

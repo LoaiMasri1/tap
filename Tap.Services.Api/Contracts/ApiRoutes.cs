@@ -7,6 +7,8 @@ public static class ApiRoutes
         private const string Base = "users";
         public const string Get = Base;
         public const string Update = $"{Base}/{{id}}";
+        public const string RecentVisits = $"{Base}/recent-visits";
+        public const string Reviews = $"{Base}/{{id}}/reviews";
     }
 
     public static class Auth
@@ -93,5 +95,11 @@ public static class ApiRoutes
         private const string Base = "payments";
         public const string Success = $"{Base}/success";
         public const string Cancel = $"{Base}/cancel";
+    }
+
+    public static class Public
+    {
+        public const string TrendingDestinations = "/trending-destinations";
+        public const string FeaturedDeals = "/featured-deals";
     }
 }

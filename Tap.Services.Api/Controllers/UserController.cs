@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Tap.Application.Features.Users.GetRecentVisits;
 using Tap.Application.Features.Users.UpdateUser;
 using Tap.Contracts.Features.Users;
 using Tap.Domain.Core.Errors;
+using Tap.Domain.Core.Primitives.Maybe;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Services.Api.Contracts;
 using Tap.Services.Api.Infrastructure;
@@ -36,5 +38,12 @@ public class UserController : ApiController
                     )
             )
             .Bind(command => Mediator.Send(command))
+            .Match(Ok, BadRequest);
+
+    [HttpGet(ApiRoutes.User.RecentVisits)]
+    public async Task<IActionResult> GetRecentVisits(int limit) =>
+        await Maybe<GetRecentVisitsQuery>
+            .From(new GetRecentVisitsQuery(limit))
+            .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }
