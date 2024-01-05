@@ -2,6 +2,6 @@
 using Tap.Contracts.Features.Public;
 using Tap.Domain.Core.Primitives.Maybe;
 
-namespace Tap.Application.Features.Public.GetFeaturedDeals;
+namespace Tap.Application.Public.GetFeaturedDeals;
 
 public record GetFeaturedDealsQuery(int Limit) : IQuery<Maybe<FeaturedDealResponse[]>>;

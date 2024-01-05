@@ -7,7 +7,7 @@ using Tap.Domain.Core.Primitives.Maybe;
 using Tap.Domain.Features.Hotels;
 using Tap.Domain.Features.Photos;
 
-namespace Tap.Application.Features.Public.GetFeaturedDeals;
+namespace Tap.Application.Public.GetFeaturedDeals;
 
 public class GetFeaturedDealsHandler
     : IQueryHandler<GetFeaturedDealsQuery, Maybe<FeaturedDealResponse[]>>
@@ -37,11 +37,8 @@ public class GetFeaturedDealsHandler
         var result = featuredDeals
             .Select(h =>
             {
-                var minPrice = h.Rooms.Min(r => r.Price.Amount);
-                var maxDiscount = h.Rooms
-                    .SelectMany(r => r.Discounts)
-                    .MaxBy(d => d.DiscountPercentage)
-                    ?.DiscountPercentage;
+                var minPrice = h.CalculateMinPrice();
+                var maxDiscount = h.CalculateMaxDiscountPercentage();
 
                 return new FeaturedDealResponse(
                     h.Name,
@@ -51,7 +48,7 @@ public class GetFeaturedDealsHandler
                     h.City.Name,
                     h.Rating,
                     minPrice,
-                    maxDiscount,
+                    Discount: maxDiscount,
                     minPrice - minPrice * maxDiscount / 100
                 );
             })

@@ -8,7 +8,7 @@ using Tap.Domain.Features.Hotels;
 
 namespace Tap.Domain.Features.Users;
 
-public class User : Entity, IAuditableEntity
+public class User : AggregateRoot, IAuditableEntity
 {
     private string _hashedPassword;
 

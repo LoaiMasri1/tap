@@ -2,11 +2,11 @@
 using Tap.Application.Core.Errors;
 using Tap.Application.Core.Extensions;
 
-namespace Tap.Application.Features.Users.CreateUser;
+namespace Tap.Application.Features.Authentication.RegisterUser;
 
-public sealed class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
+public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
 {
-    public CreateUserCommandValidator()
+    public RegisterUserCommandValidator()
     {
         RuleFor(command => command.Name)
             .NotEmpty()

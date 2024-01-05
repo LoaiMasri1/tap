@@ -5,7 +5,7 @@ using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Features.Users;
 
-namespace Tap.Application.Features.Users.ActivateUser;
+namespace Tap.Application.Features.Authentication.ActivateUser;
 
 public class ActivateUserCommandHandler : IRequestHandler<ActivateUserCommand, Result<Unit>>
 {
@@ -13,16 +13,21 @@ public class ActivateUserCommandHandler : IRequestHandler<ActivateUserCommand, R
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
 
-
     public ActivateUserCommandHandler(
-        IUserRepository userRepository, IUnitOfWork unitOfWork, IDateTime dateTime)
+        IUserRepository userRepository,
+        IUnitOfWork unitOfWork,
+        IDateTime dateTime
+    )
     {
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
         _dateTime = dateTime;
     }
 
-    public async Task<Result<Unit>> Handle(ActivateUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Unit>> Handle(
+        ActivateUserCommand request,
+        CancellationToken cancellationToken
+    )
     {
         var user = await _userRepository.GetByTokenAsync(request.Token, cancellationToken);
 

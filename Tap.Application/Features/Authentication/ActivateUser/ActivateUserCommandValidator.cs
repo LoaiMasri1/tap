@@ -2,7 +2,7 @@
 using Tap.Application.Core.Errors;
 using Tap.Application.Core.Extensions;
 
-namespace Tap.Application.Features.Users.ActivateUser;
+namespace Tap.Application.Features.Authentication.ActivateUser;
 
 public class ActivateUserCommandValidator : AbstractValidator<ActivateUserCommand>
 {

@@ -1,4 +1,5 @@
-﻿using Tap.Domain.Core.Abstraction;
+﻿using Tap.Domain.Common.ValueObjects;
+using Tap.Domain.Core.Abstraction;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives;
 using Tap.Domain.Core.Primitives.Result;
@@ -94,26 +95,8 @@ public class Hotel : Entity, IAuditableEntity
         Bookings.Add(booking);
     }
 
-    //public int CalculateMaxDiscountPercentage()
-    //{
-    //    var discountedPercentage = Rooms
-    //        .SelectMany(x => x.Discounts)
-    //        .Max(x => x.DiscountPercentage);
+    public int? CalculateMaxDiscountPercentage() =>
+        Rooms.SelectMany(r => r.Discounts).MaxBy(d => d.DiscountPercentage)?.DiscountPercentage;
 
-    //    return discountedPercentage == 0 ? 0 : discountedPercentage;
-    //}
-
-    //public decimal CalculateMinDiscountedPrice()
-    //{
-    //    var discountedPrices = Rooms.SelectMany(x => x.Discounts);
-
-    //    return !discountedPrices.Any() ? 0 : Rooms.Min(x => x.DiscountedPrice);
-    //}
-
-    //public decimal CalculateMinPrice()
-    //{
-    //    var min = Rooms.Min(x => x.Price.Amount);
-
-    //    return min;
-    //}
+    public decimal? CalculateMinPrice() => Rooms.MinBy(r => r.Price.Amount)?.Price.Amount;
 }

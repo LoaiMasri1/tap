@@ -7,7 +7,7 @@ using Tap.Domain.Core.Primitives.Maybe;
 using Tap.Domain.Features.Cities;
 using Tap.Domain.Features.Photos;
 
-namespace Tap.Application.Features.Public.GetTrendingDestination
+namespace Tap.Application.Public.GetTrendingDestination
 {
     public class GetTrendingDestinationHandler
         : IQueryHandler<GetTrendingDestinationQuery, Maybe<TrendingDestinationResponse[]>>

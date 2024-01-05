@@ -1,17 +1,17 @@
 ﻿using Tap.Application.Core.Abstractions.Common;
+using Tap.Application.Core.Abstractions.Cryptography;
+using Tap.Application.Core.Abstractions.Data;
+using Tap.Application.Core.Abstractions.Notification;
 using Tap.Application.Core.Messaging;
+using Tap.Contracts.Emails;
+using Tap.Contracts.Features.Users;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives.Result;
-using Tap.Application.Core.Abstractions.Data;
-using Tap.Contracts.Features.Users;
 using Tap.Domain.Features.Users;
-using Tap.Application.Core.Abstractions.Cryptography;
-using Tap.Application.Core.Abstractions.Notification;
-using Tap.Contracts.Emails;
 
-namespace Tap.Application.Features.Users.CreateUser;
+namespace Tap.Application.Features.Authentication.RegisterUser;
 
-public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Result<UserResponse>>
+public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, Result<UserResponse>>
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
@@ -20,7 +20,7 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Resul
     private readonly IDateTime _dateTime;
     private readonly ITokenGenerator _tokenGenerator;
 
-    public CreateUserCommandHandler(
+    public RegisterUserCommandHandler(
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,
         IPasswordHasher passwordHasher,
@@ -38,7 +38,7 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Resul
     }
 
     public async Task<Result<UserResponse>> Handle(
-        CreateUserCommand request,
+        RegisterUserCommand request,
         CancellationToken cancellationToken
     )
     {

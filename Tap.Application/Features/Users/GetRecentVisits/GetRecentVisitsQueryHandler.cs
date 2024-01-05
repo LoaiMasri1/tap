@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Tap.Application.Core.Abstractions.Common;
 using Tap.Application.Core.Abstractions.Data;
 using Tap.Application.Core.Messaging;
 using Tap.Application.Features.Authentication;
+using Tap.Contracts.Features.Users;
 using Tap.Domain.Common.Enumerations;
 using Tap.Domain.Core.Primitives.Maybe;
 using Tap.Domain.Features.Bookings;
@@ -9,28 +11,22 @@ using Tap.Domain.Features.Photos;
 
 namespace Tap.Application.Features.Users.GetRecentVisits;
 
-public record RecentVisitsResponse(
-    string HotelName,
-    string? ImageUrl,
-    string CityName,
-    int Rating,
-    decimal Price,
-    string CheckInDate,
-    string CheckOutDate
-);
-
-public record GetRecentVisitsQuery(int Limit) : IQuery<Maybe<RecentVisitsResponse[]>>;
-
 public class GetRecentVisitsQueryHandler
     : IQueryHandler<GetRecentVisitsQuery, Maybe<RecentVisitsResponse[]>>
 {
     private readonly IDbContext _dbContext;
     private readonly IUserContext _userContext;
+    private readonly IDateTime _dateTime;
 
-    public GetRecentVisitsQueryHandler(IDbContext dbContext, IUserContext userContext)
+    public GetRecentVisitsQueryHandler(
+        IDbContext dbContext,
+        IUserContext userContext,
+        IDateTime dateTime
+    )
     {
         _dbContext = dbContext;
         _userContext = userContext;
+        _dateTime = dateTime;
     }
 
     public async Task<Maybe<RecentVisitsResponse[]>> Handle(
@@ -60,8 +56,8 @@ public class GetRecentVisitsQueryHandler
                         v.Hotel.City.Name,
                         v.Hotel.Rating,
                         v.TotalPrice,
-                        v.CheckInDate.ToString("dd/MM/yyyy"),
-                        v.CheckOutDate.ToString("dd/MM/yyyy")
+                        _dateTime.ToShortDateString(v.CheckInDate),
+                        _dateTime.ToShortDateString(v.CheckOutDate)
                     )
             )
             .ToArray();

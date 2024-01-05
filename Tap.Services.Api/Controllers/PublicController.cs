@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tap.Application.Features.Public.GetFeaturedDeals;
-using Tap.Application.Features.Public.GetTrendingDestination;
+using Tap.Application.Public.GetFeaturedDeals;
+using Tap.Application.Public.GetTrendingDestination;
 using Tap.Domain.Core.Primitives.Maybe;
 using Tap.Services.Api.Contracts;
 using Tap.Services.Api.Infrastructure;

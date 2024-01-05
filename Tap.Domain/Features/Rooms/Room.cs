@@ -9,7 +9,7 @@ using Tap.Domain.Features.Hotels;
 
 namespace Tap.Domain.Features.Rooms;
 
-public class Room : AggregateRoot, IAuditableEntity
+public class Room : Entity, IAuditableEntity
 {
     private Room() { }
 
