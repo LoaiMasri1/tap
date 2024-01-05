@@ -2,7 +2,7 @@
 using Tap.Application.Core.Errors;
 using Tap.Application.Core.Extensions;
 
-namespace Tap.Application.Features.Bookings.CheckoutRoom;
+namespace Tap.Application.Features.Bookings.CheckoutBooking;
 
 public class CheckoutBookingCommandValidator : AbstractValidator<CheckoutBookingCommand>
 {

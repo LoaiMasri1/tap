@@ -6,15 +6,15 @@ using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Features.Bookings;
 using Tap.Domain.Features.Users;
 
-namespace Tap.Application.Features.Bookings.ConfirmBook;
+namespace Tap.Application.Features.Bookings.ConfirmBooking;
 
-public record ConfirmBookCommandHandler : ICommandHandler<ConfirmBookCommand, Result>
+public record ConfirmBookingCommandHandler : ICommandHandler<ConfirmBookingCommand, Result>
 {
     private readonly IBookingRepository _bookingRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserContext _userContext;
 
-    public ConfirmBookCommandHandler(
+    public ConfirmBookingCommandHandler(
         IBookingRepository bookingRepository,
         IUnitOfWork unitOfWork,
         IUserContext userContext
@@ -26,7 +26,7 @@ public record ConfirmBookCommandHandler : ICommandHandler<ConfirmBookCommand, Re
     }
 
     public async Task<Result> Handle(
-        ConfirmBookCommand request,
+        ConfirmBookingCommand request,
         CancellationToken cancellationToken
     )
     {

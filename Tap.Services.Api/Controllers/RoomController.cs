@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tap.Application.Features.Amenities.CreateAmenity;
-using Tap.Application.Features.Bookings.BookRoom;
 using Tap.Application.Features.Discounts.CreateDiscount;
 using Tap.Application.Features.Photos.UploadPhoto;
+using Tap.Application.Features.Rooms.BookRoom;
 using Tap.Application.Features.Rooms.DeleteRoom;
 using Tap.Application.Features.Rooms.GetRooms;
 using Tap.Application.Features.Rooms.UpdateRoom;

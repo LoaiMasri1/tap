@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tap.Application.Features.Bookings.CancelBooking;
-using Tap.Application.Features.Bookings.CheckoutRoom;
+using Tap.Application.Features.Bookings.CheckoutBooking;
 using Tap.Application.Features.Bookings.ConfirmBook;
+using Tap.Application.Features.Bookings.ConfirmBooking;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Services.Api.Contracts;
 using Tap.Services.Api.Infrastructure;
@@ -26,7 +27,7 @@ public class BookingController : ApiController
     public async Task<IActionResult> ConfirmBooking(int id) =>
         await Result
             .Create(id)
-            .Map(x => new ConfirmBookCommand(x))
+            .Map(x => new ConfirmBookingCommand(x))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 

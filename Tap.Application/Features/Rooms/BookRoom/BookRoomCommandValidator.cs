@@ -2,7 +2,7 @@
 using Tap.Application.Core.Errors;
 using Tap.Application.Core.Extensions;
 
-namespace Tap.Application.Features.Bookings.BookRoom;
+namespace Tap.Application.Features.Rooms.BookRoom;
 
 public class BookRoomCommandValidator : AbstractValidator<BookRoomCommand>
 {

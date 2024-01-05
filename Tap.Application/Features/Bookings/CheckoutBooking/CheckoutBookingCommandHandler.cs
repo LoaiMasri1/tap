@@ -8,7 +8,7 @@ using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Features.Bookings;
 using Tap.Domain.Features.Users;
 
-namespace Tap.Application.Features.Bookings.CheckoutRoom;
+namespace Tap.Application.Features.Bookings.CheckoutBooking;
 
 public class CheckoutBookingCommandHandler
     : ICommandHandler<CheckoutBookingCommand, Result<Session>>
