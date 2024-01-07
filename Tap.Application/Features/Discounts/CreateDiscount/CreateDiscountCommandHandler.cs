@@ -1,4 +1,5 @@
-﻿using Tap.Application.Core.Abstractions.Data;
+﻿using Tap.Application.Core.Abstractions.Common;
+using Tap.Application.Core.Abstractions.Data;
 using Tap.Application.Core.Messaging;
 using Tap.Application.Features.Authentication;
 using Tap.Contracts.Features.Discounts;
@@ -15,17 +16,20 @@ public class CreateDiscountCommandHandler
 {
     private readonly IRoomRepository _roomRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IDateTime _dateTime;
     private readonly IUserContext _userContext;
 
     public CreateDiscountCommandHandler(
         IRoomRepository roomRepository,
         IUnitOfWork unitOfWork,
-        IUserContext userContext
+        IUserContext userContext,
+        IDateTime dateTime
     )
     {
         _roomRepository = roomRepository;
         _unitOfWork = unitOfWork;
         _userContext = userContext;
+        _dateTime = dateTime;
     }
 
     public async Task<Result<DiscountResponse>> Handle(
@@ -33,6 +37,7 @@ public class CreateDiscountCommandHandler
         CancellationToken cancellationToken
     )
     {
+        Console.WriteLine($"User id: {_userContext.Id}, User role: {_userContext.Role}");
         var userRole = _userContext.Role;
         if (userRole != UserRole.Admin)
         {
@@ -51,6 +56,8 @@ public class CreateDiscountCommandHandler
 
         var room = maybeRoom.Value;
 
+        Console.WriteLine($"Discounts count before adding: {room.Discounts.Count}");
+
         var discount = Discount.Create(
             command.Name,
             command.Description,
@@ -59,8 +66,13 @@ public class CreateDiscountCommandHandler
             command.EndDate
         );
 
-        room.AddDiscount(discount);
-        room.UpdateDiscountedPrice();
+        var result = room.AddDiscount(discount, _dateTime.UtcNow);
+        if (result.IsFailure)
+        {
+            return result.Error;
+        }
+
+        Console.WriteLine($"Discounts count after adding: {room.Discounts.Count}");
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

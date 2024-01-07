@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tap.Application.Features.Amenities.CreateAmenity;
+using Tap.Application.Features.Amenities.GetAmenities;
 using Tap.Application.Features.Discounts.CreateDiscount;
 using Tap.Application.Features.Photos.UploadPhoto;
 using Tap.Application.Features.Rooms.BookRoom;
@@ -46,11 +47,11 @@ public class RoomController : ApiController
     /// Adds amenities to a room.
     /// </summary>
     /// <param name="id">The ID of the room.</param>
-    /// <param name="command">The command containing the amenity details.</param>
+    /// <param name="command">The request containing the amenity details.</param>
     /// <response code="200">The amenities were added successfully.</response>
     /// <response code="400">The amenities were not added successfully.</response>
     /// <returns>The result of the add amenities operation.</returns>
-    [HttpPost(ApiRoutes.Room.AddAmenities)]
+    [HttpPost(ApiRoutes.Room.AddAmenity)]
     public async Task<IActionResult> AddAmenities(int id, CreateAmenityRequest command) =>
         await Result
             .Create((id, command))
@@ -71,14 +72,19 @@ public class RoomController : ApiController
     /// Adds a discount to a room.
     /// </summary>
     /// <param name="id">The ID of the room.</param>
-    /// <param name="command">The command containing the discount details.</param>
+    /// <param name="request">The request containing the discount details.</param>
     /// <response code="200">The discount was added successfully.</response>
     /// <response code="400">The discount was not added successfully.</response>
     /// <returns>The result of the add discount operation.</returns>
     [HttpPost(ApiRoutes.Room.AddDiscount)]
-    public async Task<IActionResult> AddDiscount(int id, CreateDiscountRequest command) =>
-        await Result
-            .Create((id, command))
+    public async Task<IActionResult> AddDiscount(int id, [FromBody] CreateDiscountRequest request)
+    {
+        Console.WriteLine(
+            $"AddDiscount Command: {request.RoomId}, {request.Name}, {request.Description}, {request.DiscountPercentage}, {request.StartDate}, {request.EndDate}"
+        );
+
+        return await Result
+            .Create((id, command: request))
             .Ensure(x => x.command.RoomId == x.id, DomainErrors.General.UnProcessableRequest)
             .Map(
                 x =>
@@ -93,6 +99,7 @@ public class RoomController : ApiController
             )
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
+    }
 
     /// <summary>
     /// Updates a room.

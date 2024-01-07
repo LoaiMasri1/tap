@@ -30,6 +30,7 @@ public class RoomRepository : GenericRepository<Room>, IRoomRepository
     {
         var room = await DbContext
             .Set<Room>()
+            .Include(r => r.Discounts)
             .Include(r => r.Hotel)
             .ThenInclude(h => h.Bookings)
             .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);

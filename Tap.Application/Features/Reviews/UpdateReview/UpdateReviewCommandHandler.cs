@@ -48,11 +48,6 @@ public class UpdateReviewCommandHandler
 
         var review = maybeReview.Value;
 
-        if (review.HotelId is null || review.UserId is null)
-        {
-            return DomainErrors.General.UnProcessableRequest;
-        }
-
         if (review.UserId != userId)
         {
             return DomainErrors.User.Unauthorized;
@@ -72,8 +67,8 @@ public class UpdateReviewCommandHandler
             review.Title,
             review.Content,
             review.Rating,
-            review.HotelId.Value,
-            review.UserId.Value
+            review.HotelId,
+            review.UserId
         );
     }
 }

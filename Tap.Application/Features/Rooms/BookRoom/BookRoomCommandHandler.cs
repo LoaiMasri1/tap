@@ -93,6 +93,7 @@ public class BookRoomCommandHandler : ICommandHandler<BookRoomCommand, Result<Bo
             booking.HotelId,
             booking.RoomId,
             booking.UserId,
+            booking.Status,
             booking.CheckInDate,
             booking.CheckOutDate,
             booking.TotalPrice

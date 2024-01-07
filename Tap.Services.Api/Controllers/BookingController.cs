@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Tap.Application.Features.Bookings.CancelBooking;
 using Tap.Application.Features.Bookings.CheckoutBooking;
-using Tap.Application.Features.Bookings.ConfirmBook;
 using Tap.Application.Features.Bookings.ConfirmBooking;
+using Tap.Application.Features.Bookings.GetBookings;
+using Tap.Domain.Core.Primitives.Maybe;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Services.Api.Contracts;
 using Tap.Services.Api.Infrastructure;
@@ -58,6 +59,32 @@ public class BookingController : ApiController
         await Result
             .Create(id)
             .Map(x => new CheckoutBookingCommand(x))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Retrieves bookings based on specified filters.
+    /// </summary>
+    /// <param name="filterBy">The field to filter by.</param>
+    /// <param name="filterQuery">The value to filter by.</param>
+    /// <param name="sortBy">The field to sort by. Default is "id".</param>
+    /// <param name="sortOrder">The sort order. Default is "asc".</param>
+    /// <param name="pageNumber">The page number. Default is 1.</param>
+    /// <param name="pageSize">The page size. Default is 10.</param>
+    /// <returns>The result of the retrieval.</returns>
+    [HttpGet(ApiRoutes.Booking.Get)]
+    public async Task<IActionResult> GetBookings(
+        string? filterBy,
+        string? filterQuery,
+        string sortBy = "id",
+        string sortOrder = "asc",
+        int pageNumber = 1,
+        int pageSize = 10
+    ) =>
+        await Maybe<GetBookingsQuery>
+            .From(
+                new GetBookingsQuery(filterBy, filterQuery, sortBy, sortOrder, pageNumber, pageSize)
+            )
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }

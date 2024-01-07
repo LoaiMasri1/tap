@@ -37,8 +37,9 @@ public static class ApiRoutes
         public const string Post = Base;
         public const string Update = $"{Base}/{{id}}";
         public const string UploadPhotos = $"{Base}/{{id}}/photos";
-        public const string CreateAmenities = $"{Base}/{{id}}/amenities";
+        public const string AddAmenity = $"{Base}/{{id}}/amenities";
         public const string CreateRoom = $"{Base}/{{id}}/rooms";
+        public const string Gallery = $"{Base}/{{id}}/gallery";
     }
 
     public static class Room
@@ -50,7 +51,7 @@ public static class ApiRoutes
         public const string Update = $"{Base}/{{id}}";
         public const string Delete = $"{Base}/{{id}}";
         public const string UploadPhotos = $"{Base}/{{id}}/photos";
-        public const string AddAmenities = $"{Base}/{{id}}/amenities";
+        public const string AddAmenity = $"{Base}/{{id}}/amenities";
         public const string AddDiscount = $"{Base}/{{id}}/discounts";
         public const string Book = $"{Base}/{{id}}/bookings";
     }
@@ -85,6 +86,7 @@ public static class ApiRoutes
     public static class Booking
     {
         private const string Base = "bookings";
+        public const string Get = Base;
         public const string Confirm = $"{Base}/{{id}}/confirm";
         public const string Cancel = $"{Base}/{{id}}/cancel";
         public const string Checkout = $"{Base}/{{id}}/checkout";

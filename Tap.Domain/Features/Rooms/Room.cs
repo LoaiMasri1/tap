@@ -50,32 +50,40 @@ public class Room : Entity, IAuditableEntity
 
         foreach (var discount in Discounts)
         {
-            if (!discount.IsApplicable())
-            {
-                discountedPrice = discount.Apply(Price);
-            }
+            discountedPrice = discount.Apply(Price);
         }
 
         DiscountedPrice = discountedPrice.Amount;
     }
 
-    public Result AddDiscount(Discount discount) =>
-        Result
-            .Create(discount)
-            .Ensure(x => x.IsApplicable(), DomainErrors.Discount.NotApplicable)
-            .Ensure(
-                x => Discounts.Any(y => y.Name == discount.Name),
-                DomainErrors.Discount.AlreadyExists
-            )
-            .Ensure(
-                x => discount.DiscountPercentage is > 0 and < 100,
-                DomainErrors.Discount.InvalidDiscountPercentage
-            )
-            .Ensure(
-                x => discount.StartDate <= discount.EndDate,
-                DomainErrors.Discount.InvalidDateRange
-            )
-            .Tap(Discounts.Add);
+    public Result AddDiscount(Discount discount, DateTime now)
+    {
+        if (discount.IsApplicable(now))
+        {
+            return DomainErrors.Discount.NotApplicable;
+        }
+
+        if (Discounts.Any(x => x.Name == discount.Name))
+        {
+            return DomainErrors.Discount.AlreadyExists;
+        }
+
+        if (discount.DiscountPercentage is < 0 or > 100)
+        {
+            return DomainErrors.Discount.InvalidDiscountPercentage;
+        }
+
+        if (discount.StartDate > discount.EndDate)
+        {
+            return DomainErrors.Discount.InvalidDateRange;
+        }
+
+        Discounts.Add(discount);
+
+        UpdateDiscountedPrice();
+
+        return Result.Success();
+    }
 
     public int Number { get; private set; }
     public Money Price { get; private set; }
@@ -116,6 +124,8 @@ public class Room : Entity, IAuditableEntity
         CapacityOfAdults = commandCapacityOfAdults;
         CapacityOfChildren = commandCapacityOfChildren;
 
+        UpdateDiscountedPrice();
+
         return Result.Success();
     }
 
@@ -140,6 +150,4 @@ public class Room : Entity, IAuditableEntity
 
         return discountedPercentage;
     }
-
-    // calculate min
 }
