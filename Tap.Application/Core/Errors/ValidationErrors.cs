@@ -293,4 +293,10 @@ public static class ValidationErrors
         public static Error SessionIdIsRequired =>
             new("SuccessPayment.SessionIdIsRequired", "The session id is required.");
     }
+
+    public class DeleteDiscount
+    {
+        public static Error DiscountIdIsRequired =>
+            new("DeleteDiscount.DiscountIdIsRequired", "The discount id is required.");
+    }
 }

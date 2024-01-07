@@ -206,6 +206,9 @@ public static class DomainErrors
             );
         public static Error InvalidDateRange =>
             new("Discount.InvalidDateRange", "The start date should be less than the end date.");
+
+        public static Error NotFound =>
+            new("Discount.NotFound", "The discount with the specified identifier was not found.");
     }
 
     public class Review

@@ -39,6 +39,13 @@ public static class ApiRoutes
         public const string CreateRoom = $"{Base}/{{id}}/rooms";
     }
 
+    public static class Discount
+    {
+        private const string Base = "discounts";
+        public const string GetByHotelId = $"{Base}/hotels/{{id}}";
+        public const string Delete = $"{Base}/{{id}}";
+    }
+
     public static class Room
     {
         private const string Base = "rooms";
