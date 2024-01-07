@@ -43,8 +43,7 @@ You can find the API documentation Swagger UI at `http://localhost:7194/swagger/
 
 ## Database Diagram
 
-![Database Diagram](
-https://user-images.githubusercontent.com/43981051/137637421-9f6b9b9b-5b9e-4b9f-8b9f-9b9b9b9b9b9b.png)
+![Database Diagram](https://github.com/LoaiMasri1/tap/assets/90678867/c01da887-a4e0-45c9-a832-a9578556aa24)
 
 ## Project Structure
 
