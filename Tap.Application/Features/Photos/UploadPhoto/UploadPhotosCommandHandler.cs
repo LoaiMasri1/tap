@@ -1,6 +1,6 @@
-﻿using MediatR;
-using Tap.Application.Core.Abstractions.Common;
+﻿using Tap.Application.Core.Abstractions.Common;
 using Tap.Application.Core.Abstractions.Data;
+using Tap.Application.Core.Messaging;
 using Tap.Contracts.Features.Photos;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Features.Photos;
@@ -8,7 +8,7 @@ using Tap.Domain.Features.Photos;
 namespace Tap.Application.Features.Photos.UploadPhoto;
 
 public class UploadPhotosCommandHandler
-    : IRequestHandler<UploadPhotosCommand, Result<UploadPhotosResponse>>
+    : ICommandHandler<UploadPhotosCommand, Result<UploadPhotosResponse>>
 {
     private readonly IUploadFileService _uploadFileService;
     private readonly IPhotoRepository _photoRepository;

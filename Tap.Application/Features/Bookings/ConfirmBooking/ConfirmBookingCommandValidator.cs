@@ -5,9 +5,9 @@ using Tap.Application.Features.Bookings.ConfirmBooking;
 
 namespace Tap.Application.Features.Bookings.ConfirmBook;
 
-public class ConfirmBookCommandValidator : AbstractValidator<ConfirmBookingCommand>
+public class ConfirmBookingCommandValidator : AbstractValidator<ConfirmBookingCommand>
 {
-    public ConfirmBookCommandValidator()
+    public ConfirmBookingCommandValidator()
     {
         RuleFor(x => x.BookingId)
             .NotEmpty()
