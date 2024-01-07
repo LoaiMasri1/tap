@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿using Tap.Application.Core.Messaging;
 using Tap.Contracts.Features.Authentication;
 using Tap.Domain.Common.Services;
 using Tap.Domain.Core.Errors;
@@ -7,7 +7,7 @@ using Tap.Domain.Features.Users;
 
 namespace Tap.Application.Features.Authentication.LoginUser;
 
-public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<TokenResponse>>
+public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, Result<TokenResponse>>
 {
     private readonly IPasswordHashChecker _passwordHashChecker;
     private readonly IJwtProvider _jwtProvider;

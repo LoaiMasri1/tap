@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Tap.Application.Core.Abstractions.Data;
 using Tap.Application.Core.Extensions;
-using Tap.Application.Features.Hotels;
 using Tap.Contracts.Features.Amenities;
+using Tap.Contracts.Features.Photos;
 using Tap.Contracts.Features.Rooms;
 using Tap.Domain.Common.Enumerations;
 using Tap.Domain.Core.Primitives.Maybe;

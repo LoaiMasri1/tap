@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using NSubstitute;
+using Tap.Application.Core.Abstractions.Common;
 using Tap.Application.Core.Abstractions.Data;
 using Tap.Application.Features.Authentication;
 using Tap.Application.Features.Discounts.CreateDiscount;
@@ -17,6 +18,7 @@ public class CreateDiscountHandlerTests
     private readonly IRoomRepository _roomRepositoryMock;
     private readonly IUnitOfWork _unitOfWorkMock;
     private readonly IUserContext _userContextMock;
+    private readonly IDateTime _dateTimeMock;
 
     private static readonly CreateDiscountCommand Command =
         new(1, "Name", "Description", 10, DateTime.UtcNow, DateTime.UtcNow.AddDays(1));
@@ -28,11 +30,15 @@ public class CreateDiscountHandlerTests
         _roomRepositoryMock = Substitute.For<IRoomRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
         _userContextMock = Substitute.For<IUserContext>();
+        _dateTimeMock = Substitute.For<IDateTime>();
+
+        _dateTimeMock.UtcNow.Returns(DateTime.UtcNow.AddDays(-1));
 
         _sut = new CreateDiscountCommandHandler(
             _roomRepositoryMock,
             _unitOfWorkMock,
-            _userContextMock
+            _userContextMock,
+            _dateTimeMock
         );
     }
 
@@ -74,12 +80,28 @@ public class CreateDiscountHandlerTests
     }
 
     [Fact]
+    public async Task Handle_WhenDiscountNotApplicable_ReturnsDiscountNotApplicableError()
+    {
+        _userContextMock.Role.Returns(UserRole.Admin);
+        _roomRepositoryMock
+            .GetByIdWithDiscountsAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
+            .Returns(Room.Create(1, Money.Create(1, "USD"), RoomType.Single, 1, 1));
+
+        _dateTimeMock.UtcNow.Returns(DateTime.UtcNow.AddDays(1));
+
+        var result = await _sut.Handle(Command, CancellationToken.None);
+
+        result.Error.Should().Be(DomainErrors.Discount.NotApplicable);
+    }
+
+    [Fact]
     public async Task Handle_WhenRoomExists_AddsDiscountToRoom()
     {
         _userContextMock.Role.Returns(UserRole.Admin);
         _roomRepositoryMock
             .GetByIdWithDiscountsAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(Room.Create(1, Money.Create(1, "USD"), RoomType.Single, 1, 1));
+        _dateTimeMock.UtcNow.Returns(DateTime.UtcNow.AddDays(-1));
 
         var result = await _sut.Handle(Command, CancellationToken.None);
 

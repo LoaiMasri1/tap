@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using Tap.Application.Features.Authentication.ActivateUser;
 using Tap.Application.Features.Authentication.LoginUser;
-using Tap.Application.Features.Users.ActivateUser;
-using Tap.Application.Features.Users.CreateUser;
+using Tap.Application.Features.Authentication.RegisterUser;
 using Tap.Contracts.Features.Authentication;
 using Tap.Contracts.Features.Users;
 using Tap.Domain.Core.Primitives.Result;
@@ -44,7 +44,7 @@ public class AuthController : ApiController
             .Create(createUserRequest)
             .Map(
                 request =>
-                    new CreateUserCommand(
+                    new RegisterUserCommand(
                         $"{request.FirstName} {request.LastName}",
                         request.Email,
                         request.Password,

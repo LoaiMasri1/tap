@@ -1,5 +1,4 @@
-﻿using Tap.Domain.Common;
-using Tap.Domain.Core.Abstraction;
+﻿using Tap.Domain.Core.Abstraction;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives;
 using Tap.Domain.Core.Primitives.Result;
@@ -77,7 +76,9 @@ public class Booking : AggregateRoot, IAuditableEntity
     {
         Ensure.NotDefault(pricePerNight, "The price per night is required.", nameof(pricePerNight));
 
-        TotalPrice = pricePerNight * (decimal)CheckOutDate.Subtract(CheckInDate).TotalDays;
+        var totalNights = (int)Math.Ceiling(CheckOutDate.Subtract(CheckInDate).TotalDays);
+
+        TotalPrice = pricePerNight * totalNights;
     }
 
     public void AddSession(string sessionId)

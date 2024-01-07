@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Tap.Application.Features.Amenities.CreateAmenity;
 using Tap.Application.Features.Hotels.GetHotelById;
+using Tap.Application.Features.Hotels.GetHotelGallery;
 using Tap.Application.Features.Hotels.SearchHotel;
 using Tap.Application.Features.Hotels.UpdateHotel;
 using Tap.Application.Features.Photos.UploadPhoto;
@@ -75,7 +76,7 @@ public class HotelController : ApiController
     /// <response code="200">The amenities were created successfully.</response>
     /// <response code="400">The amenities were not created successfully.</response>
     /// <returns>The result of the create amenity operation.</returns>
-    [HttpPost(ApiRoutes.Hotel.CreateAmenities)]
+    [HttpPost(ApiRoutes.Hotel.AddAmenity)]
     public async Task<IActionResult> CreateAmenities(int id, CreateAmenityRequest request) =>
         await Result
             .Create((id, request))
@@ -101,7 +102,6 @@ public class HotelController : ApiController
     /// <response code="400">The room was not created successfully.</response>
     /// <returns>The result of the create room operation.</returns>
     [HttpPost(ApiRoutes.Hotel.CreateRoom)]
-    [Authorize]
     public async Task<IActionResult> CreateRoom(int id, CreateRoomRequest request) =>
         await Result
             .Create((id, request))
@@ -125,7 +125,6 @@ public class HotelController : ApiController
     /// Gets a list of hotels based on the specified criteria.
     /// </summary>
     /// <param name="city">The city to search for hotels.</param>
-    /// <param name="rating">The minimum rating of the hotels.</param>
     /// <param name="numberOfAvailableRooms">The number of available rooms in the hotels.</param>
     /// <param name="filterBy">The field to filter the hotels by.</param>
     /// <param name="filterQuery">The query to filter the hotels.</param>
@@ -177,6 +176,23 @@ public class HotelController : ApiController
     public async Task<IActionResult> GetById(int id, bool includeRooms = false) =>
         await Maybe<GetHotelByIdQuery>
             .From(new GetHotelByIdQuery(id, includeRooms))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Gets the gallery of a hotel.
+    /// </summary>
+    /// <param name="id">The ID of the hotel.</param>
+    /// <param name="pageNumber">The page number of the gallery.</param>
+    /// <param name="pageSize">The page size of the gallery.</param>
+    /// <response code="200">The gallery of the hotel was retrieved successfully.</response>
+    /// <response code="400">The gallery of the hotel was not retrieved successfully.</response>
+    /// <returns>The gallery of the hotel.</returns>
+    [HttpGet(ApiRoutes.Hotel.Gallery)]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetGallery(int id, int pageNumber = 1, int pageSize = 10) =>
+        await Maybe<GetHotelGalleryQuery>
+            .From(new GetHotelGalleryQuery(id, pageNumber, pageSize))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }

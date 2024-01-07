@@ -33,4 +33,7 @@ public class City : Entity, IAuditableEntity
 
         Hotels.Add(hotel);
     }
+
+    public double CalculateTrendingScore() =>
+        Hotels.Average(h => h.Rating) * Hotels.Sum(h => h.Rooms.Sum(r => r.Bookings.Count));
 }

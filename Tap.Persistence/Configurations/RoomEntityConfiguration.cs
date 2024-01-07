@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Tap.Domain.Common.ValueObjects;
 using Tap.Domain.Features.Rooms;
 
 namespace Tap.Persistence.Configurations;

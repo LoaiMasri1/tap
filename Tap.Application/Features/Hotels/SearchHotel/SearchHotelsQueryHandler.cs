@@ -4,6 +4,7 @@ using Tap.Application.Core.Extensions;
 using Tap.Application.Core.Messaging;
 using Tap.Contracts.Features.Amenities;
 using Tap.Contracts.Features.Hotels;
+using Tap.Contracts.Features.Photos;
 using Tap.Domain.Common.Enumerations;
 using Tap.Domain.Core.Primitives.Maybe;
 using Tap.Domain.Features.Amenities;

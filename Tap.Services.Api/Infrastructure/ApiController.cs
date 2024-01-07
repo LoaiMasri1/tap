@@ -54,10 +54,4 @@ public class ApiController : ControllerBase
     /// <returns>An OK response.</returns>
     protected IActionResult Ok<TValue>(TValue? value) =>
         base.Ok(new ApiResponse { Data = value, StatusCode = HttpStatusCode.OK });
-
-    /// <summary>
-    /// Returns a not found response.
-    /// </summary>
-    /// <returns>A not found response.</returns>
-    protected new IActionResult NotFound() => base.NotFound();
 }

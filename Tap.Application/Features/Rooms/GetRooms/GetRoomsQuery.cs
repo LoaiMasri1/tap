@@ -1,5 +1,6 @@
 ﻿using Tap.Application.Core.Messaging;
 using Tap.Contracts.Features.Rooms;
+using Tap.Domain.Common.QueryOptions;
 using Tap.Domain.Core.Primitives.Maybe;
 
 namespace Tap.Application.Features.Rooms.GetRooms;

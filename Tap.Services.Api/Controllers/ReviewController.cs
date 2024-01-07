@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tap.Application.Features.Reviews.CreateReview;
 using Tap.Application.Features.Reviews.DeleteReview;
+using Tap.Application.Features.Reviews.GetReviews;
 using Tap.Application.Features.Reviews.UpdateReview;
 using Tap.Contracts.Features.Reviews;
 using Tap.Domain.Core.Errors;
+using Tap.Domain.Core.Primitives.Maybe;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Services.Api.Contracts;
 using Tap.Services.Api.Infrastructure;
@@ -85,6 +87,35 @@ public class ReviewController : ApiController
                         x.request.Content,
                         x.request.Rating
                     )
+            )
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Retrieves reviews based on specified filters.
+    /// </summary>
+    /// <param name="filterBy">The field to filter by.</param>
+    /// <param name="filterQuery">The value to filter by.</param>
+    /// <param name="sortBy">The field to sort by. Default is "createdAtUtc".</param>
+    /// <param name="sortOrder">The sort order. Default is "desc".</param>
+    /// <param name="pageNumber">The page number. Default is 1.</param>
+    /// <param name="pageSize">The page size. Default is 10.</param>
+    /// <response code="200">The reviews were retrieved successfully.</response>
+    /// <response code="400">The reviews were not retrieved successfully.</response>
+    /// <returns>The result of the operation.</returns>
+    [AllowAnonymous]
+    [HttpGet(ApiRoutes.Review.Get)]
+    public async Task<IActionResult> GetReviews(
+        string? filterBy,
+        string? filterQuery,
+        string sortBy = "createdAtUtc",
+        string sortOrder = "desc",
+        int pageNumber = 1,
+        int pageSize = 10
+    ) =>
+        await Maybe<GetReviewsQuery>
+            .From(
+                new GetReviewsQuery(filterBy, filterQuery, sortBy, sortOrder, pageNumber, pageSize)
             )
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);

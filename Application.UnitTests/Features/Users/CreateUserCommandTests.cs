@@ -4,7 +4,7 @@ using Tap.Application.Core.Abstractions.Common;
 using Tap.Application.Core.Abstractions.Cryptography;
 using Tap.Application.Core.Abstractions.Data;
 using Tap.Application.Core.Abstractions.Notification;
-using Tap.Application.Features.Users.CreateUser;
+using Tap.Application.Features.Authentication.RegisterUser;
 using Tap.Contracts.Emails;
 using Tap.Contracts.Features.Users;
 using Tap.Domain.Core.Errors;
@@ -15,10 +15,10 @@ namespace Application.UnitTests.Features.Users;
 
 public class CreateUserCommandTests
 {
-    private static readonly CreateUserCommand Command =
+    private static readonly RegisterUserCommand Command =
         new("John Doe", "test@example.com", "validDDD1!", UserRole.User);
 
-    private readonly CreateUserCommandHandler _sut;
+    private readonly RegisterUserCommandHandler _sut;
 
     private readonly IUserRepository _userRepositoryMock;
     private readonly IUnitOfWork _unitOfWorkMock;
@@ -40,7 +40,7 @@ public class CreateUserCommandTests
             .SendWelcomeEmail(Arg.Any<WelcomeEmail>())
             .Returns(Task.CompletedTask);
 
-        _sut = new CreateUserCommandHandler(
+        _sut = new RegisterUserCommandHandler(
             _userRepositoryMock,
             _unitOfWorkMock,
             passwordHasherMock,

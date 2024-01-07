@@ -1,5 +1,4 @@
 ﻿using Tap.Domain.Core.Primitives;
-using Tap.Domain.Core.Primitives.Result;
 
 namespace Tap.Domain.Core.Errors;
 
@@ -112,6 +111,9 @@ public static class DomainErrors
 
         public static Error PhotoNotFound =>
             new("Photo.PhotoNotFound", "The photo with the specified identifier was not found.");
+
+        public static Error UrlInvalidFormat =>
+            new("Photo.UrlInvalidFormat", "The photo url format is invalid.");
     }
 
     public static class General
