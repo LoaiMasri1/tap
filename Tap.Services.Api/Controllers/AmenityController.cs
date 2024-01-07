@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tap.Application.Features.Amenities.DeleteAmenity;
+using Tap.Application.Features.Amenities.GetAmenities;
 using Tap.Application.Features.Amenities.UpdateAmenity;
 using Tap.Contracts.Features.Amenities;
 using Tap.Domain.Core.Errors;
+using Tap.Domain.Core.Primitives.Maybe;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Services.Api.Contracts;
 using Tap.Services.Api.Infrastructure;
@@ -24,7 +26,6 @@ public class AmenityController : ApiController
     /// <response code="400">The amenity was not updated successfully.</response>
     /// <returns>The updated amenity.</returns>
     [HttpPut(ApiRoutes.Amenity.Update)]
-    [Authorize]
     public async Task<IActionResult> Update(int id, UpdateAmenityRequest request) =>
         await Result
             .Create((id, request))
@@ -41,11 +42,44 @@ public class AmenityController : ApiController
     /// <response code="400">The amenity was not deleted successfully.</response>
     /// <returns>The result of the deletion.</returns>
     [HttpDelete(ApiRoutes.Amenity.Delete)]
-    [Authorize]
     public async Task<IActionResult> Delete(int id) =>
         await Result
             .Create(id)
             .Map(x => new DeleteAmenityCommand(x))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Retrieves amenities based on specified filters.
+    /// </summary>
+    /// <param name="filterBy">The field to filter by.</param>
+    /// <param name="filterQuery">The value to filter by.</param>
+    /// <param name="sortBy">The field to sort by.</param>
+    /// <param name="sortOrder">The sort order (asc or desc).</param>
+    /// <param name="pageNumber">The page number.</param>
+    /// <param name="pageSize">The number of items per page.</param>
+    /// <returns>The list of amenities.</returns>
+    [HttpGet(ApiRoutes.Amenity.Get)]
+    [AllowAnonymous]
+    public async Task<IActionResult> Get(
+        string? filterBy,
+        string? filterQuery,
+        string sortBy = "id",
+        string sortOrder = "asc",
+        int pageNumber = 1,
+        int pageSize = 10
+    ) =>
+        await Maybe<GetAmenitiesQuery>
+            .From(
+                new GetAmenitiesQuery(
+                    filterBy,
+                    filterQuery,
+                    sortBy,
+                    sortOrder,
+                    pageNumber,
+                    pageSize
+                )
+            )
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }

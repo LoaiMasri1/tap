@@ -1,5 +1,5 @@
-﻿using Tap.Application.Features.Hotels;
-using Tap.Contracts.Features.Amenities;
+﻿using Tap.Contracts.Features.Amenities;
+using Tap.Contracts.Features.Photos;
 using Tap.Domain.Features.Rooms;
 
 namespace Tap.Contracts.Features.Rooms;

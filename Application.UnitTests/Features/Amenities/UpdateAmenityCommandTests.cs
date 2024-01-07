@@ -6,7 +6,6 @@ using Tap.Application.Features.Authentication;
 using Tap.Contracts.Features.Amenities;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives.Maybe;
-using Tap.Domain.Core.Primitives.Result;
 using Tap.Domain.Features.Amenities;
 using Tap.Domain.Features.Users;
 

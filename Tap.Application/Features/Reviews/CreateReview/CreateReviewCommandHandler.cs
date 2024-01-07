@@ -82,8 +82,8 @@ public class CreateReviewCommandHandler
             review.Title,
             review.Content,
             review.Rating,
-            review.HotelId!.Value,
-            review.UserId!.Value
+            review.HotelId,
+            review.UserId
         );
     }
 }

@@ -35,8 +35,8 @@ public class Review : AggregateRoot, IAuditableEntity
     public string Title { get; private set; }
     public string Content { get; private set; }
     public int Rating { get; private set; }
-    public int? HotelId { get; private set; }
-    public int? UserId { get; private set; }
+    public int HotelId { get; private set; }
+    public int UserId { get; private set; }
     public DateTime CreatedAtUtc { get; private set; }
     public DateTime? UpdatedAtUtc { get; private set; }
 

@@ -274,7 +274,7 @@ namespace Tap.Persistence.Migrations
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("HotelId")
+                    b.Property<int>("HotelId")
                         .HasColumnType("int");
 
                     b.Property<int>("Rating")
@@ -288,7 +288,7 @@ namespace Tap.Persistence.Migrations
                     b.Property<DateTime?>("UpdatedAtUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -392,7 +392,7 @@ namespace Tap.Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("Tap.Domain.Features.Rooms.Room", "Room")
-                        .WithMany()
+                        .WithMany("Bookings")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -464,12 +464,14 @@ namespace Tap.Persistence.Migrations
                     b.HasOne("Tap.Domain.Features.Hotels.Hotel", null)
                         .WithMany("Reviews")
                         .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Tap.Domain.Features.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Tap.Domain.Features.Rooms.Room", b =>
@@ -553,6 +555,8 @@ namespace Tap.Persistence.Migrations
 
             modelBuilder.Entity("Tap.Domain.Features.Rooms.Room", b =>
                 {
+                    b.Navigation("Bookings");
+
                     b.Navigation("Discounts");
                 });
 

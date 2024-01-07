@@ -65,8 +65,6 @@ public class UpdateRoomCommandHandler : ICommandHandler<UpdateRoomCommand, Resul
             return result.Error;
         }
 
-        room.UpdateDiscountedPrice();
-
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new RoomResponse(

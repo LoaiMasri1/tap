@@ -1,3 +1,3 @@
-﻿namespace Tap.Application.Features.Hotels;
+﻿namespace Tap.Contracts.Features.Photos;
 
 public record PhotoResponse(string Url);

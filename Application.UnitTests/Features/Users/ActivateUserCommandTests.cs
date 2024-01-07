@@ -2,7 +2,7 @@
 using NSubstitute;
 using Tap.Application.Core.Abstractions.Common;
 using Tap.Application.Core.Abstractions.Data;
-using Tap.Application.Features.Users.ActivateUser;
+using Tap.Application.Features.Authentication.ActivateUser;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives.Maybe;
 using Tap.Domain.Features.Users;

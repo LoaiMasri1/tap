@@ -42,7 +42,7 @@ public class Discount : Entity, IAuditableEntity
     public DateTime CreatedAtUtc { get; private set; }
     public DateTime? UpdatedAtUtc { get; private set; }
 
-    public bool IsApplicable() => StartDate <= DateTime.UtcNow && EndDate >= DateTime.UtcNow;
+    public bool IsApplicable(DateTime now) => StartDate <= now && EndDate >= now;
 
     public Money Apply(Money price)
     {

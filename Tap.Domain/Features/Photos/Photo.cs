@@ -37,8 +37,6 @@ public class Photo : Entity, IAuditableEntity
 
     public void UpdateUrl(string url)
     {
-        // TODO: Validate url
-
         Url = url;
     }
 }

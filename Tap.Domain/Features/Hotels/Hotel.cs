@@ -93,4 +93,9 @@ public class Hotel : Entity, IAuditableEntity
 
         Bookings.Add(booking);
     }
+
+    public int? CalculateMaxDiscountPercentage() =>
+        Rooms.SelectMany(r => r.Discounts).MaxBy(d => d.DiscountPercentage)?.DiscountPercentage;
+
+    public decimal? CalculateMinPrice() => Rooms.MinBy(r => r.Price.Amount)?.Price.Amount;
 }

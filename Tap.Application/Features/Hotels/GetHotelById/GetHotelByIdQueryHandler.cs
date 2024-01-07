@@ -3,6 +3,7 @@ using Tap.Application.Core.Abstractions.Data;
 using Tap.Application.Core.Messaging;
 using Tap.Contracts.Features.Amenities;
 using Tap.Contracts.Features.Hotels;
+using Tap.Contracts.Features.Photos;
 using Tap.Contracts.Features.Rooms;
 using Tap.Domain.Common.Enumerations;
 using Tap.Domain.Core.Primitives.Maybe;

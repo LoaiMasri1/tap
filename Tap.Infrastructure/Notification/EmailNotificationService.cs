@@ -1,4 +1,5 @@
-﻿using Tap.Application.Core.Abstractions.Email;
+﻿using Microsoft.Extensions.Configuration;
+using Tap.Application.Core.Abstractions.Email;
 using Tap.Application.Core.Abstractions.Notification;
 using Tap.Contracts.Emails;
 
@@ -7,11 +8,13 @@ namespace Tap.Infrastructure.Notification;
 public class EmailNotificationService : IEmailNotificationService
 {
     private readonly IEmailService _emailService;
-    private const string BaseUrl = "https://localhost:5001";
+    private readonly IConfiguration _configuration;
+    private string BaseUrl => $"{_configuration["Host:Url"]!}/api/v1/";
 
-    public EmailNotificationService(IEmailService emailService)
+    public EmailNotificationService(IEmailService emailService, IConfiguration configuration)
     {
         _emailService = emailService;
+        _configuration = configuration;
     }
 
     public async Task SendWelcomeEmail(WelcomeEmail welcomeEmail)
@@ -19,7 +22,7 @@ public class EmailNotificationService : IEmailNotificationService
         var body = $"""
                     Welcome to Tap, {welcomeEmail.Name}!
 
-                    Please click the following link to verify your email address: {BaseUrl}/users/activate?t={welcomeEmail.Token}
+                    Please click the following link to verify your email address: {BaseUrl}auth/activate?t={welcomeEmail.Token}
                     
                     Thank you for using Tap!
                     """;
@@ -63,7 +66,7 @@ public class EmailNotificationService : IEmailNotificationService
                     check out date: {bookingConfirmedEmail.CheckOutDate}
                     total price: {bookingConfirmedEmail.TotalPrice} {bookingConfirmedEmail.Currency}
                     
-                    to checkout, please click the following link: {BaseUrl}/bookings/{bookingConfirmedEmail.BookingId}/checkout
+                    to checkout, please click the following link: {BaseUrl}bookings/{bookingConfirmedEmail.BookingId}/checkout
                     
                     Thank you for using Tap!
                     """;
