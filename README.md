@@ -64,3 +64,11 @@ This Project used the Clean Architecture approach to structure the project into 
 ## Demo
 
 You can find a demo for the project at `https://foothill-tap.azurewebsites.net/`, and the API documentation at `https://foothill-tap.azurewebsites.net/swagger/index.html`
+
+## Notes
+
+- To check the payment feature, just go through these steps:
+
+    - Use the checkout API, which will provide you with a   payment session ID and a publishable key.
+    - I've set up a demo for testing the payment feature. You can utilize the card number `4242 4242 4242 4242` with any future date and any CVC code.
+    - Locate the HTML page in the stripe-demo directory of the project. Open it, input the publishable key and payment session ID, then hit the "Pay" button.
