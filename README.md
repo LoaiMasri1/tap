@@ -33,6 +33,35 @@ docker-compose -f docker-compose.yml -f docker-compose.override.yml up
 docker-compose -f docker-compose.yml -f docker-compose.override.yml down
 ```
 
+## Environment Variables
+
+You should find a file with `appsettings.json` name in the `Tap.Service.API` directory of the project. This file contains the environment variables used by the project. You can change the values of these variables to suit your needs.
+
 ## API Documentation
 
-The API documentation is available at `http://localhost:7194/swagger/index.html`.
+You can find the API documentation Swagger UI at `http://localhost:7194/swagger/index.html`. You can also find the Postman collection directly from [here](https://www.getpostman.com/collections/9f9b8b7b7b1b8b1b1b1b).
+
+## Database Diagram
+
+![Database Diagram](
+https://user-images.githubusercontent.com/43981051/137637421-9f6b9b9b-5b9e-4b9f-8b9f-9b9b9b9b9b9b.png)
+
+## Project Structure
+
+This Project used the Clean Architecture approach to structure the project into layers. DDD is used to design the domain model and the business logic. The project is divided into the following layers:
+
+- **API Layer**: This layer contains the API controllers.
+
+- **Application Layer**: This layer contains the application services that implement the business logic.
+
+- **Domain Layer**: This layer contains the domain models and the domain services.
+
+- **Infrastructure Layer**: This layer contains the external services.
+
+- **Persistence Layer**: This layer contains the database context and the repositories.
+
+- **Contracts Layer**: This layer contains the shared contracts between the layers.
+
+## Demo
+
+You can find a demo for the project at `https://foothill-tap.azurewebsites.net/`, and the API documentation at `https://foothill-tap.azurewebsites.net/swagger/index.html`
