@@ -1,9 +1,8 @@
 ﻿using FluentValidation;
 using Tap.Application.Core.Errors;
 using Tap.Application.Core.Extensions;
-using Tap.Application.Features.Bookings.ConfirmBooking;
 
-namespace Tap.Application.Features.Bookings.ConfirmBook;
+namespace Tap.Application.Features.Bookings.ConfirmBooking;
 
 public class ConfirmBookingCommandValidator : AbstractValidator<ConfirmBookingCommand>
 {
