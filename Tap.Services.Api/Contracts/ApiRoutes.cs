@@ -8,7 +8,6 @@ public static class ApiRoutes
         public const string Get = Base;
         public const string Update = $"{Base}/{{id}}";
         public const string RecentVisits = $"{Base}/recent-visits";
-        public const string Reviews = $"{Base}/{{id}}/reviews";
     }
 
     public static class Auth
@@ -34,7 +33,6 @@ public static class ApiRoutes
         private const string Base = "hotels";
         public const string Get = Base;
         public const string GetById = $"{Base}/{{id}}";
-        public const string Post = Base;
         public const string Update = $"{Base}/{{id}}";
         public const string UploadPhotos = $"{Base}/{{id}}/photos";
         public const string AddAmenity = $"{Base}/{{id}}/amenities";
@@ -46,8 +44,6 @@ public static class ApiRoutes
     {
         private const string Base = "rooms";
         public const string Get = Base;
-        public const string GeByHotelId = $"{Base}/hotels/{{id}}";
-        public const string Post = Base;
         public const string Update = $"{Base}/{{id}}";
         public const string Delete = $"{Base}/{{id}}";
         public const string UploadPhotos = $"{Base}/{{id}}/photos";
@@ -69,7 +65,6 @@ public static class ApiRoutes
     {
         private const string Base = "amenities";
         public const string Get = Base;
-        public const string Post = Base;
         public const string Update = $"{Base}/{{id}}";
         public const string Delete = $"{Base}/{{id}}";
     }

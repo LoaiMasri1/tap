@@ -1,5 +1,4 @@
-﻿using Tap.Domain.Common.ValueObjects;
-using Tap.Domain.Core.Abstraction;
+﻿using Tap.Domain.Core.Abstraction;
 using Tap.Domain.Core.Errors;
 using Tap.Domain.Core.Primitives;
 using Tap.Domain.Core.Primitives.Result;

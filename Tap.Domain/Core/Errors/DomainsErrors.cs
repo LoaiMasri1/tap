@@ -1,5 +1,4 @@
 ﻿using Tap.Domain.Core.Primitives;
-using Tap.Domain.Core.Primitives.Result;
 
 namespace Tap.Domain.Core.Errors;
 
