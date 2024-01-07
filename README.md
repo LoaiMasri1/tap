@@ -39,7 +39,7 @@ You should find a file with `appsettings.json` name in the `Tap.Service.API` dir
 
 ## API Documentation
 
-You can find the API documentation Swagger UI at `http://localhost:7194/swagger/index.html`. You can also find the Postman collection directly from [here](https://www.getpostman.com/collections/9f9b8b7b7b1b8b1b1b1b).
+You can find the API documentation Swagger UI at `http://localhost:7194/swagger/index.html`. You can also find the Postman collection directly from [here](https://documenter.getpostman.com/view/19681252/2s9YsJBC9w).
 
 ## Database Diagram
 
