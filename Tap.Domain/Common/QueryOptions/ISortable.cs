@@ -2,6 +2,5 @@
 
 public interface ISortable
 {
-    string SortBy { get; init; }
-    string SortOrder { get; init; }
+    string Sorts { get; init; }
 }

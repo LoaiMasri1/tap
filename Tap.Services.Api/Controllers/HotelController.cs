@@ -124,13 +124,10 @@ public class HotelController : ApiController
     /// <summary>
     /// Gets a list of hotels based on the specified criteria.
     /// </summary>
-    /// <param name="city">The city to search for hotels.</param>
     /// <param name="numberOfAvailableRooms">The number of available rooms in the hotels.</param>
-    /// <param name="filterBy">The field to filter the hotels by.</param>
-    /// <param name="filterQuery">The query to filter the hotels.</param>
-    /// <param name="sortBy">The field to sort the hotels by.</param>
-    /// <param name="sortOrder">The sort order of the hotels.</param>
-    /// <param name="pageNumber">The page number of the hotels.</param>
+    /// <param name="filters">The filters to apply.</param>
+    /// <param name="sorts">The sorts to apply.</param>
+    /// <param name="page">The page number of the hotels.</param>
     /// <param name="pageSize">The page size of the hotels.</param>
     /// <response code="200">The list of hotels was retrieved successfully.</response>
     /// <response code="400">The list of hotels was not retrieved successfully.</response>
@@ -138,28 +135,14 @@ public class HotelController : ApiController
     [HttpGet(ApiRoutes.Hotel.Get)]
     [AllowAnonymous]
     public async Task<IActionResult> Get(
-        string? city,
         int? numberOfAvailableRooms,
-        string? filterBy,
-        string? filterQuery,
-        string sortBy = "name",
-        string sortOrder = "asc",
-        int pageNumber = 1,
+        string filters,
+        string sorts,
+        int page = 1,
         int pageSize = 10
     ) =>
         await Maybe<SearchHotelsQuery>
-            .From(
-                new SearchHotelsQuery(
-                    city,
-                    numberOfAvailableRooms,
-                    pageSize,
-                    pageNumber,
-                    sortBy,
-                    sortOrder,
-                    filterBy,
-                    filterQuery
-                )
-            )
+            .From(new SearchHotelsQuery(numberOfAvailableRooms, pageSize, page, sorts, filters))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 

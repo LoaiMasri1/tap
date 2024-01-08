@@ -2,6 +2,5 @@
 
 public interface IFilterable
 {
-    string? FilterBy { get; init; }
-    string? FilterQuery { get; init; }
+    string Filters { get; init; }
 }

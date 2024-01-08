@@ -15,24 +15,22 @@ public class DiscountController : ApiController
     /// Retrieves discounts for a specific hotel.
     /// </summary>
     /// <param name="id">The ID of the hotel.</param>
-    /// <param name="sortBy">The field to sort by.</param>
-    /// <param name="sortOrder">The sort order (asc or desc).</param>
-    /// <param name="pageNumber">The page number.</param>
+    /// <param name="sorts">The sort criteria.</param>
+    /// <param name="filters">The filter criteria.</param>
+    /// <param name="page">The page number.</param>
     /// <param name="pageSize">The number of items per page.</param>
     /// <returns>The discounts for the specific hotel.</returns>
     [HttpGet(ApiRoutes.Discount.GetByHotelId)]
     [AllowAnonymous]
     public async Task<IActionResult> GetDiscount(
         int id,
-        string sortBy = "id",
-        string sortOrder = "asc",
-        int pageNumber = 1,
+        string sorts,
+        string filters,
+        int page = 1,
         int pageSize = 10
     ) =>
         await Maybe<GetDiscountsForSpecificHotelQuery>
-            .From(
-                new GetDiscountsForSpecificHotelQuery(pageNumber, pageSize, sortBy, sortOrder, id)
-            )
+            .From(new GetDiscountsForSpecificHotelQuery(page, pageSize, sorts, filters, id))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 
@@ -41,7 +39,7 @@ public class DiscountController : ApiController
     /// </summary>
     /// <param name="id">The ID of the discount to delete.</param>
     /// <returns>The result of the delete operation.</returns>
-    [HttpPost(ApiRoutes.Discount.Delete)]
+    [HttpDelete(ApiRoutes.Discount.Delete)]
     [Authorize]
     public async Task<IActionResult> DeleteDiscount(int id) =>
         await Result

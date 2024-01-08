@@ -71,11 +71,9 @@ public class CityController : ApiController
     /// <summary>
     /// Gets a list of cities.
     /// </summary>
-    /// <param name="filterBy">The field to filter by.</param>
-    /// <param name="filterQuery">The value to filter by.</param>
-    /// <param name="sortBy">The field to sort by.</param>
-    /// <param name="sortOrder">The sort order.</param>
-    /// <param name="pageNumber">The page number.</param>
+    /// <param name="filters">The filters.</param>
+    /// <param name ="sorts">The sorts.</param>
+    /// <param name="page">The page.</param>
     /// <param name="pageSize">The page size.</param>
     /// <response code="200">The list of cities was retrieved successfully.</response>
     /// <response code="400">The list of cities was not retrieved successfully.</response>
@@ -83,17 +81,13 @@ public class CityController : ApiController
     [HttpGet(ApiRoutes.City.Get)]
     [AllowAnonymous]
     public async Task<IActionResult> Get(
-        string? filterBy,
-        string? filterQuery,
-        string sortBy = "name",
-        string sortOrder = "asc",
-        int pageNumber = 1,
+        string filters,
+        string sorts,
+        int page = 1,
         int pageSize = 10
     ) =>
         await Maybe<GetCitiesQuery>
-            .From(
-                new GetCitiesQuery(pageSize, pageNumber, sortBy, sortOrder, filterBy, filterQuery)
-            )
+            .From(new GetCitiesQuery(filters, sorts, page, pageSize))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 

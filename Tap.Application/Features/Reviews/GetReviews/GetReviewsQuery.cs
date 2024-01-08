@@ -5,11 +5,8 @@ using Tap.Domain.Core.Primitives.Maybe;
 
 namespace Tap.Application.Features.Reviews.GetReviews;
 
-public record GetReviewsQuery(
-    string? FilterBy,
-    string? FilterQuery,
-    string SortBy,
-    string SortOrder,
-    int PageNumber,
-    int PageSize
-) : IQuery<Maybe<ReviewResponse[]>>, IPageable, IFilterable, ISortable;
+public record GetReviewsQuery(string Filters, string Sorts, int Page, int PageSize)
+    : IQuery<Maybe<ReviewResponse[]>>,
+        IPageable,
+        IFilterable,
+        ISortable;

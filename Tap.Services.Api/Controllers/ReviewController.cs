@@ -94,11 +94,9 @@ public class ReviewController : ApiController
     /// <summary>
     /// Retrieves reviews based on specified filters.
     /// </summary>
-    /// <param name="filterBy">The field to filter by.</param>
-    /// <param name="filterQuery">The value to filter by.</param>
-    /// <param name="sortBy">The field to sort by. Default is "createdAtUtc".</param>
-    /// <param name="sortOrder">The sort order. Default is "desc".</param>
-    /// <param name="pageNumber">The page number. Default is 1.</param>
+    /// <param name="filters">The filters.</param>
+    /// <param name="sorts">The sorts.</param>
+    /// <param name="page">The page.</param>
     /// <param name="pageSize">The page size. Default is 10.</param>
     /// <response code="200">The reviews were retrieved successfully.</response>
     /// <response code="400">The reviews were not retrieved successfully.</response>
@@ -106,17 +104,13 @@ public class ReviewController : ApiController
     [AllowAnonymous]
     [HttpGet(ApiRoutes.Review.Get)]
     public async Task<IActionResult> GetReviews(
-        string? filterBy,
-        string? filterQuery,
-        string sortBy = "createdAtUtc",
-        string sortOrder = "desc",
-        int pageNumber = 1,
+        string filters,
+        string sorts,
+        int page = 1,
         int pageSize = 10
     ) =>
         await Maybe<GetReviewsQuery>
-            .From(
-                new GetReviewsQuery(filterBy, filterQuery, sortBy, sortOrder, pageNumber, pageSize)
-            )
+            .From(new GetReviewsQuery(filters, sorts, page, pageSize))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }

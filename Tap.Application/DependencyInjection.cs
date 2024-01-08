@@ -2,7 +2,9 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using Sieve.Services;
 using Tap.Application.Core.Behaviours;
+using Tap.Application.Core.Sieve;
 
 namespace Tap.Application;
 
@@ -18,6 +20,8 @@ public static class DependencyInjection
 
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
+
+        services.AddScoped<ISieveProcessor, TapSieveProcessor>();
 
         return services;
     }

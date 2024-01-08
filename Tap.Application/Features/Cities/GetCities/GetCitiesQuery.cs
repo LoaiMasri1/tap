@@ -5,11 +5,8 @@ using Tap.Domain.Core.Primitives.Maybe;
 
 namespace Tap.Application.Features.Cities.GetCities;
 
-public record GetCitiesQuery(
-    int PageSize,
-    int PageNumber,
-    string SortBy,
-    string SortOrder,
-    string? FilterBy,
-    string? FilterQuery
-) : IQuery<Maybe<CityResponse[]>>, IPageable, ISortable, IFilterable;
+public record GetCitiesQuery(string Filters, string Sorts, int Page, int PageSize)
+    : IQuery<Maybe<CityResponse[]>>,
+        IPageable,
+        ISortable,
+        IFilterable;

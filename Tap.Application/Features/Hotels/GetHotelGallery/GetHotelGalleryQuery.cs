@@ -5,6 +5,6 @@ using Tap.Domain.Core.Primitives.Maybe;
 
 namespace Tap.Application.Features.Hotels.GetHotelGallery;
 
-public record GetHotelGalleryQuery(int Id, int PageNumber, int PageSize)
+public record GetHotelGalleryQuery(int Id, int Page, int PageSize)
     : IQuery<Maybe<PhotoResponse[]>>,
         IPageable;

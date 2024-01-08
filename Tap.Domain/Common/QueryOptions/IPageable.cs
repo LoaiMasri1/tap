@@ -2,6 +2,6 @@
 
 public interface IPageable
 {
+    int Page { get; init; }
     int PageSize { get; init; }
-    int PageNumber { get; init; }
 }

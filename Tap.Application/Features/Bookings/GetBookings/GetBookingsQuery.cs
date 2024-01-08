@@ -5,11 +5,8 @@ using Tap.Domain.Core.Primitives.Maybe;
 
 namespace Tap.Application.Features.Bookings.GetBookings;
 
-public record GetBookingsQuery(
-    string? FilterBy,
-    string? FilterQuery,
-    string SortBy,
-    string SortOrder,
-    int PageNumber,
-    int PageSize
-) : IQuery<Maybe<BookingResponse[]>>, IPageable, IFilterable, ISortable;
+public record GetBookingsQuery(string Filters, string Sorts, int Page, int PageSize)
+    : IQuery<Maybe<BookingResponse[]>>,
+        IPageable,
+        IFilterable,
+        ISortable;

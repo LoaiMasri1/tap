@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sieve.Models;
+using Sieve.Services;
 using Tap.Application.Core.Abstractions.Data;
-using Tap.Application.Core.Extensions;
 using Tap.Application.Core.Messaging;
 using Tap.Contracts.Features.Reviews;
 using Tap.Domain.Core.Primitives.Maybe;
@@ -11,20 +12,34 @@ namespace Tap.Application.Features.Reviews.GetReviews;
 public class GetReviewsQueryHandler : IQueryHandler<GetReviewsQuery, Maybe<ReviewResponse[]>>
 {
     private readonly IDbContext _dbContext;
+    private readonly ISieveProcessor _sieveProcessor;
 
-    public GetReviewsQueryHandler(IDbContext dbContext) => _dbContext = dbContext;
+    public GetReviewsQueryHandler(IDbContext dbContext, ISieveProcessor sieveProcessor)
+    {
+        _dbContext = dbContext;
+        _sieveProcessor = sieveProcessor;
+    }
 
     public async Task<Maybe<ReviewResponse[]>> Handle(
         GetReviewsQuery request,
         CancellationToken cancellationToken
-    ) =>
-        await _dbContext
-            .Set<Review>()
-            .FilterBy(request.FilterBy, request.FilterQuery)
-            .OrderBy(request.SortBy, request.SortOrder)
-            .Paginate(request.PageNumber, request.PageSize)
+    )
+    {
+        var reviews = _dbContext.Set<Review>().AsNoTracking();
+
+        var sieveModel = new SieveModel
+        {
+            Filters = request.Filters,
+            Sorts = request.Sorts,
+            Page = request.Page,
+            PageSize = request.PageSize
+        };
+
+        return await _sieveProcessor
+            .Apply(sieveModel, reviews)
             .Select(
                 r => new ReviewResponse(r.Id, r.Title, r.Content, r.Rating, r.HotelId, r.UserId)
             )
             .ToArrayAsync(cancellationToken);
+    }
 }

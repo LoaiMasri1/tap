@@ -163,12 +163,9 @@ public class RoomController : ApiController
     /// <summary>
     /// Retrieves rooms.
     /// </summary>
-    /// <param name="filterBy">The filter criteria.</param>
-    /// <param name="filterQuery">The filter query.</param>
-    /// <param name="isAvailable">Indicates if the rooms should be available.</param>
-    /// <param name="sortBy">The field to sort by.</param>
-    /// <param name="sortOrder">The sort order.</param>
-    /// <param name="pageNumber">The page number.</param>
+    /// <param name="filters">The filters.</param>
+    /// <param name="sorts">The sorts.</param>
+    /// <param name="page">The page.</param>
     /// <param name="pageSize">The page size.</param>
     /// <response code="200">The rooms were retrieved successfully.</response>
     /// <response code="400">The rooms were not retrieved successfully.</response>
@@ -176,26 +173,13 @@ public class RoomController : ApiController
     [HttpGet(ApiRoutes.Room.Get)]
     [AllowAnonymous]
     public async Task<IActionResult> Get(
-        string? filterBy,
-        string? filterQuery,
-        bool isAvailable = true,
-        string sortBy = "number",
-        string sortOrder = "asc",
-        int pageNumber = 1,
+        string filters,
+        string sorts,
+        int page = 1,
         int pageSize = 10
     ) =>
         await Maybe<GetRoomsQuery>
-            .From(
-                new GetRoomsQuery(
-                    isAvailable,
-                    pageNumber,
-                    pageSize,
-                    sortOrder,
-                    sortBy,
-                    filterBy,
-                    filterQuery
-                )
-            )
+            .From(new GetRoomsQuery(page, pageSize, sorts, filters))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }

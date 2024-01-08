@@ -5,11 +5,8 @@ using Tap.Domain.Core.Primitives.Maybe;
 
 namespace Tap.Application.Features.Amenities.GetAmenities;
 
-public record GetAmenitiesQuery(
-    string? FilterBy,
-    string? FilterQuery,
-    string SortBy,
-    string SortOrder,
-    int PageNumber,
-    int PageSize
-) : IQuery<Maybe<AmenityResponse[]>>, IPageable, ISortable, IFilterable;
+public record GetAmenitiesQuery(string Filters, string Sorts, int Page, int PageSize)
+    : IQuery<Maybe<AmenityResponse[]>>,
+        IPageable,
+        ISortable,
+        IFilterable;

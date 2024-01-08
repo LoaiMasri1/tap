@@ -1,7 +1,8 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Sieve.Models;
+using Sieve.Services;
 using Tap.Application.Core.Abstractions.Data;
-using Tap.Application.Core.Extensions;
 using Tap.Contracts.Features.Amenities;
 using Tap.Contracts.Features.Photos;
 using Tap.Contracts.Features.Rooms;
@@ -16,22 +17,30 @@ namespace Tap.Application.Features.Rooms.GetRooms;
 public class GetRoomsQueryHandler : IRequestHandler<GetRoomsQuery, Maybe<FilteredRoomResponse[]>>
 {
     private readonly IDbContext _dbContext;
+    private readonly ISieveProcessor _sieveProcessor;
 
-    public GetRoomsQueryHandler(IDbContext dbContext) => _dbContext = dbContext;
+    public GetRoomsQueryHandler(IDbContext dbContext, ISieveProcessor sieveProcessor)
+    {
+        _dbContext = dbContext;
+        _sieveProcessor = sieveProcessor;
+    }
 
     public async Task<Maybe<FilteredRoomResponse[]>> Handle(
         GetRoomsQuery request,
         CancellationToken cancellationToken
     )
     {
-        var rooms = _dbContext
-            .Set<Room>()
-            .AsNoTracking()
-            .Where(r => r.IsAvailable == request.IsAvailable)
-            .Include(r => r.Discounts)
-            .OrderBy(request.SortBy, request.SortOrder)
-            .FilterBy(request.FilterBy, request.FilterQuery)
-            .Paginate(request.PageNumber, request.PageSize);
+        IQueryable<Room> rooms = _dbContext.Set<Room>().AsNoTracking().Include(r => r.Discounts);
+
+        var sieveModel = new SieveModel
+        {
+            Filters = request.Filters,
+            Sorts = request.Sorts,
+            Page = request.Page,
+            PageSize = request.PageSize
+        };
+
+        rooms = _sieveProcessor.Apply(sieveModel, rooms);
 
         var amenities = _dbContext.Set<Amenity>().Where(a => a.Type == AmenityType.Room);
 

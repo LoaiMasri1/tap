@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sieve.Models;
+using Sieve.Services;
 using Tap.Application.Core.Abstractions.Data;
-using Tap.Application.Core.Extensions;
 using Tap.Application.Core.Messaging;
 using Tap.Application.Features.Authentication;
 using Tap.Contracts.Features.Bookings;
@@ -14,11 +15,17 @@ public class GetBookingsQueryHandler : IQueryHandler<GetBookingsQuery, Maybe<Boo
 {
     private readonly IDbContext _dbContext;
     private readonly IUserContext _userContext;
+    private readonly ISieveProcessor _sieveProcessor;
 
-    public GetBookingsQueryHandler(IDbContext dbContext, IUserContext userContext)
+    public GetBookingsQueryHandler(
+        IDbContext dbContext,
+        IUserContext userContext,
+        ISieveProcessor sieveProcessor
+    )
     {
         _dbContext = dbContext;
         _userContext = userContext;
+        _sieveProcessor = sieveProcessor;
     }
 
     public async Task<Maybe<BookingResponse[]>> Handle(
@@ -38,10 +45,16 @@ public class GetBookingsQueryHandler : IQueryHandler<GetBookingsQuery, Maybe<Boo
             _ => bookings
         };
 
-        return await bookings
-            .FilterBy(request.FilterBy, request.FilterQuery)
-            .OrderBy(request.SortBy, request.SortOrder)
-            .Paginate(request.PageNumber, request.PageSize)
+        var sieveModel = new SieveModel
+        {
+            Filters = request.Filters,
+            Sorts = request.Sorts,
+            Page = request.Page,
+            PageSize = request.PageSize
+        };
+
+        return await _sieveProcessor
+            .Apply(sieveModel, bookings)
             .Select(
                 b =>
                     new BookingResponse(
