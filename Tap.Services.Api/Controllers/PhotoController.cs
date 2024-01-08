@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tap.Application.Features.Photos.DeletePhoto;
+using Tap.Application.Features.Photos.GetPhotos;
 using Tap.Application.Features.Photos.UpdatePhoto;
 using Tap.Application.Features.Photos.UploadPhoto;
 using Tap.Domain.Common.Enumerations;
 using Tap.Domain.Core.Errors;
+using Tap.Domain.Core.Primitives.Maybe;
 using Tap.Domain.Core.Primitives.Result;
 using Tap.Services.Api.Contracts;
 using Tap.Services.Api.Infrastructure;
@@ -68,6 +70,23 @@ public class PhotoController : ApiController
         await Result
             .Create(id)
             .Map(x => new DeletePhotoCommand(x))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Retrieves photos based on specified filters, page number, and page size.
+    /// </summary>
+    /// <param name="filters">The filters to apply to the photos.</param>
+    /// <param name="page">The page number.</param>
+    /// <param name="pageSize">The number of photos per page.</param>
+    /// <response code="200">The photos were retrieved successfully.</response>
+    /// <response code="400">The photos were not retrieved successfully.</response>
+    /// <returns>The result of the retrieval operation.</returns>
+    [HttpGet(ApiRoutes.Photo.Get)]
+    [AllowAnonymous]
+    public async Task<IActionResult> Get(string filters, int page = 1, int pageSize = 10) =>
+        await Maybe<GetPhotosQuery>
+            .From(new GetPhotosQuery(page, pageSize, filters))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }

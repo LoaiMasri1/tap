@@ -36,7 +36,7 @@ public class GetBookingsQueryHandler : IQueryHandler<GetBookingsQuery, Maybe<Boo
         var userId = _userContext.Id;
         var role = _userContext.Role;
 
-        var bookings = _dbContext.Set<Booking>().Include(b => b.Hotel).AsQueryable();
+        IQueryable<Booking> bookings = _dbContext.Set<Booking>().Include(b => b.Hotel);
 
         bookings = role switch
         {
