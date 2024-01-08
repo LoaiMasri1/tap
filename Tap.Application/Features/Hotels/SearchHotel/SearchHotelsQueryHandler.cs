@@ -55,8 +55,8 @@ public class SearchHotelsQueryHandler
                     new SearchHotelResponse(
                         h.Id,
                         h.Name,
-                        h.City.Name,
                         h.Description,
+                        h.City.Name,
                         h.Rating,
                         h.Location.Longitude,
                         h.Location.Latitude,
