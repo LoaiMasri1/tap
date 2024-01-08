@@ -8,7 +8,5 @@ public record CreateDiscountCommand(
     int RoomId,
     string Name,
     string Description,
-    int DiscountPercentage,
-    DateTime StartDate,
-    DateTime EndDate
+    int DiscountPercentage
 ) : ICommand<Result<DiscountResponse>>;

@@ -15,8 +15,6 @@ public class DiscountSieveConfiguration : ISieveConfiguration
             .CanFilter()
             .CanSort()
             .HasName("discount");
-        mapper.Property<Discount>(x => x.StartDate).CanFilter().CanSort();
-        mapper.Property<Discount>(x => x.EndDate).CanFilter().CanSort();
         mapper.Property<Discount>(x => x.CreatedAtUtc).CanFilter().CanSort().HasName("created");
         mapper.Property<Discount>(x => x.UpdatedAtUtc).CanFilter().CanSort().HasName("updated");
     }

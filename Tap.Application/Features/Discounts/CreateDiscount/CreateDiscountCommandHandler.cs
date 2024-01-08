@@ -61,9 +61,7 @@ public class CreateDiscountCommandHandler
         var discount = Discount.Create(
             command.Name,
             command.Description,
-            command.DiscountPercentage,
-            command.StartDate,
-            command.EndDate
+            command.DiscountPercentage
         );
 
         var result = room.AddDiscount(discount, _dateTime.UtcNow);
@@ -78,9 +76,9 @@ public class CreateDiscountCommandHandler
 
         return new DiscountResponse(
             discount.Id,
-            discount.DiscountPercentage,
-            discount.StartDate,
-            discount.EndDate
+            discount.Name,
+            discount.Description,
+            discount.DiscountPercentage
         );
     }
 }

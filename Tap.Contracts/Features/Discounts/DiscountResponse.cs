@@ -1,8 +1,3 @@
 ﻿namespace Tap.Contracts.Features.Discounts;
 
-public record DiscountResponse(
-    int Id,
-    decimal DiscountPercentage,
-    DateTime StartDate,
-    DateTime EndDate
-);
+public record DiscountResponse(int Id, string Name, string Description, decimal DiscountPercentage);

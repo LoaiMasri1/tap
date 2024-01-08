@@ -78,10 +78,6 @@ public class RoomController : ApiController
     [HttpPost(ApiRoutes.Room.AddDiscount)]
     public async Task<IActionResult> AddDiscount(int id, [FromBody] CreateDiscountRequest request)
     {
-        Console.WriteLine(
-            $"AddDiscount Command: {request.RoomId}, {request.Name}, {request.Description}, {request.DiscountPercentage}, {request.StartDate}, {request.EndDate}"
-        );
-
         return await Result
             .Create((id, command: request))
             .Ensure(x => x.command.RoomId == x.id, DomainErrors.General.UnProcessableRequest)
@@ -91,9 +87,7 @@ public class RoomController : ApiController
                         x.command.RoomId,
                         x.command.Name,
                         x.command.Description,
-                        x.command.DiscountPercentage,
-                        x.command.StartDate,
-                        x.command.EndDate
+                        x.command.DiscountPercentage
                     )
             )
             .Bind(x => Mediator.Send(x))

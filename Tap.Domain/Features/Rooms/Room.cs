@@ -58,11 +58,6 @@ public class Room : Entity, IAuditableEntity
 
     public Result AddDiscount(Discount discount, DateTime now)
     {
-        if (discount.IsApplicable(now))
-        {
-            return DomainErrors.Discount.NotApplicable;
-        }
-
         if (Discounts.Any(x => x.Name == discount.Name))
         {
             return DomainErrors.Discount.AlreadyExists;
@@ -71,11 +66,6 @@ public class Room : Entity, IAuditableEntity
         if (discount.DiscountPercentage is < 0 or > 100)
         {
             return DomainErrors.Discount.InvalidDiscountPercentage;
-        }
-
-        if (discount.StartDate > discount.EndDate)
-        {
-            return DomainErrors.Discount.InvalidDateRange;
         }
 
         Discounts.Add(discount);

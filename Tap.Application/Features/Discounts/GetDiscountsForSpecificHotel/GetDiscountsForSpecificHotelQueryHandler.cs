@@ -47,15 +47,7 @@ public class GetDiscountsForSpecificHotelQueryHandler
         return await _sieveProcessor
             .Apply(sieveModel, discounts)
             .Select(
-                d =>
-                    new FilteredDiscountResponse(
-                        d.Id,
-                        d.Name,
-                        d.Description,
-                        d.DiscountPercentage,
-                        d.StartDate,
-                        d.EndDate
-                    )
+                d => new FilteredDiscountResponse(d.Id, d.Name, d.Description, d.DiscountPercentage)
             )
             .ToArrayAsync(cancellationToken);
     }

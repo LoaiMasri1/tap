@@ -18,10 +18,6 @@ public class DiscountEntityConfiguration : IEntityTypeConfiguration<Discount>
 
         builder.Property(x => x.DiscountPercentage).IsRequired();
 
-        builder.Property(x => x.StartDate).IsRequired();
-
-        builder.Property(x => x.EndDate).IsRequired();
-
         builder.Property(x => x.CreatedAtUtc).IsRequired();
 
         builder.Property(x => x.UpdatedAtUtc);

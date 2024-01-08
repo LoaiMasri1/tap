@@ -20,8 +20,7 @@ public class CreateDiscountHandlerTests
     private readonly IUserContext _userContextMock;
     private readonly IDateTime _dateTimeMock;
 
-    private static readonly CreateDiscountCommand Command =
-        new(1, "Name", "Description", 10, DateTime.UtcNow, DateTime.UtcNow.AddDays(1));
+    private static readonly CreateDiscountCommand Command = new(1, "Name", "Description", 10);
 
     private readonly CreateDiscountCommandHandler _sut;
 
@@ -80,21 +79,6 @@ public class CreateDiscountHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WhenDiscountNotApplicable_ReturnsDiscountNotApplicableError()
-    {
-        _userContextMock.Role.Returns(UserRole.Admin);
-        _roomRepositoryMock
-            .GetByIdWithDiscountsAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
-            .Returns(Room.Create(1, Money.Create(1, "USD"), RoomType.Single, 1, 1));
-
-        _dateTimeMock.UtcNow.Returns(DateTime.UtcNow.AddDays(1));
-
-        var result = await _sut.Handle(Command, CancellationToken.None);
-
-        result.Error.Should().Be(DomainErrors.Discount.NotApplicable);
-    }
-
-    [Fact]
     public async Task Handle_WhenRoomExists_AddsDiscountToRoom()
     {
         _userContextMock.Role.Returns(UserRole.Admin);
@@ -111,8 +95,6 @@ public class CreateDiscountHandlerTests
         var discount = result.Value;
 
         discount.DiscountPercentage.Should().Be(Command.DiscountPercentage);
-        discount.StartDate.Should().Be(Command.StartDate);
-        discount.EndDate.Should().Be(Command.EndDate);
     }
 
     [Fact]
