@@ -44,9 +44,18 @@ public class Hotel : Entity, IAuditableEntity
 
     public Result Update(string name, string description, Location location)
     {
+        if (string.IsNullOrEmpty(name))
+        {
+            return DomainErrors.Hotel.NameIsRequired;
+        }
+
+        if (string.IsNullOrEmpty(description))
+        {
+            return DomainErrors.Hotel.DescriptionIsNullOrEmpty;
+        }
+
         Ensure.NotEmpty(name, "The name is required.", nameof(name));
         Ensure.NotEmpty(description, "The description is required.", nameof(description));
-        Ensure.NotDefault(location, "The location is required.", nameof(location));
 
         if (Name == name && Description == description && Location == location)
         {

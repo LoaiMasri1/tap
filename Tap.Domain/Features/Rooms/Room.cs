@@ -56,7 +56,7 @@ public class Room : Entity, IAuditableEntity
         DiscountedPrice = discountedPrice.Amount;
     }
 
-    public Result AddDiscount(Discount discount, DateTime now)
+    public Result AddDiscount(Discount discount)
     {
         if (Discounts.Any(x => x.Name == discount.Name))
         {

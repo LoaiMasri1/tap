@@ -150,8 +150,10 @@ public static class DomainErrors
 
         public static Error NothingToUpdate =>
             new("Hotel.NothingToUpdate", "Nothing to update. The hotel is already up to date.");
-        public static Error AmenityTypeShouldBeHotel =>
-            new("Hotel.AmenityTypeShouldBeHotel", "The amenity type should be Hotel.");
+        public static Error NameIsRequired =>
+            new("Hotel.NameIsRequired", "The hotel name is required.");
+        public static Error DescriptionIsNullOrEmpty =>
+            new("Hotel.DescriptionIsNullOrEmpty", "The hotel description is required.");
     }
 
     public class Amenity
@@ -161,6 +163,8 @@ public static class DomainErrors
 
         public static Error NameIsRequired =>
             new("Amenity.NameIsRequired", "The amenity name is required.");
+        public static Error DescriptionIsNullOrEmpty =>
+            new("Amenity.DescriptionIsNullOrEmpty", "The amenity description is required.");
 
         public static Error DescriptionIsRequired =>
             new("Amenity.DescriptionIsRequired", "The amenity description is required.");
@@ -172,6 +176,8 @@ public static class DomainErrors
 
         public static Error TypeIdIsRequired =>
             new("Amenity.TypeIdIsRequired", "The amenity type id is required.");
+        public static Error NameIsNullOrEmpty =>
+            new("Amenity.NameIsNullOrEmpty", "The amenity name is required.");
 
         public static Error NothingToUpdate =>
             new("Amenity.NothingToUpdate", "Nothing to update. The amenity is already up to date.");
@@ -252,6 +258,9 @@ public static class DomainErrors
 
         public static Error NotConfirmed =>
             new("Booking.NotConfirmed", "The booking is not confirmed.");
+
+        public static Error IsNotPending =>
+            new("Booking.IsNotPending", "The booking is not pending.");
     }
 
     public class Session

@@ -90,9 +90,9 @@ public class Booking : AggregateRoot, IAuditableEntity
 
     public Result Confirm()
     {
-        if (Status == BookingStatus.Confirmed)
+        if (Status != BookingStatus.Pending)
         {
-            return DomainErrors.Booking.AlreadyConfirmed;
+            return DomainErrors.Booking.IsNotPending;
         }
 
         Status = BookingStatus.Confirmed;

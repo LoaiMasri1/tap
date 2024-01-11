@@ -35,8 +35,15 @@ public class Amenity : Entity, IAuditableEntity
 
     public Result Update(string name, string description)
     {
-        Ensure.NotEmpty(name, "The name is required.", nameof(name));
-        Ensure.NotEmpty(description, "The description is required.", nameof(description));
+        if (string.IsNullOrEmpty(name))
+        {
+            return DomainErrors.Amenity.NameIsRequired;
+        }
+
+        if (string.IsNullOrEmpty(description))
+        {
+            return DomainErrors.Amenity.DescriptionIsRequired;
+        }
 
         if (Name == name && Description == description)
         {

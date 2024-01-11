@@ -13,7 +13,7 @@ using Tap.Domain.Features.Users;
 
 namespace Application.UnitTests.Features.Discounts;
 
-public class CreateDiscountHandlerTests
+public class CreateDiscountCommandHandlerTests
 {
     private readonly IRoomRepository _roomRepositoryMock;
     private readonly IUnitOfWork _unitOfWorkMock;
@@ -24,7 +24,7 @@ public class CreateDiscountHandlerTests
 
     private readonly CreateDiscountCommandHandler _sut;
 
-    public CreateDiscountHandlerTests()
+    public CreateDiscountCommandHandlerTests()
     {
         _roomRepositoryMock = Substitute.For<IRoomRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
@@ -36,8 +36,7 @@ public class CreateDiscountHandlerTests
         _sut = new CreateDiscountCommandHandler(
             _roomRepositoryMock,
             _unitOfWorkMock,
-            _userContextMock,
-            _dateTimeMock
+            _userContextMock
         );
     }
 

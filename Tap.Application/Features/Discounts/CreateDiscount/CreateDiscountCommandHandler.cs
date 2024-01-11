@@ -1,5 +1,4 @@
-﻿using Tap.Application.Core.Abstractions.Common;
-using Tap.Application.Core.Abstractions.Data;
+﻿using Tap.Application.Core.Abstractions.Data;
 using Tap.Application.Core.Messaging;
 using Tap.Application.Features.Authentication;
 using Tap.Contracts.Features.Discounts;
@@ -16,20 +15,17 @@ public class CreateDiscountCommandHandler
 {
     private readonly IRoomRepository _roomRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IDateTime _dateTime;
     private readonly IUserContext _userContext;
 
     public CreateDiscountCommandHandler(
         IRoomRepository roomRepository,
         IUnitOfWork unitOfWork,
-        IUserContext userContext,
-        IDateTime dateTime
+        IUserContext userContext
     )
     {
         _roomRepository = roomRepository;
         _unitOfWork = unitOfWork;
         _userContext = userContext;
-        _dateTime = dateTime;
     }
 
     public async Task<Result<DiscountResponse>> Handle(
@@ -64,7 +60,7 @@ public class CreateDiscountCommandHandler
             command.DiscountPercentage
         );
 
-        var result = room.AddDiscount(discount, _dateTime.UtcNow);
+        var result = room.AddDiscount(discount);
         if (result.IsFailure)
         {
             return result.Error;
