@@ -37,7 +37,17 @@ public class GetCitiesQueryHandler : IQueryHandler<GetCitiesQuery, Maybe<CityRes
 
         var citiesPaged = await _sieveProcessor
             .Apply(sieveModel, cities)
-            .Select(x => new CityResponse(x.Id, x.Name, x.Description, x.Country))
+            .Select(
+                x =>
+                    new CityResponse(
+                        x.Id,
+                        x.Name,
+                        x.Description,
+                        x.Country,
+                        x.CreatedAtUtc,
+                        x.UpdatedAtUtc
+                    )
+            )
             .ToArrayAsync(cancellationToken);
 
         return citiesPaged;

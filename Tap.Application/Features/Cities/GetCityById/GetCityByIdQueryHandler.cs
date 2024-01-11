@@ -28,6 +28,13 @@ public class GetCityByIdQueryHandler : IQueryHandler<GetCityByIdQuery, Maybe<Cit
             return Maybe<CityResponse>.None;
         }
 
-        return new CityResponse(city.Id, city.Name, city.Description, city.Country);
+        return new CityResponse(
+            city.Id,
+            city.Name,
+            city.Description,
+            city.Country,
+            city.CreatedAtUtc,
+            city.UpdatedAtUtc
+        );
     }
 }

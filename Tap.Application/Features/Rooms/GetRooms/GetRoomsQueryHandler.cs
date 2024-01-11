@@ -1,8 +1,8 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 using Sieve.Services;
 using Tap.Application.Core.Abstractions.Data;
+using Tap.Application.Core.Messaging;
 using Tap.Contracts.Features.Amenities;
 using Tap.Contracts.Features.Photos;
 using Tap.Contracts.Features.Rooms;
@@ -14,7 +14,7 @@ using Tap.Domain.Features.Rooms;
 
 namespace Tap.Application.Features.Rooms.GetRooms;
 
-public class GetRoomsQueryHandler : IRequestHandler<GetRoomsQuery, Maybe<FilteredRoomResponse[]>>
+public class GetRoomsQueryHandler : IQueryHandler<GetRoomsQuery, Maybe<FilteredRoomResponse[]>>
 {
     private readonly IDbContext _dbContext;
     private readonly ISieveProcessor _sieveProcessor;
@@ -67,7 +67,9 @@ public class GetRoomsQueryHandler : IRequestHandler<GetRoomsQuery, Maybe<Filtere
                         photos
                             .Where(p => p.ItemId == r.Id)
                             .Select(x => new PhotoResponse(x.Url))
-                            .ToArray()
+                            .ToArray(),
+                        r.CreatedAtUtc,
+                        r.UpdatedAtUtc
                     )
             )
             .ToArrayAsync(cancellationToken);

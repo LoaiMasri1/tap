@@ -50,6 +50,13 @@ public class CreateCityCommandHandler : ICommandHandler<CreateCityCommand, Resul
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new CityResponse(city.Id, city.Name, city.Description, city.Country);
+        return new CityResponse(
+            city.Id,
+            city.Name,
+            city.Description,
+            city.Country,
+            city.CreatedAtUtc,
+            city.UpdatedAtUtc
+        );
     }
 }

@@ -16,5 +16,7 @@ public record FilteredRoomResponse(
     string Currency,
     bool IsAvailable,
     FilteredAmenityResponse[] Amenities,
-    PhotoResponse[] Photos
+    PhotoResponse[] Photos,
+    DateTime Created,
+    DateTime? Updated
 );

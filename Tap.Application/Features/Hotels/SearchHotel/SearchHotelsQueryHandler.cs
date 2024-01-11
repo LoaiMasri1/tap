@@ -61,6 +61,8 @@ public class SearchHotelsQueryHandler
                         h.Location.Longitude,
                         h.Location.Latitude,
                         h.Rooms.Count(r => r.IsAvailable),
+                        h.CreatedAtUtc,
+                        h.UpdatedAtUtc,
                         amenities
                             .Where(a => a.TypeId == h.Id)
                             .Select(a => new FilteredAmenityResponse(a.Name, a.Description))

@@ -13,6 +13,8 @@ public record SearchHotelResponse(
     double Longitude,
     double Latitude,
     int NumberOfAvailableRooms,
+    DateTime Created,
+    DateTime? Updated,
     FilteredAmenityResponse[] Amenities,
     PhotoResponse[] Photos,
     FilteredRoomResponse[]? Rooms = null

@@ -70,6 +70,8 @@ public class GetHotelByIdQueryHandler : IQueryHandler<GetHotelByIdQuery, Maybe<S
             hotel.Location.Longitude,
             hotel.Location.Latitude,
             hotel.Rooms.Count(r => r.IsAvailable),
+            hotel.CreatedAtUtc,
+            hotel.UpdatedAtUtc,
             amenities.ToArray(),
             photos.ToArray(),
             rooms?.ToArray()
@@ -88,7 +90,9 @@ public class GetHotelByIdQueryHandler : IQueryHandler<GetHotelByIdQuery, Maybe<S
             room.Price.Currency,
             room.IsAvailable,
             GetAmenities(room.Id, AmenityType.Room).ToArray(),
-            GetPhotos(room.Id, ItemType.Room).ToArray()
+            GetPhotos(room.Id, ItemType.Room).ToArray(),
+            room.CreatedAtUtc,
+            room.UpdatedAtUtc
         );
 
     private IQueryable<Photo> GetPhotosByType(int id, ItemType type) =>
