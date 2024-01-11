@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Logging;
 using Tap.Application.Core.Abstractions.Common;
 using Tap.Contracts.Files;
 
@@ -13,12 +12,7 @@ public class FileService : IFileService
 
     private static readonly object Lock = new();
 
-    public FileService(
-        IWebHostEnvironment env,
-        IDateTime dateTime,
-        ITokenGenerator guidGenerator,
-        ILogger<FileService> logger
-    )
+    public FileService(IWebHostEnvironment env, IDateTime dateTime, ITokenGenerator guidGenerator)
     {
         _env = env;
         _dateTime = dateTime;

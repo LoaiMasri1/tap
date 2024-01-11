@@ -90,4 +90,23 @@ public class EmailNotificationService : IEmailNotificationService
 
         return _emailService.SendEmailAsync(mailRequest);
     }
+
+    public Task SendBookingPayedEmail(BookingPayedEmail bookingPayedEmail)
+    {
+        var body = $"""
+                    Dear {bookingPayedEmail.Name},
+                    
+                    Thank you for choosing Tap!
+                    your booking {bookingPayedEmail.BookingId} in {bookingPayedEmail.HotelName} has been payed.
+                    
+                    Total price: {bookingPayedEmail.TotalPrice} {bookingPayedEmail.Currency}
+                    
+                    Thank you for choosing Tap! , Hope to see you again.
+                    
+                    """;
+
+        var mailRequest = new MailRequest(bookingPayedEmail.EmailTo, "Booking Payed", body);
+
+        return _emailService.SendEmailAsync(mailRequest);
+    }
 }

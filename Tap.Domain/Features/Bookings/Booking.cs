@@ -153,6 +153,8 @@ public class Booking : AggregateRoot, IAuditableEntity
 
         Status = BookingStatus.Paid;
 
+        AddDomainEvent(new BookingPayedEvent(Id));
+
         return Result.Success();
     }
 }
